@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <div class="container-fluid mt-3">
+      <div class="row">
+        <div class="container-fluid p-5 bg-primary text-white text-center">
+          <img
+            src="./myLogo.jpg"
+            class="rounded"
+            alt="logo"
+            width="100"
+            height="100"
+          />
+          <h1>User Panel</h1>
+        </div>
+        <nav class="w-25 navbar bg-light">
+          <div class="container-fluid">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <img
+                    src="./profile.png"
+                    class="rounded-circle"
+                    alt="Cinque Terre"
+                    width="100"
+                    height="100"
+                  />
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Employees' list</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Reports</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <div class="col p-3 bg-dark text-white clearfix">
+          <img
+            src="./profile.png"
+            class="rounded-circle float-left mr-2"
+            alt="profile"
+            width="100"
+            height="100"
+          />
+          <button type="button" class="btn btn-secondary btn-sm">
+            change profile photo
+          </button>
+          <br />First name : Mohammad <br />Last name : Sharifi <br />Phone
+          number : 09123456789 <br />Email : msharifi2000@gmail.com <br />Face
+          registration status :
+          <span class="badge bg-danger">Not registered!</span>
+          <br />
+          <div style="padding: 0" class="alert alert-danger w-50">
+            Please upload your pictures, or your attendance won't be processed.
+          </div>
+          <label for="formFileMultiple" class="form-label"></label>
+          <input
+            class="form-control w-50"
+            type="file"
+            id="formFileMultiple"
+            multiple
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
