@@ -9,7 +9,7 @@ class Employee(models.Model):
     password = models.CharField(max_length=20)
 
 
-class In_Out(models.Model):
+class In_out(models.Model):
     in_time = models.TimeField()
     out_time = models.TimeField()
     employee = models.ForeignKey(
