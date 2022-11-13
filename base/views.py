@@ -2,14 +2,16 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
 from django.contrib import messages 
+from django.contrib.auth.decorators import login_required
+
 
 def home(request):
-        return render(request, 'base/home.html')
+    return render(request, 'base/home.html')
 
 def loginPage(request):
     if request.user.is_authenticated:
-        return redirect('home')
-    
+        return render(request ,'base/dashboard.html')
+   
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -22,7 +24,7 @@ def loginPage(request):
         
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return render(request ,'base/dashboard.html')
         else:
             messages.error(request, 'Username or Password does not exist')
             
@@ -31,3 +33,7 @@ def loginPage(request):
 def logoutUser(request):
     logout(request)
     return redirect('home')
+
+def dashboard(request):
+    return render(request ,'base/dashboard.html')
+    
