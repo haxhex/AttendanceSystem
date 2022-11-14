@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance System</title>
+    <style>
+        .menu-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+        }
+    </style>
 </head>
 <body>
     {% include 'navbar.html' %}
@@ -15,6 +21,7 @@
         {% endfor %}
     </ul>
     {% endif %}
+
     {% block content %}
     {% endblock %}
     

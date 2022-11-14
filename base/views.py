@@ -3,14 +3,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth. forms import UserCreationForm
+
 
 
 def home(request):
     return render(request, 'base/home.html')
 
 def loginPage(request):
+    page = 'login'
     if request.user.is_authenticated:
-        return render(request ,'base/dashboard.html')
+        return redirect('dashboard')
    
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -24,11 +27,11 @@ def loginPage(request):
         
         if user is not None:
             login(request, user)
-            return render(request ,'base/dashboard.html')
+            return redirect('dashboard')
         else:
             messages.error(request, 'Username or Password does not exist')
-            
-    return render(request, 'base/login.html')
+    context = {'page' : page}        
+    return render(request, 'base/login_register.html', context)
 
 def logoutUser(request):
     logout(request)
@@ -36,4 +39,26 @@ def logoutUser(request):
 
 def dashboard(request):
     return render(request ,'base/dashboard.html')
+
+def io(request):
+    return render(request ,'base/io.html')
+
+def io_archive(request):
+    return render(request ,'base/io_archive.html')
+
+def registerUser(request):
+    form = UserCreationForm()
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            # make sure username in lower case
+            user.username = user.username.lower()
+            user.save()    
+            # logged user in
+            login(request, user )
+            return redirect('home') 
+        else:
+            messages.error(request, 'An error occcured during registeration')   
+    return render(request, 'base/login_register.html', {'form' : form})
     
