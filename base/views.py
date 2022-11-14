@@ -52,12 +52,10 @@ def registerUser(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            # make sure username in lower case
             user.username = user.username.lower()
             user.save()    
-            # logged user in
-            login(request, user )
-            return redirect('home') 
+            login(request, user)
+            return redirect('dashboard') 
         else:
             messages.error(request, 'An error occcured during registeration')   
     return render(request, 'base/login_register.html', {'form' : form})

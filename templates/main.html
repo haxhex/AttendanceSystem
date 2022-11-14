@@ -22,8 +22,28 @@
     </ul>
     {% endif %}
 
-    {% block content %}
+    {% if request.user.is_authenticated %}
+    <div class="menu-container">
+        <div>
+            <div>
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+            </div>
+            <div>
+                <a href="{% url 'io-archive' %}">Activities</a>
+            </div>
+            <div>
+                <a href="{% url 'io' %}">Time and Attendance</a>
+            </div>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% else %}
+    {% block no_menu %}
     {% endblock %}
+    {% endif %}
+
+
     
 </body>
 </html>
