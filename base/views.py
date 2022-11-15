@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth. forms import UserCreationForm
+from .forms import *
+from django.http import HttpResponse
 
 
 
@@ -59,4 +61,21 @@ def registerUser(request):
         else:
             messages.error(request, 'An error occcured during registeration')   
     return render(request, 'base/login_register.html', {'form' : form})
+
+def view_profile(request):
+    return render(request, 'base/view_profile.html')
+
+def edit_profile(request, pk):
+    employee = Employee.objects.get(id=pk)
+    form = EmployeeForm(instance=employee)
+    
+    if request.method == 'POST':
+        form = EmployeeForm(request.POST, instance=employee)
+        if form.is_valid():
+            form.save()
+            return redirect('view-profile')
+        
+    context = {'form' : form}
+    return render(request, 'base/edit_profile.html', context)
+
     

@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<div>
+    <h1>View Profile</h1>
+    <label>Username: </label>
+    {{user.username}}
+    <br>
+    <label>First Name: </label>
+    {{user.employee.first_name}}
+    <br>
+    <label>Last Name: </label>
+    {{user.employee.last_name}}
+    <br>
+    <label>Email: </label>
+    {{user.employee.email}}
+    <br>
+    <label>Phone Number: </label>
+    {{user.employee.phone_number}}
+    <br>
+    <a href="{% url 'edit-profile' user.employee.id %}">Edit Profile</a>
+</div>
+{% endblock %}

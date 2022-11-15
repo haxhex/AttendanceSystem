@@ -9,5 +9,7 @@ urlpatterns = [
     path("dashboard/", views.dashboard, name="dashboard"),
     path("io/", views.io, name="io"),
     path("io-archive/", views.io_archive, name="io-archive"),
-    
+    path("view-profile/", views.view_profile, name="view-profile"),
+    path("edit-profile/<str:pk>/", views.edit_profile, name="edit-profile"),
+        
 ]
