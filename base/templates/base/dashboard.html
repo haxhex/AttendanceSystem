@@ -1,5 +1,18 @@
 {% extends 'main.html' %}
 
 {% block content %}
-    <div><h1>Dashboard Content</h1></div>
+    <div>
+        <h1>Dashboard Content</h1>        
+        {% for in_out in in_outs %}
+            <label>Date:</label>
+            {{in_out.date}}
+            <br>
+            <label>Time In:</label>
+            {{in_out.in_time}}
+            <br>
+            <label>Time Out:</label>
+            {{in_out.out_time}}
+            <hr>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth. forms import UserCreationForm
 from .forms import *
 from django.http import HttpResponse
+from .models import *
 
 
 
@@ -40,7 +41,9 @@ def logoutUser(request):
     return redirect('home')
 
 def dashboard(request):
-    return render(request ,'base/dashboard.html')
+    in_outs = In_out.objects.all()
+    context = {'in_outs' : in_outs}
+    return render(request ,'base/dashboard.html', context)
 
 def io(request):
     return render(request ,'base/io.html')

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import datetime
 
 class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -14,6 +14,7 @@ class Employee(models.Model):
 
 
 class In_out(models.Model):
+    date = models.DateField(default=datetime.date.today)
     in_time = models.TimeField()
     out_time = models.TimeField()
     employee = models.ForeignKey(
