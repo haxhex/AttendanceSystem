@@ -7,6 +7,8 @@ from django.contrib.auth. forms import UserCreationForm
 from .forms import *
 from django.http import HttpResponse
 from .models import *
+from .forms import SetPasswordForm
+
 
 
 
@@ -81,4 +83,18 @@ def edit_profile(request, pk):
     context = {'form' : form}
     return render(request, 'base/edit_profile.html', context)
 
-    
+@login_required
+def password_change(request):
+    user = request.user
+    if request.method == 'POST':
+        form = SetPasswordForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your password has been changed")
+            return redirect('login')
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+
+    form = SetPasswordForm(user)
+    return render(request, 'base/password_reset_confirm.html', {'form': form})
