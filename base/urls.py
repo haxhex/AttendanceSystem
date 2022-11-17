@@ -11,6 +11,6 @@ urlpatterns = [
     path("io-archive/", views.io_archive, name="io-archive"),
     path("view-profile/", views.view_profile, name="view-profile"),
     path("edit-profile/<str:pk>/", views.edit_profile, name="edit-profile"),
-    path("password-change/" , views.password_change , name="password-change" )
-        
+    path("password-change/" , views.password_change , name="password-change" ),
+    path("password_reset/", views.password_reset_request, name="password_reset"),    
 ]

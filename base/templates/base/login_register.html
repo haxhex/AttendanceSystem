@@ -15,6 +15,7 @@
     </form>
     <p>Haven't Signed up yet?</p>
     <a href="{% url 'register' %}">Sign up</a>
+    <a href="/password_reset">Forgot password?</a>
 </div>
 
 {% else %}
@@ -25,7 +26,7 @@
         {{form.as_p}}
         <input type="submit" value="Register">
     </form>
-    
+
     <p>Alredy Signed up?</p>
     <a href="{% url 'login' %}">Login</a>
 
