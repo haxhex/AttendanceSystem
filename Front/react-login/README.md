@@ -1,3 +1,7 @@
+# You have to install some modules
+
+node_modules is in .gitignore due to its large size. So please install essentional modules.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
