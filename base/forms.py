@@ -4,10 +4,14 @@ from django.contrib.auth.forms import SetPasswordForm , UserCreationForm ,Authen
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django import forms
+from django.contrib.auth.models import User
+
+
 class EmployeeForm(ModelForm):
     class Meta:
         model = Employee
-        fields = ['first_name', 'last_name', 'email', 'phone_number']
+        fields = '__all__'
+        exclude = ['user']
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:
@@ -32,8 +36,8 @@ class UserRegistrationForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         if commit:
             user.save()
-
         return user
+    
 
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -48,15 +52,21 @@ class UserLoginForm(AuthenticationForm):
 
     #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
+# class UserUpdateForm(forms.ModelForm):
+#     email = forms.EmailField()
 
-    class Meta:
-        model = Employee
-        fields = ['first_name', 'last_name', 'email', 'phone_number']
+#     class Meta:
+#         model = Employee
+#         fields = ['first_name', 'last_name', 'email', 'profile_pic']
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:
         model = get_user_model()
         fields = ['new_password1', 'new_password2']
+        
 
+class CreateUserForm(UserCreationForm):
+	class Meta:
+		model = User
+		fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        

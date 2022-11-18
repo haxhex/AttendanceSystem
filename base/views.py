@@ -17,7 +17,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
-from .forms import UserRegistrationForm, UserLoginForm, UserUpdateForm, SetPasswordForm, PasswordResetForm
+from .forms import *
 from .decorators import user_not_authenticated
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail, BadHeaderError
@@ -29,35 +29,17 @@ from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
+from django.contrib.auth import get_user_model
+from django.urls import reverse_lazy
+from .decorators import unauthenticated_user, allowed_users, admin_only
+from django.contrib.auth.models import Group
 
 
-
+# User = get_user_model()
 
 def home(request):
     return render(request, 'base/home.html')
 
-def loginPage(request):
-    page = 'login'
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-   
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        try:
-            user = User.objects.get(username=username)
-        except:
-            messages.error(request, 'User does not exist')
-        
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('dashboard')
-        else:
-            messages.error(request, 'Username or Password does not exist')
-    context = {'page' : page}        
-    return render(request, 'base/login_register.html', context)
 
 def logoutUser(request):
     logout(request)
@@ -74,35 +56,8 @@ def io(request):
 def io_archive(request):
     return render(request ,'base/io_archive.html')
 
-def registerUser(request):
-    form = UserCreationForm()
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.save()    
-            login(request, user)
-            return redirect('dashboard') 
-        else:
-            messages.error(request, 'An error occcured during registeration')   
-    return render(request, 'base/login_register.html', {'form' : form})
-
 def view_profile(request):
     return render(request, 'base/view_profile.html')
-
-def edit_profile(request, pk):
-    employee = Employee.objects.get(id=pk)
-    form = EmployeeForm(instance=employee)
-    
-    if request.method == 'POST':
-        form = EmployeeForm(request.POST, instance=employee)
-        if form.is_valid():
-            form.save()
-            return redirect('view-profile')
-        
-    context = {'form' : form}
-    return render(request, 'base/edit_profile.html', context)
 
 @login_required
 def password_change(request):
@@ -149,3 +104,61 @@ def password_reset_request(request):
 					return redirect ("/password_reset/done/")
 	password_reset_form = PasswordResetForm()
 	return render(request=request, template_name="base/password_reset.html", context={"password_reset_form":password_reset_form})
+
+@unauthenticated_user
+def registerPage(request):
+	form = CreateUserForm()
+	if request.method == 'POST':
+		form = CreateUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			username = form.cleaned_data.get('username')
+			email = form.cleaned_data.get('email')
+			first_name = form.cleaned_data.get('first_name')
+			last_name = form.cleaned_data.get('last_name')
+			group = Group.objects.get(name='employee')
+			user.groups.add(group)
+			Employee.objects.create(
+				user=user,
+				email=email,
+                first_name = first_name,
+                last_name = last_name
+    )
+
+			messages.success(request, 'Account was created for ' + username)
+
+			return redirect('login')
+
+	context = {'form':form}
+	return render(request, 'base/login_register.html', context)
+
+@unauthenticated_user
+def loginPage(request):
+	page = 'login'
+	if request.method == 'POST':
+		username = request.POST.get('username')
+		password =request.POST.get('password')
+
+		user = authenticate(request, username=username, password=password)
+
+		if user is not None:
+			login(request, user)
+			return redirect('dashboard')
+		else:
+			messages.info(request, 'Username OR password is incorrect')
+
+	context = {'page': page}
+	return render(request, 'base/login_register.html', context)
+
+@login_required(login_url='login')
+def accountSettings(request):
+	employee = request.user.employee
+	form = EmployeeForm(instance=employee)
+
+	if request.method == 'POST':
+		form = EmployeeForm(request.POST, request.FILES,instance=employee)
+		if form.is_valid():
+			form.save()
+			return redirect('view-profile')
+	context = {'form':form}
+	return render(request, 'base/edit_profile.html', context)

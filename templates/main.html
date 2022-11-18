@@ -28,6 +28,9 @@
     <div class="menu-container">
         <div>
             <div>
+                <a href="{% url 'view-profile' %}"><img src="{{request.user.employee.profile_picture.url}}" alt="Profile Picture" width="75" height="75"></a>
+            </div>
+            <div>
                 <a href="{% url 'dashboard' %}">Dashboard</a>
             </div>
             <div>

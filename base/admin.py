@@ -6,16 +6,16 @@ from .models import *
 
 # Register your models here.
 
-class AccountInline(admin.StackedInline):
-    model = Employee
-    can_delete = False
-    verbose_name_plural = 'Accounts'
+# class AccountInline(admin.StackedInline):
+#     model = Employee
+#     can_delete = False
+#     verbose_name_plural = 'Accounts'
     
-class CustomizeUserAdmin (UserAdmin):
-    inlines = (AccountInline, )
+# class CustomizeUserAdmin (UserAdmin):
+#     inlines = (AccountInline, )
     
-admin.site.unregister(User)
-admin.site.register(User, CustomizeUserAdmin)
+# admin.site.unregister(User)
+# admin.site.register(User, CustomizeUserAdmin)
 admin.site.register(Employee)
 admin.site.register(In_out)
 
