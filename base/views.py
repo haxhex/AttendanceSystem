@@ -40,22 +40,35 @@ from django.contrib.auth.models import Group
 def home(request):
     return render(request, 'base/home.html')
 
-
 def logoutUser(request):
     logout(request)
     return redirect('home')
 
+@login_required(login_url='login')
 def dashboard(request):
     in_outs = In_out.objects.all()
     context = {'in_outs' : in_outs}
     return render(request ,'base/dashboard.html', context)
 
+@login_required(login_url='login')
 def io(request):
     return render(request ,'base/io.html')
 
+@login_required(login_url='login')
 def io_archive(request):
     return render(request ,'base/io_archive.html')
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def io_report(request):
+    return render(request ,'base/io_report.html')
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def io_archive_report(request):
+    return render(request ,'base/io_archive_report.html')
+
+@login_required(login_url='login')
 def view_profile(request):
     return render(request, 'base/view_profile.html')
 

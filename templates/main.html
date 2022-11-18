@@ -33,12 +33,21 @@
             <div>
                 <a href="{% url 'dashboard' %}">Dashboard</a>
             </div>
+            {% if user.is_superuser %}
+            <div>
+                <a href="{% url 'io-archive-report' %}">Activities Report</a>
+            </div>
+            <div>
+                <a href="{% url 'io-report' %}">Time and Attendance Report</a>
+            </div>
+            {% else %}
             <div>
                 <a href="{% url 'io-archive' %}">Activities</a>
             </div>
             <div>
                 <a href="{% url 'io' %}">Time and Attendance</a>
             </div>
+            {% endif %}
         </div>
         {% block content %}
         {% endblock %}
