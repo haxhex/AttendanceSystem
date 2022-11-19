@@ -161,7 +161,7 @@ def loginPage(request):
 			messages.info(request, 'Username OR password is incorrect')
 
 	context = {'page': page}
-	return render(request, 'base/login_register.html', context)
+	return render(request, 'base/log-in.html', context)
 
 @login_required(login_url='login')
 def accountSettings(request):
