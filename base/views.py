@@ -136,7 +136,7 @@ def registerPage(request):
 				email=email,
                 first_name = first_name,
                 last_name = last_name
-    )
+    		)
 
 			messages.success(request, 'Account was created for ' + username)
 

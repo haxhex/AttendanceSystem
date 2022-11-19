@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Bootstrap 5 Example</title>
+    <title>Attendance System</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -76,11 +76,13 @@
                 <button type="submit" class="btn btn-primary btn-block mb-4">
                   Log in
                 </button>
-
+                {% for message in messages %}
+                <p id="messages">{{message}}</p>
+                {% endfor %}	
                 <!-- switch to sign up-->
                 <br />
                 Don't have an account?                   
-                <a href="{% url 'login' %}">Sign Up</a>
+                <a href="{% url 'register' %}">Sign Up</a>
                 <br />
                 </div>
               </form>
