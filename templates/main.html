@@ -35,6 +35,9 @@
             </div>
             {% if user.is_superuser %}
             <div>
+                <a href="{% url 'employees_list' %}">Employees List</a>
+            </div>
+            <div>
                 <a href="{% url 'io-archive-report' %}">Activities Report</a>
             </div>
             <div>

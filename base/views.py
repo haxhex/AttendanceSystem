@@ -69,6 +69,12 @@ def io_archive_report(request):
     return render(request ,'base/io_archive_report.html')
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def employees_list(request):
+    return render(request ,'base/employees_list.html')
+
+
+@login_required(login_url='login')
 def view_profile(request):
     return render(request, 'base/view_profile.html')
 
@@ -78,7 +84,11 @@ def password_change(request):
     if request.method == 'POST':
         form = SetPasswordForm(user, request.POST)
         if form.is_valid():
+            form.new_password1 = request.POST.get('new_password1')
+            form.new_password2 = request.POST.get('new_password2')
             form.save()
+            # new_password1 = request.POST.get('new_password1')
+            # new_password2 = request.POST.get('new_password2')
             messages.success(request, "Your password has been changed")
             return redirect('login')
         else:
@@ -94,7 +104,8 @@ def password_reset_request(request):
 	if request.method == "POST":
 		password_reset_form = PasswordResetForm(request.POST)
 		if password_reset_form.is_valid():
-			data = password_reset_form.cleaned_data['email']
+			# data = password_reset_form.cleaned_data['email']
+			data = request.POST.get('email')
 			associated_users = User.objects.filter(Q(email=data))
 			if associated_users.exists():
 				for user in associated_users:
@@ -125,15 +136,15 @@ def registerPage(request):
 		form = CreateUserForm(request.POST)
 		if form.is_valid():
 			user = form.save()
-			username = form.cleaned_data.get('username')
-			email = form.cleaned_data.get('email')
-			first_name = form.cleaned_data.get('first_name')
-			last_name = form.cleaned_data.get('last_name')
+			username = request.POST.get('username')
+			email = request.POST.get('email')
+			first_name = request.POST.get('first_name')
+			last_name = request.POST.get('last_name')
 			group = Group.objects.get(name='employee')
 			user.groups.add(group)
 			Employee.objects.create(
-				user=user,
-				email=email,
+				user = user,
+				email = email,
                 first_name = first_name,
                 last_name = last_name
     		)
@@ -143,7 +154,7 @@ def registerPage(request):
 			return redirect('login')
 
 	context = {'form':form}
-	return render(request, 'base/login_register.html', context)
+	return render(request, 'base/sign-up.html', context)
 
 @unauthenticated_user
 def loginPage(request):
