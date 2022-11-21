@@ -131,28 +131,57 @@ def password_reset_request(request):
 
 @unauthenticated_user
 def registerPage(request):
+	emailvalue=''
+	uservalue=''
+	passwordvalue1=''
+	passwordvalue2=''
 	form = CreateUserForm()
 	if request.method == 'POST':
 		form = CreateUserForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			username = request.POST.get('username')
-			email = request.POST.get('email')
-			first_name = request.POST.get('first_name')
-			last_name = request.POST.get('last_name')
-			group = Group.objects.get(name='employee')
-			user.groups.add(group)
-			Employee.objects.create(
-				user = user,
-				email = email,
-                first_name = first_name,
-                last_name = last_name
-    		)
-
-			messages.success(request, 'Account was created for ' + username)
-
-			return redirect('login')
-
+		print("Form Created")
+		uservalue = request.POST.get('username')
+		emailvalue = request.POST.get('email')
+		passwordvalue1= request.POST.get('password1')
+		passwordvalue2= request.POST.get('password2')
+		if passwordvalue1 == passwordvalue2:
+			print("----Password Matched")
+			try:
+				user= User.objects.get(username=uservalue)
+				context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
+				print("----User Exist")
+				return render(request, 'base/sign-up.html', context)
+			except User.DoesNotExist:
+				print("-----User Not Exist")
+				try:
+					user= User.objects.get(email=emailvalue)
+					context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
+					return render(request, 'base/sign-up.html', context)
+				except:
+					print("Email not repeated")
+          			
+					if form.is_valid():
+						print("----Form is Valid")
+						user = form.save()
+						username = request.POST.get('username')
+						email = request.POST.get('email')
+						first_name = request.POST.get('first_name')
+						last_name = request.POST.get('last_name')
+						group = Group.objects.get(name='employee')
+						user.groups.add(group)
+						Employee.objects.create(
+							user = user,
+							email = email,
+							first_name = first_name,
+							last_name = last_name
+						)
+						context= {'form': form}
+						messages.success(request, 'Account was created for ' + username)
+						return redirect('login')
+		else:
+			print("Password not match")
+			context= {'form': form, 'error':'The passwords that you provided don\'t match'}
+			return render(request, 'base/sign-up.html', context)
+   
 	context = {'form':form}
 	return render(request, 'base/sign-up.html', context)
 

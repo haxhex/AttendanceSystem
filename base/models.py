@@ -8,7 +8,7 @@ class Employee(models.Model):
 	first_name = models.CharField(max_length=200, null=True)
 	last_name = models.CharField(max_length=200, null=True)
 	mobile_number = models.CharField(max_length=200, null=True)
-	email = models.CharField(max_length=200, null=True)
+	email = models.EmailField(max_length=200, null=True, unique=True)
 	profile_picture = models.ImageField(default="default_profile.png", null=True, blank=True)
 
 	def __str__(self):
