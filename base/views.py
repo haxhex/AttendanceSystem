@@ -141,8 +141,10 @@ def registerPage(request):
 		print("Form Created")
 		uservalue = request.POST.get('username')
 		emailvalue = request.POST.get('email')
-		passwordvalue1= request.POST.get('password1')
-		passwordvalue2= request.POST.get('password2')
+		passwordvalue1 = request.POST.get('password1')
+		passwordvalue2 = request.POST.get('password2')
+		fname = request.POST.get('first_name')
+		lname = request.POST.get('last_name')
 		if passwordvalue1 == passwordvalue2:
 			print("----Password Matched")
 			try:
@@ -187,21 +189,23 @@ def registerPage(request):
 
 @unauthenticated_user
 def loginPage(request):
-	page = 'login'
-	if request.method == 'POST':
-		username = request.POST.get('username')
-		password =request.POST.get('password')
-
-		user = authenticate(request, username=username, password=password)
-
-		if user is not None:
-			login(request, user)
-			return redirect('dashboard')
+	if request.method == "POST":
+		form = LoginForm(request, data=request.POST)
+		if form.is_valid():
+			username = form.cleaned_data.get('username')
+			password = form.cleaned_data.get('password')
+			user = authenticate(username=username, password=password)
+			if user is not None:
+				login(request, user)
+				# messages.info(request, f"You are now logged in as {username}.")
+				return redirect("dashboard")
+			else:
+				messages.error(request,"Invalid username or password.")
 		else:
-			messages.info(request, 'Username OR password is incorrect')
-
-	context = {'page': page}
-	return render(request, 'base/log-in.html', context)
+			messages.error(request,"Invalid username or password.")
+	form = LoginForm()
+	context={"form":form}
+	return render(request, "base/log-in.html", context)
 
 @login_required(login_url='login')
 def accountSettings(request):
