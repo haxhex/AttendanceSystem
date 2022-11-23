@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance System</title>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/shabnam-font/dist/font-face.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        body {
+            display: -webkit-box;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+                    flex-flow: row wrap;
+            align-content: center;
+            -webkit-box-pack: center;
+                    justify-content: center;
+                    
+          }
+
+          
+          div {
+            width: 100%;
+            direction: ltr;
+            text-align: center;
+          }
+          
+          .number {
+            background: #fff;
+            position: relative;
+            font: 900 30vmin 'Consolas';
+            letter-spacing: 5vmin;
+            text-shadow: 2px -1px 0 #000, 4px -2px 0 #0a0a0a, 6px -3px 0 #0f0f0f, 8px -4px 0 #141414, 10px -5px 0 #1a1a1a, 12px -6px 0 #1f1f1f, 14px -7px 0 #242424, 16px -8px 0 #292929;
+          }
+          .number::before {
+            background-color: #673ab7;
+            background-image: radial-gradient(closest-side at 50% 50%, #ffc107 100%, rgba(0, 0, 0, 0)), radial-gradient(closest-side at 50% 50%, #e91e63 100%, rgba(0, 0, 0, 0));
+            background-repeat: repeat-x;
+            background-size: 40vmin 40vmin;
+            background-position: -100vmin 20vmin, 100vmin -25vmin;
+            width: 100%;
+            height: 100%;
+            mix-blend-mode: screen;
+            -webkit-animation: moving 10s linear infinite both;
+                    animation: moving 10s linear infinite both;
+            display: block;
+            position: absolute;
+            content: "";
+          }
+          @-webkit-keyframes moving {
+            to {
+              background-position: 100vmin 20vmin, -100vmin -25vmin;
+            }
+          }
+          @keyframes moving {
+            to {
+              background-position: 100vmin 20vmin, -100vmin -25vmin;
+            }
+          }
+          .text {
+            font: 400 5vmin "shabnam";
+          }
+          .text span {
+            font-size: 10vmin;
+          }
+          .noselect {
+            -webkit-touch-callout: none;
+              -webkit-user-select: none;
+               -khtml-user-select: none;
+                 -moz-user-select: none;
+                  -ms-user-select: none;
+                      user-select: none;
+                  -webkit-tap-highlight-color: transparent;
+          }
+          
+          button {
+              width: 150px;
+              height: 50px;
+              cursor: pointer;
+              background: none;
+              border: 2px solid rgba(103,58,183, 0.4);
+              border-radius: 5px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              overflow: hidden;
+              transition: 500ms;
+          }
+          
+          button:after {
+              content: 'Go Back  Dashboard';
+              position: absolute;
+              color: #673ab7;
+              transition: 500ms;
+          }
+          
+          .bg {
+              width: 0px;
+              height: 50px;
+              content: '';
+              z-index: -1;
+              background: rgba(255,255,255,0.2);
+              transform: skewX(45deg);
+              transition: 500ms;
+          }
+          
+          button:hover {
+              border: 2px solid rgba(103,58,183, 0.8);
+          }
+          
+          button:hover .bg {
+              background: rgba(103,58,183, 0.8);
+              width: 150px;
+          }
+          
+          button:hover:after {
+              color: white;
+          }
+          
+          button:focus {
+              outline: none;
+          }
+    </style>
+</head>
+<body>
+<div class="number">404</div>
+<div class="text">Oops, This Page Not Found!</div>
+<br><br><br><br><br> 
+<a href="{% url 'dashboard' %}">
+    <button class="noselect">
+        <div class="bg"></bg>
+    </button>
+</a>
+  
+</body>
+</html>

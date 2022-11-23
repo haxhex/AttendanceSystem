@@ -18,6 +18,11 @@ from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views #import this
 from django.conf.urls.static import static
 from django.conf import settings
+from django.conf.urls import handler404
+from django.views.static import serve
+from django.urls import re_path as url
+
+
 
 
 urlpatterns = [
@@ -26,7 +31,13 @@ urlpatterns = [
     #path('', include('django.contrib.auth.urls')),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='base/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="base/password_reset_confirm.html"), name='password_reset_confirm'),
-    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='base/password_reset_complete.html'), name='password_reset_complete'),  
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='base/password_reset_complete.html'), name='password_reset_complete'),
+    url(r'^images/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+
 ]
+      
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+handler404 = "base.views.handle_not_found"
+

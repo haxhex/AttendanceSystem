@@ -54,7 +54,7 @@ def logoutUser(request):
 # Dashboard
 @login_required(login_url='login')
 def dashboard(request):
-    return render(request ,'base/calendar.html')
+    return render(request ,'base/dashboard.html')
 
 @login_required(login_url='login')
 def io(request):
@@ -271,3 +271,6 @@ def event(request, event_id=None):
         form.save()
         return HttpResponseRedirect(reverse('calendar'))
     return render(request, 'base/event.html', {'form': form})
+
+def handle_not_found(request, exception):
+    return render(request, 'base/not-found.html')
