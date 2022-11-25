@@ -5,7 +5,11 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django import forms
 from django.contrib.auth.models import User
-
+from .models import *
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth import authenticate, get_user_model, password_validation
+from django.forms import ModelForm, DateInput
+from base.models import Event
 
 class EmployeeForm(ModelForm):
     class Meta:
@@ -52,13 +56,6 @@ class UserLoginForm(AuthenticationForm):
 
     #captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
 
-# class UserUpdateForm(forms.ModelForm):
-#     email = forms.EmailField()
-
-#     class Meta:
-#         model = Employee
-#         fields = ['first_name', 'last_name', 'email', 'profile_pic']
-
 class SetPasswordForm(SetPasswordForm):
     class Meta:
         model = get_user_model()
@@ -66,7 +63,61 @@ class SetPasswordForm(SetPasswordForm):
         
 
 class CreateUserForm(UserCreationForm):
-	class Meta:
-		model = User
-		fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+    password1 = forms.CharField(
+    label=_("Password"),
+    strip=False,
+    widget=forms.PasswordInput(attrs={"autocomplete": "new-password", "class" : "form-control","id": "form3Example3"}),
+    help_text=password_validation.password_validators_help_text_html(),
+    )
+    password2 = forms.CharField(
+    label=_("Password confirmation"),
+    widget=forms.PasswordInput(attrs={"autocomplete": "new-password", "class" : "form-control","id": "form3Example3"}),
+    strip=False,
+    help_text=_("Enter the same password as before, for verification."),
+    )
+    def __init__(self, *args, **kwargs):
+        super(CreateUserForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True      
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control','id': 'form3Example0'}),            
+            'first_name': forms.TextInput(attrs={'class': 'form-control','id': 'form3Example1'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control','id': 'form3Example2'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control','id': 'form3Example3'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control','id': 'form3Example4'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control','id': 'form3Example5'}),    
+        }
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+    username = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control','id': 'form3Example3'}),)
+
+    password = forms.CharField(widget=forms.PasswordInput(
+        attrs={'class': 'form-control','id': 'form3Example4'}))
+    
+
+class EventForm(ModelForm):
+  class Meta:
+    model = Event
+    # datetime-local is a HTML5 input type, format to make date time show on fields
+    widgets = {
+      'start_time': DateInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+      'end_time': DateInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+    }
+    fields = '__all__'
+
+  def __init__(self, *args, **kwargs):
+    super(EventForm, self).__init__(*args, **kwargs)
+    # input_formats parses HTML5 datetime-local input to datetime field
+    self.fields['start_time'].input_formats = ('%Y-%m-%dT%H:%M',)
+    self.fields['end_time'].input_formats = ('%Y-%m-%dT%H:%M',)
+
+
         

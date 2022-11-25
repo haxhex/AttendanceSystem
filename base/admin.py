@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-
+from base.models import Event
 from .models import *
 
 # Register your models here.
@@ -18,4 +18,6 @@ from .models import *
 # admin.site.register(User, CustomizeUserAdmin)
 admin.site.register(Employee)
 admin.site.register(In_out)
+admin.site.register(Event)
+
 

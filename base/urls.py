@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -14,5 +14,10 @@ urlpatterns = [
     path("view-profile/", views.view_profile, name="view-profile"),
     path("edit-profile/", views.accountSettings, name="edit-profile"),
     path("password-change/" , views.password_change , name="password-change" ),
-    path("password_reset/", views.password_reset_request, name="password_reset"),    
+    path("password_reset/", views.password_reset_request, name="password_reset"), 
+    path("employees_list/", views.employees_list, name="employees_list"),  
+    re_path(r'^calendar/$', views.CalendarView.as_view(), name='calendar'),
+    re_path(r'^event/new/$', views.event, name='event_new'),
+	re_path(r'^event/edit/(?P<event_id>\d+)/$', views.event, name='event_edit'),
 ]
+

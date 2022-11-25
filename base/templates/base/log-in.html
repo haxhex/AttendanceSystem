@@ -35,23 +35,25 @@
           <div class="row d-flex justify-content-center">
             <div class="col-lg-8">
               <h2 class="fw-bold mb-5">Log in</h2>
+              {% for message in messages %}
+              <p id="messages">{{message}}</p>
+              {% endfor %}	
               <form method="POST" action="">
                 {% csrf_token %}
                 <div class="row">
                     <!-- Username input -->
                 <div class="form-outline col-md-6 mb-4">
-                    <label class="form-label" for="form3Example3"
-                    >Username</label
-                  >
-                  <input type="text" name="username" id="form3Example3" class="form-control">
-
+                    <label class="form-label" for="form3Example3">Username</label>
+                  <!-- <input type="text" name="username" id="form3Example3" class="form-control"> -->
+                  {{form.username}}
                 </div>
 
                 <!-- Password input -->
                 <div class="form-outline col-md-6 mb-4">
                     <label class="form-label" for="form3Example4">Password</label>
-   
-                  <input type="password" name="password" id="form3Example4" class="form-control"">
+                  <!-- <input type="password" name="password" id="form3Example4" class="form-control""> -->
+                  {{form.password}}
+
 
 
                 </div>
@@ -76,15 +78,13 @@
                 <button type="submit" class="btn btn-primary btn-block mb-4">
                   Log in
                 </button>
-                {% for message in messages %}
-                <p id="messages">{{message}}</p>
-                {% endfor %}	
+
                 <!-- switch to sign up-->
                 <br />
                 Don't have an account?                   
                 <a href="{% url 'register' %}">Sign Up</a>
                 <br />
-                <a href="{% url 'register' %}">Forgot password?</a>
+                <a href="{% url 'password_reset' %}">Forgot password?</a>
                 </div>
               </form>
             </div>
