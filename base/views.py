@@ -54,8 +54,13 @@ def logoutUser(request):
 
 # Dashboard
 @login_required(login_url='login')
-def dashboard(request):
-    return render(request ,'base/dashboard.html')
+def dashboard(request , pk):
+	in_out_list = []
+	in_out_all = In_out.objects.all()
+	for in_out in in_out_all:
+		if in_out.employee.id == pk:
+			in_out_list.append(in_out)
+	return render(request ,'base/dashboard.html' , {"in_outs" : in_out_list})
 
 @login_required(login_url='login')
 def io(request):
