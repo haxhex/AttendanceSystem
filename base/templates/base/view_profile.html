@@ -45,7 +45,12 @@
     <div class="container-fluid mt-3">
       <div class="row">
         <!-- Navbar -->
-        <nav class="w-25 navbar bg-light">
+        <nav class="navbar" style="width:200px; border-radius: 10px; background-image: linear-gradient(
+          to left,
+          #5062b3 50%,
+          #5062b3 50%,
+          #4152a0
+        );">
           <div class="container-fluid">
             <ul class="navbar-nav">
               <li class="nav-item">
@@ -89,8 +94,8 @@
             </ul>
           </div>
         </nav>
-        <!-- Profile -->
-        <div class="col p-3 bg-dark text-white clearfix">
+        <!-- Profile  bg-light--> 
+        <div class="col p-3 clearfix bg-light" style="border-radius: 10px;">
           <img
             src="{{request.user.employee.profile_picture.url}}"
             class="rounded-circle float-left mr-2"
@@ -99,30 +104,35 @@
             height="100"
           />
           <div>
-            <h1>View Profile</h1>
-            <label>Username: </label>
+            <!-- <h2>User Profile</h2> -->
+            <label><b>Username: </b></label>
             {{user.username}}
             <br>
-            <label>First name: </label>
+            <label><b>First name: </b></label>
             {{user.employee.first_name}}
             <br>
-            <label>Last name: </label>
+            <label><b>Last name: </b></label>
             {{user.employee.last_name}}
             <br>
-            <label>Email: </label>
+            <label><b>Email address: </b></label>
             {{user.employee.email}}
             <br>
-            <label>Mobile number: </label>
+            <label><b>Mobile number: </b></label>
             {{user.employee.mobile_number | default_if_none:"" }}
 
         </div>
-          <br />Face
-          registration status :
+          <b>Face registration status :</b>
+
+          <!-- if not registered -->
           <span class="badge bg-danger">Not registered!</span>
-          <br />
-          <div style="padding: 0" class="alert alert-danger w-50">
+          <br /><br />
+          <div style="padding: 1px" class="alert alert-danger w-50">
             Please upload your pictures, or your attendance won't be processed.
           </div>
+
+          <!-- if registered -->
+          <span class="badge bg-success">Registered!</span>
+          
           <br>
           <a href="{% url 'edit-profile' %}">
           <button type="button" class="btn btn-secondary btn-sm">
