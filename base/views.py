@@ -39,6 +39,7 @@ from django.utils.safestring import mark_safe
 from django.views import generic
 from datetime import date, datetime, timedelta
 from django.http import HttpResponse, HttpResponseRedirect
+import re
 
 
 
@@ -137,6 +138,7 @@ def password_reset_request(request):
 
 @unauthenticated_user
 def registerPage(request):
+	valid_username = True
 	emailvalue=''
 	uservalue=''
 	passwordvalue1=''
@@ -153,6 +155,26 @@ def registerPage(request):
 		lname = request.POST.get('last_name')
 		if passwordvalue1 == passwordvalue2:
 			print("----Password Matched")
+			if passwordvalue1 == uservalue:
+				context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
+				print("----Password match username")
+				return render(request, 'base/sign-up.html', context)
+			if len(passwordvalue1) < 8:
+				context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
+				print("----Password is too short")
+				return render(request, 'base/sign-up.html', context)
+			if not re.match('.*[0-9]', passwordvalue1):
+				print("---Your password must contain a number")
+				context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
+				return render(request, 'base/sign-up.html', context)
+			if not re.match('.*[A-Z]', passwordvalue1):
+				print("---Your password must contain at least 1 upper case character.")
+				context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
+				return render(request, 'base/sign-up.html', context)
+			if not re.match('.*[a-z]', passwordvalue1):
+				print("Your password must contain at least 1 lower case character." )
+				context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
+				return render(request, 'base/sign-up.html', context)			
 			try:
 				user= User.objects.get(username=uservalue)
 				context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
@@ -184,11 +206,17 @@ def registerPage(request):
 						)
 						context= {'form': form}
 						messages.success(request, 'Account was created for ' + username)
+						valid_username = False
 						return redirect('login')
 		else:
-			print("Password not match")
+			print("---Password not match")
 			context= {'form': form, 'error':'The passwords that you provided don\'t match'}
 			return render(request, 'base/sign-up.html', context)
+		if valid_username:
+			print("---Invalid Username")
+			context= {'form': form, 'error':'Please enter a valid username.\n150 characters or fewer. Letters, digits and @/./+/-/_ only.'}
+			return render(request, 'base/sign-up.html', context)
+
    
 	context = {'form':form}
 	return render(request, 'base/sign-up.html', context)
