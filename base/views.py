@@ -260,10 +260,11 @@ def accountSettings(request):
 	context = {'form':form}
 	return render(request, 'base/edit_profile.html', context)
 
+
 class CalendarView(generic.ListView):
     model = In_out
     template_name = 'base/calendar.html'
-
+	
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
