@@ -73,16 +73,11 @@
       </div>
       <b>Face registration status :</b>
 
-      if not registered
       <span class="badge bg-danger">Not registered!</span>
       <br /><br />
       <div style="padding: 1px" class="alert alert-danger w-50">
         Please upload your pictures, or your attendance won't be processed.
       </div>
-
-      if registered
-      <span class="badge bg-success">Registered!</span>
-
       <br>
       <a href="{% url 'edit-profile' %}">
         <button type="button" class="btn btn-secondary btn-sm">
