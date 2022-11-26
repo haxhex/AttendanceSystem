@@ -1,11 +1,15 @@
 {% extends 'main.html' %}
-
+{% load crispy_forms_tags %}
+{% crispy form %}
 {% block content %}
 <div>
     <h1>Edit Profile</h1>
     <form method="POST" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{form.as_p}}
+        <div>
+            {% csrf_token %}
+            {{form|crispy}}
+        </div>
+
         <a href="{% url 'password-change' %}">Change Password</a>
         <br>
         <input type="submit" value="submit">
