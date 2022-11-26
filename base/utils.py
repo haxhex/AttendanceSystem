@@ -2,7 +2,8 @@ from datetime import datetime, timedelta
 from calendar import HTMLCalendar
 from .models import Event, In_out
 from django.contrib.auth.models import User
-
+from datetime import datetime as dt
+import datetime as dtt
 
 
 class Calendar(HTMLCalendar):
@@ -16,11 +17,27 @@ class Calendar(HTMLCalendar):
 	def formatday(self, day, in_outs, user_id):
 		in_outs_per_day = in_outs.filter(start_time__day=day, employee = user_id)
 		d = ''
+		total = []
+		i = 0
 		for in_out in in_outs_per_day:
-			d += f'<li> {in_out.get_html_url} </li>'
-
+			in_out_times = str(in_out.get_html_url)
+			in_out_times_arr = in_out_times.split(' ')
+			FMT = '%H:%M:%S'
+			tdelta = dt.strptime(in_out_times_arr[6], FMT) - dt.strptime(in_out_times_arr[2], FMT)
+			total.append(str(tdelta))
+			d += f'<li> {in_out.get_html_url}</li>'
+		
 		if day != 0:
-			return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
+			mysum = dtt.timedelta()
+			for i in total:
+				(h, m, s) = i.split(':')
+				dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+				mysum += dd
+			if (str(mysum) == '0:00:00'):
+				mysum = ''
+			else:
+				mysum = "Total: " + str(mysum)
+			return f"<td><span class='date'>{day}</span><ul> {d} {str(mysum)}</ul></td>"
 		return '<td></td>'
 
 	# formats a week as a tr
