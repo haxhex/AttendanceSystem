@@ -40,6 +40,9 @@ from django.views import generic
 from datetime import date, datetime, timedelta
 from django.http import HttpResponse, HttpResponseRedirect
 import re
+from datetime import datetime as dt
+import datetime as dtt
+from .utils import get_plot
 
 
 
@@ -270,10 +273,36 @@ class CalendarView(generic.ListView):
         d = get_date(self.request.GET.get('month', None))
         user_id = self.request.user.employee
         cal = Calendar(d.year, d.month)
+        in_outs = In_out.objects.all()
+        in_out_list = []
+        dates_ss = []
+        for in_out in in_outs:
+            if in_out.employee.id == self.request.user.employee.id:
+                in_out_list.append(in_out)
+                if str(in_out.start_time.date()) not in dates_ss:
+                   dates_ss.append(str(in_out.start_time.date()))
+        t_vals = []
+        for dte in dates_ss:   
+            total = []
+            for in_out in in_outs:    
+                if in_out.employee.id == self.request.user.employee.id:
+                   if str(in_out.start_time.date()) == dte:
+                       FMT = '%H:%M:%S'
+                       tdelta = dt.strptime(str(in_out.end_time.time()), FMT) - dt.strptime(str(in_out.start_time.time()), FMT)
+                       total.append(str(tdelta))
+            mysum = dtt.timedelta()
+            for i in total:
+                (h, m, s) = i.split(':')
+                dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+                mysum += dd
+            date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
+            t_vals.append(date_time)    
+        chart = get_plot(dates_ss, t_vals)
         html_cal = cal.formatmonth(user_id, withyear=True)
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
+        context['chart'] = chart
         return context
 
 def get_date(req_month):
