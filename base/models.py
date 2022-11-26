@@ -28,7 +28,7 @@ class In_out(models.Model):
     def get_html_url(self):
         # url = reverse('event_edit', args=(self.id,))
         # return f'<a href="{url}"> {self.start_time} <br/> {self.end_time} </a>'
-        return f'{self.start_time} <br/> {self.end_time}'
+        return f'Time In: {self.start_time.time().strftime("%H:%M:%S")} <br/> Time Out: {self.end_time.time().strftime("%H:%M:%S")}'
     
     
 class Event(models.Model):
