@@ -18,13 +18,18 @@ class Employee(models.Model):
 
 
 class In_out(models.Model):
-    date = models.DateField(default=datetime.date.today)
-    in_time = models.TimeField()
-    out_time = models.TimeField()
+    start_time = models.DateTimeField(default=datetime.datetime.now)
+    end_time = models.DateTimeField(default=datetime.datetime.now)
     employee = models.ForeignKey(
         "Employee",
         on_delete=models.CASCADE,
     )
+    @property
+    def get_html_url(self):
+        # url = reverse('event_edit', args=(self.id,))
+        # return f'<a href="{url}"> {self.start_time} <br/> {self.end_time} </a>'
+        return f'{self.start_time} <br/> {self.end_time}'
+    
     
 class Event(models.Model):
     title = models.CharField(max_length=200)

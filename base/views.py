@@ -261,14 +261,15 @@ def accountSettings(request):
 	return render(request, 'base/edit_profile.html', context)
 
 class CalendarView(generic.ListView):
-    model = Event
+    model = In_out
     template_name = 'base/calendar.html'
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
+        user_id = self.request.user.employee
         cal = Calendar(d.year, d.month)
-        html_cal = cal.formatmonth(withyear=True)
+        html_cal = cal.formatmonth(user_id, withyear=True)
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
@@ -293,14 +294,14 @@ def next_month(d):
     month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
     return month
 
-def event(request, event_id=None):
-    instance = Event()
-    if event_id:
-        instance = get_object_or_404(Event, pk=event_id)
+def event(request, inOut_id=None):
+    instance = In_out()
+    if inOut_id:
+        instance = get_object_or_404(Event, pk=inOut_id)
     else:
-        instance = Event()
+        instance = In_out()
 
-    form = EventForm(request.POST or None, instance=instance)
+    form = InOutForm(request.POST or None,instance=instance)
     if request.POST and form.is_valid():
         form.save()
         return HttpResponseRedirect(reverse('calendar'))
