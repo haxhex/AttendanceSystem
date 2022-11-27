@@ -28,7 +28,7 @@ class Calendar(HTMLCalendar):
 			FMT = '%H:%M:%S'
 			tdelta = dt.strptime(in_out_times_arr[6], FMT) - dt.strptime(in_out_times_arr[2], FMT)
 			total.append(str(tdelta))
-			d += f'<li> {in_out.get_html_url}</li>'
+			d += f'<li> {in_out.get_html_url}'
 		
 		if day != 0:
 			mysum = dtt.timedelta()
@@ -40,7 +40,7 @@ class Calendar(HTMLCalendar):
 				mysum = ''
 			else:
 				mysum = "Total: " + str(mysum)
-			return f"<td><span class='date'>{day}</span><ul> {d} {str(mysum)}</ul></td>"
+			return f"<td><span class='date'>{day}</span><ul> {d} <br> {str(mysum)}</li> </ul></td>"
 		return '<td></td>'
 
 	# formats a week as a tr
