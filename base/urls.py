@@ -1,18 +1,20 @@
 from django.urls import path, re_path
 from . import views
+from django.contrib.auth.decorators import login_required
+
 
 urlpatterns = [
     path("", views.home, name="home"),
     path("login/", views.loginPage, name="login"),
     path("logout/", views.logoutUser, name="logout"),
     path('register/', views.registerPage, name="register"),
-    path("dashboard/", views.CalendarView.as_view(), name="dashboard"),
+    path("dashboard/", login_required(views.CalendarView.as_view()), name="dashboard"),
     path("io/", views.io, name="io"),
     path("io-archive/", views.io_archive, name="io-archive"),
     path("io-report/", views.io_report, name="io-report"),
     path("io-archive-report/", views.io_archive_report, name="io-archive-report"),
     path("view-profile/", views.view_profile, name="view-profile"),
-    path("edit-profile/", views.accountSettings, name="edit-profile"),
+    path("edit-profile/", login_required(views.accountSettings), name="edit-profile"),
     path("password-change/" , views.password_change , name="password-change" ),
     path("password_reset/", views.password_reset_request, name="password_reset"), 
     path("employees_list/", views.employees_list, name="employees_list"),  
