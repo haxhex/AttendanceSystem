@@ -1,54 +1,61 @@
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-
-<head>
-  <style>
-    ul {
+<div>
+  <ul
+    style="
       list-style-type: none;
       margin: 0;
       padding: 0;
       overflow: hidden;
       background-color: #334180;
-    }
-
-    li {
-      float: left;
-    }
-
-    li a {
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 16px;
-      text-decoration: none;
-    }
-
-    li a:hover {
-      background-color: #5d74ba;
-      color: white;
-    }
-  </style>
-</head>
-
-<body>
-  <ul>
-    <li>
+    "
+  >
+    <li style="float: left">
       <div style="color: white">
         <!-- <a href="/"> -->
-          <img src="{% static 'images/logo.png' %}" alt="Logo" weight="50" height="50" />
+        <img
+          src="{% static 'images/logo.png' %}"
+          alt="Logo"
+          weight="50"
+          height="50"
+        />
         <!-- </a> -->
         Attendance System
       </div>
     </li>
     {% if request.user.is_authenticated %}
-    <li><a href="{% url 'logout' %}">Logout</a></li>
+    <li style="float: left">
+      <a
+        href="{% url 'logout' %}"
+        style="
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 16px;
+          text-decoration: none;
+        "
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Logout</a
+      >
+    </li>
 
     {% else %}
-    <li><a href="{% url 'login' %}">Login</a></li>
+    <li style="float: left">
+      <a
+        href="{% url 'login' %}"
+        style="
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 16px;
+          text-decoration: none;
+        "
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Login</a
+      >
+    </li>
   </ul>
   {% endif %}
-</body>
-
-</html>
+</div>

@@ -2,125 +2,142 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <title>Attendance System</title>
     <style>
-        .flex-container {
-            display: flex;
-            padding: 5px;
-        }
+      .flex-container {
+        display: flex;
+        padding: 5px;
+      }
 
-        .calendar {
-            width: 98%;
-            margin: auto;
-            font-size: 13px;
-        }
+      .calendar {
+        width: 98%;
+        margin: auto;
+        font-size: 13px;
+      }
 
-        .calendar tr,
-        .calendar td {
-            border: 1px solid black;
-        }
+      .calendar tr,
+      .calendar td {
+        border: 1px solid black;
+      }
 
-        .calendar th {
-            padding: 10px;
-            text-align: center;
-            font-size: 18px;
-        }
+      .calendar th {
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+      }
 
-        .calendar td {
-            width: 200px;
-            height: 150px;
-            padding: 20px 0px 0px 5px;
-        }
+      .calendar td {
+        width: 200px;
+        height: 150px;
+        padding: 20px 0px 0px 5px;
+        /* color: white; */
+      }
 
-        .month {
-            font-size: 25px;
-        }
+      .month {
+        font-size: 25px;
+      }
 
-        .date {
-            font-size: 16px;
-        }
+      .date {
+        font-size: 16px;
+      }
 
-        ul {
-            height: 100%;
-            padding: 0px 5px 0px 20px;
-        }
+      ul {
+        height: 100%;
+        padding: 0px 5px 0px 20px;
+      }
 
-        a {
-            color: #17a2b8;
-        }
+      a {
+        color: #17a2b8;
+      }
 
-        .left {
-            float: left;
-        }
+      .left {
+        float: left;
+      }
 
-        .right {
-            float: right;
-        }
+      .right {
+        float: right;
+      }
 
-        .btn {
-            outline: none;
-            color: black;
-            background-color: transparent;
-            box-shadow: 0 0 0 0;
-        }
+      .btn {
+        outline: none;
+        color: black;
+        background-color: transparent;
+        box-shadow: 0 0 0 0;
+      }
 
-        .clearfix {
-            margin: 15px;
-        }
+      .clearfix {
+        margin: 15px;
+      }
 
-        .form {
-            margin: auto;
-        }
+      .form {
+        margin: auto;
+      }
 
-        .form input,
-        .form select,
-        .form textarea {
-            border-radius: 5px;
-            border: 1px solid #17a2b8;
-            outline: none;
-            background: none;
-            padding: 5px;
-            width: 100%;
-        }
-        table.center {
-            margin-left: auto; 
-            margin-right: auto;
-          }
+      .form input,
+      .form select,
+      .form textarea {
+        border-radius: 5px;
+        border: 1px solid #17a2b8;
+        outline: none;
+        background: none;
+        padding: 5px;
+        width: 100%;
+      }
+      table.center {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .flex-container2 {
+        display: flex;
+        flex-direction: column;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <div>
-        {%include "navbar.html" %}
-    </div>
-    <div class="flex-container">
-        <div>
-            {% include "navbar2.html" %}
-        </div>
-        <div>
+  <body>
+    <div class="flex-container2">
+      <div>{%include "navbar.html" %}</div>
+
+      <div>
+        <div class="flex-container">
+          <div>{% include "navbar2.html" %}</div>
+          <div>
             {{ calendar }}
-            <a class="btn btn-info left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
-            <a class="btn btn-info right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+            <a
+              class="btn btn-info left"
+              href="{% url 'calendar' %}?{{ prev_month }}"
+            >
+              Previous Month
+            </a>
+            <a
+              class="btn btn-info right"
+              href="{% url 'calendar' %}?{{ next_month }}"
+            >
+              Next Month
+            </a>
             <!-- <a class="btn btn-info right" href="{% url 'event_new' %}"> New Event </a> -->
+          </div>
         </div>
-        
-        {% endblock %}
-    </div>
-</div>
-<table class="center">
-    <tr>
-        <td>
-            {% if chart %}
-            <img src="data:image/png;base64, {{chart|safe}}">
-        {% endif %}
-        </td>
-    </tr>
-</table>
+      </div>
 
-</body>
+      {% endblock %}
+    </div>
+    <table class="center">
+      <tr>
+        <td>
+          {% if chart %}
+          <img src="data:image/png;base64, {{chart|safe}}" />
+          {% endif %}
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
