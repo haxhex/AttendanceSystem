@@ -16,6 +16,17 @@
             flex-direction: row;
             padding: 5px;
         }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+          }
+          
+          td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+          }
     </style>
 </head>
 
@@ -31,6 +42,32 @@
             <h1>
                 Employee list
             </h1>
+            <a href="{% url 'create-user' %}">
+                <button>+Add New Employee</button>
+            </a>
+            <table>
+                <tr>
+                    <th>Photo</th>
+                    <th>Name</th>
+                    <th>Mobile Number</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                {% for emps in employees %}
+                <tr>
+                    <td>
+                        <img src="{{emps.profile_picture.url}}" width="100" height="100">         
+                    </td>
+                    <td>{{emps.first_name}} {{emps.last_name}}</td> 
+                    <td>{{emps.mobile_number}}</td>
+                    <td>Active</td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
 
         </div>
     </div>
