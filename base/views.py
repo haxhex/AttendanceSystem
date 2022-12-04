@@ -88,8 +88,11 @@ def io_archive_report(request):
 @allowed_users(allowed_roles=['admin'])
 def employees_list(request):
     employees = Employee.objects.all()
-    print(employees)
-    return render(request, 'base/employees_list.html', {'employees' : employees})
+    employees_list = []
+    for employee in employees:
+        if employee.user.id != request.user.id:
+            employees_list.append(employee)  
+    return render(request, 'base/employees_list.html', {'employees' : employees_list})
 
 
 @login_required(login_url='login')
@@ -254,6 +257,7 @@ def loginPage(request):
 
 @login_required(login_url='login')
 def accountSettings(request):
+	page = 'accountSettings'
 	employee = request.user.employee
 	form = EmployeeForm(instance=employee)
 
@@ -262,7 +266,7 @@ def accountSettings(request):
 		if form.is_valid():
 			form.save()
 			return redirect('view-profile')
-	context = {'form':form}
+	context = {'form':form, 'page':page}
 	return render(request, 'base/edit_profile.html', context)
 
 
@@ -425,6 +429,34 @@ def createUser(request):
 	context = {'form':form}
 	return render(request, 'base/create-user.html', context)
 
-def editUser(request):
-    return render(request, 'base/edit-user.html')
+def editUser(request, pk):
+	page = 'editUser'
+	employee = Employee.objects.get(id=pk)
+	form = EmployeeForm(instance=employee)
+	if request.method == 'POST':
+		form = EmployeeForm(request.POST, request.FILES,instance=employee)
+		if form.is_valid():
+			form.save()
+			return redirect('employees_list')
+	context = {'form':form, 'eid': pk, 'page':page}
+	return render(request, 'base/edit-user.html', context)
 
+
+def changeUserPass(request, pk):
+    employee = Employee.objects.get(id=pk)
+    if request.method == 'POST':
+        form = SetPasswordForm(employee.user, request.POST)
+        if form.is_valid():
+            form.new_password1 = request.POST.get('new_password1')
+            form.new_password2 = request.POST.get('new_password2')
+            form.save()
+            messages.success(request, f"{employee.first_name} {employee.last_name} password has been changed successfully!")
+            # return redirect('edit-user', pk=pk)
+            return redirect('employees_list')
+            
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+
+    form = SetPasswordForm(employee.user)
+    return render(request, 'base/password_reset_confirm.html', {'form': form})
