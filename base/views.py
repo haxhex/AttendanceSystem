@@ -43,6 +43,7 @@ import re
 from datetime import datetime as dt
 import datetime as dtt
 from .utils import get_plot
+import xlwt
 
 
 
@@ -91,8 +92,9 @@ def employees_list(request):
     employees_list = []
     for employee in employees:
         if employee.user.id != request.user.id:
-            employees_list.append(employee)  
-    return render(request, 'base/employees_list.html', {'employees' : employees_list})
+            employees_list.append(employee) 
+    context = {'employees' : employees_list, 'fltr':'all'}
+    return render(request, 'base/employees_list.html', context)
 
 
 @login_required(login_url='login')
@@ -460,3 +462,100 @@ def changeUserPass(request, pk):
 
     form = SetPasswordForm(employee.user)
     return render(request, 'base/password_reset_confirm.html', {'form': form})
+
+
+def deleteUser(request, pk):
+    employee = Employee.objects.get(id=pk)
+    if request.method == 'POST':
+        # remove item from database
+        employee.user.delete()
+        return redirect('employees_list')
+    return render(request, 'base/delete.html', {'obj' :  employee.user})
+
+def change_status(request, pk):
+	employee = Employee.objects.get(id=pk)
+	employee.user.is_active = not employee.user.is_active
+	employee.user.save()
+	return redirect('employees_list')
+
+def export_excel(request, fltr):
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
+		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Employees')
+	row_num = 0
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+	columns = ['Firstname', 'Lastname', 'Email' ,'Mobile Number', 'Status']
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style)
+	
+	font_style = xlwt.XFStyle()
+	rows = Employee.objects.all().values_list(
+		'first_name', 'last_name', 'email', 'mobile_number'
+	)
+	rows1 = Employee.objects.all()
+	emps_status = []
+	for r in rows1:
+		if r.user.is_active:
+			emps_status.append('Active')
+		else:
+			emps_status.append('Inactive')
+	print(emps_status)
+	snum = 0
+	r_a = 1
+	for row in rows:
+		row_num += 1
+		for col_num in range(len(row)+1):
+			if fltr == 'saf':
+				if emps_status[snum] == 'Active':
+					if col_num == 4:
+						ws.write(row_num, col_num, 'Active', font_style)
+						snum += 1
+					else:
+						ws.write(row_num, col_num, str(row[col_num]), font_style)
+				else:
+					if col_num == 4:
+						snum += 1 
+						row_num -= 1
+			elif fltr == 'sif':
+				if emps_status[snum] == 'Inactive':
+					if col_num == 4:
+						ws.write(row_num, col_num, 'Inactive', font_style)
+						snum += 1
+					else:
+						ws.write(row_num, col_num, str(row[col_num]), font_style)
+				else:
+					if col_num == 4:
+						snum += 1 
+						row_num -= 1
+			else:
+				if col_num == 4:
+					ws.write(row_num, col_num, str(emps_status[snum]), font_style)
+					snum += 1
+				else:
+					ws.write(row_num, col_num, str(row[col_num]), font_style)
+	wb.save(response)
+	return response
+
+def status_active_filter(request):
+    employees = Employee.objects.all()
+    employees_list = []
+    for employee in employees:
+        if employee.user.is_active and employee.user.id != request.user.id:
+            employees_list.append(employee)  
+    context = {'employees' : employees_list, 'fltr':'saf'}
+    return render(request, 'base/employees_list.html', context) 
+
+def status_inactive_filter(request):
+    employees = Employee.objects.all()
+    employees_list = []
+    for employee in employees:
+        if not employee.user.is_active and employee.user.id != request.user.id:
+            employees_list.append(employee) 
+    context = {'employees' : employees_list, 'fltr':'sif'}
+    return render(request, 'base/employees_list.html', context)         
+     
+ 
+	

@@ -10,12 +10,13 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import authenticate, get_user_model, password_validation
 from django.forms import ModelForm, DateInput
 from base.models import Event
-
+from django import forms
 class EmployeeForm(ModelForm):
     class Meta:
         model = Employee
         fields = '__all__'
-        exclude = ['user']
+        
+        exclude = ['user', 'is_active']
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:
