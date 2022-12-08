@@ -3,86 +3,94 @@
 
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    {% include "header.html" %}
+    <style>
+      .grid-container {
+        display: grid;
+        padding: 10%;
+        grid-template-columns: auto auto;
+      }
 
-<head>
-  {% include "header.html" %}
-  <style>
-    .flex-container {
-      display: flex;
-      flex-direction: row;
-      padding: 5px;
-    }
+      .grid-item {
+        text-align: left;
+      }
+    </style>
+  </head>
 
-    .flex-item {
-      padding-left: 25px;
-      flex-grow: 7;
-    }
-  </style>
-</head>
+  <body>
+    <div>{% include "navbar.html" %}</div>
 
-<body>
-  <!-- Section: Design Block -->
-  <section class="text-center">
-    <div>
-      {% include "navbar.html" %}
-    </div>
-    <!-- Background image -->
-    <!-- <div class="p-5 bg-image text-white" style="
-            background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
-            height: 300px;
-          ">
-      <img src="{% static 'images/_logo.png' %}" class="rounded" alt="logo" width="100" height="100" />
-      <br>
-      <br>
-      <br>
-      <h1> Attendance System </h1>
-    </div> -->
-    <!-- Background image -->
+    <!-- Section: Design Block -->
+    <section class="text-center">
+      <!-- Background image -->
+      <div
+        class="p-5 bg-image"
+        style="
+          background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+          height: 300px;
+        "
+      ></div>
 
-    </div>
-  </section>
-  <div class="flex-container">
-    <div>
-      {% include 'navbar2.html' %}
-    </div>
-    <!-- Profile  bg-light-->
-    <div class="flex-item" class="col p-3 clearfix bg-light" style="border-radius: 10px;">
-      <img src="{{request.user.employee.profile_picture.url}}" class="rounded-circle float-left mr-2" alt="profile"
-        width="100" height="100" />
-      <div>
-        <!-- <h2>User Profile</h2> -->
-        <label><b>Username: </b></label>
-        {{user.username}}
-        <br>
-        <label><b>First name: </b></label>
-        {{user.employee.first_name}}
-        <br>
-        <label><b>Last name: </b></label>
-        {{user.employee.last_name}}
-        <br>
-        <label><b>Email address: </b></label>
-        {{user.employee.email}}
-        <br>
-        <label><b>Mobile number: </b></label>
-        {{user.employee.mobile_number | default_if_none:"" }}
-
+      <div
+        class="card"
+        style="
+          width: 50%;
+          margin-left: 25%;
+          margin-top: -200px;
+          background: hsla(0, 0%, 100%, 0.8);
+          backdrop-filter: blur(30px);
+        "
+      >
+        <div class="grid-container">
+          <div class="grid-item" style="text-align: center">
+            <img
+              src="{{request.user.employee.profile_picture.url}}"
+              class="rounded-circle float-left mr-2"
+              alt="profile"
+              width="150"
+              height="150"
+            />
+            <a
+              onMouseOver="this.style.color='#5d74ba'"
+              onMouseOut="this.style.color='black'"
+              >Change profile photo</a
+            >
+          </div>
+          <div class="grid-item">
+            <div>
+              <!-- <h2>User Profile</h2> -->
+              <label><b>Username: </b></label>
+              {{user.username}}
+              <br />
+              <label><b>First name: </b></label>
+              {{user.employee.first_name}}
+              <br />
+              <label><b>Last name: </b></label>
+              {{user.employee.last_name}}
+              <br />
+              <label><b>Email address: </b></label>
+              {{user.employee.email}}
+              <br />
+              <label><b>Mobile number: </b></label>
+              {{user.employee.mobile_number | default_if_none:"" }}
+            </div>
+            <b>Face registration status :</b>
+            <span class="badge bg-danger">Not registered!</span>
+            <div style="padding: 1px" class="alert alert-danger">
+              Please upload your pictures, or your attendance won't be
+              processed.
+            </div>
+            <br />
+            <a href="{% url 'edit-profile' %}">
+              <button type="button" class="btn btn-secondary btn-sm">
+                Edit Profile
+              </button>
+            </a>
+          </div>
+        </div>
       </div>
-      <b>Face registration status :</b>
-
-      <span class="badge bg-danger">Not registered!</span>
-      <br /><br />
-      <div style="padding: 1px" class="alert alert-danger w-50">
-        Please upload your pictures, or your attendance won't be processed.
-      </div>
-      <br>
-      <a href="{% url 'edit-profile' %}">
-        <button type="button" class="btn btn-secondary btn-sm">
-          Edit Profile
-        </button>
-      </a>
-    </div>
-  </div>
-</body>
-<!-- {% endblock %} -->
-
+    </section>
+  </body>
+  <!-- {% endblock %} -->
 </html>
