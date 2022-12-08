@@ -4,7 +4,6 @@
     {% include "header.html" %}
   </head>
   <body>
-    <!-- Section: Design Block -->
     <section class="text-center">
       <!-- Background image -->
       <div
@@ -14,11 +13,12 @@
           height: 300px;
         "
       ></div>
-      <!-- Background image -->
 
       <div
-        class="card mx-4 mx-md-5 shadow-5-strong"
+        class="card"
         style="
+          width: 50%;
+          margin-left: 25%;
           margin-top: -100px;
           background: hsla(0, 0%, 100%, 0.8);
           backdrop-filter: blur(30px);
@@ -33,24 +33,16 @@
               {% endfor %}	
               <form method="POST" action="">
                 {% csrf_token %}
-                <div class="row">
+                <div class="row justify-content-center">
+                  <div class="form-outline mb-4">
                     <!-- Username input -->
-                <div class="form-outline col-md-6 mb-4">
                     <label class="form-label" for="form3Example3">Username</label>
-                  <!-- <input type="text" name="username" id="form3Example3" class="form-control"> -->
-                  {{form.username}}
-                </div>
+                    {{form.username}}
 
-                <!-- Password input -->
-                <div class="form-outline col-md-6 mb-4">
+                    <!-- Password input -->
                     <label class="form-label" for="form3Example4">Password</label>
-                  <!-- <input type="password" name="password" id="form3Example4" class="form-control""> -->
-                  {{form.password}}
-
-
-
-                </div>
-
+                    {{form.password}}
+                  </div>
                 </div>
             
                 <!-- Checkbox -->
@@ -85,6 +77,5 @@
         </div>
       </div>
     </section>
-    <!-- Section: Design Block -->
   </body>
 </html>
