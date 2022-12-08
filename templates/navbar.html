@@ -20,7 +20,7 @@
           height="50"
         />
         <!-- </a> -->
-        Attendance System
+        <!-- Attendance System -->
       </div>
     </li>
     <li style="float: left">
@@ -39,6 +39,21 @@
       >
     </li>
     {% if request.user.is_authenticated %}
+    <li style="float: left">
+      <a
+        href="{% url 'dashboard' %}"
+        style="
+          display: block;
+          color: white;
+          text-align: center;
+          padding: 16px;
+          text-decoration: none;
+        "
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Dashboard</a
+      >
+    </li>
     <li style="float: left">
       <a
         href="{% url 'logout' %}"
