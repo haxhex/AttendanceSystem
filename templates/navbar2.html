@@ -32,6 +32,21 @@
                     <a class="nav-link" href="{% url 'io-archive-report' %}" style="color : #ffffff">Activities
                         Reports</a>
                 </li>
+                <li style="float: left">
+                    <a
+                      href="{% url 'employees_list' %}"
+                      style="
+                        display: block;
+                        color: white;
+                        text-align: center;
+                        padding: 16px;
+                        text-decoration: none;
+                      "
+                      onMouseOver="this.style.color='#5d74ba'"
+                      onMouseOut="this.style.color='white'"
+                      >Employees' List</a
+                    >
+                  </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'io' %}" style="color : #ffffff">Activities</a>

@@ -1,5 +1,15 @@
 {% load static %}
 
+<style>
+  a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+  }
+</style>
+
 <div>
   <ul
     style="
@@ -11,81 +21,106 @@
     "
   >
     <li style="float: left">
-      <div style="color: white">
-        <!-- <a href="/"> -->
-        <img
-          src="{% static 'images/logo.png' %}"
-          alt="Logo"
-          weight="50"
-          height="50"
-        />
-        <!-- </a> -->
-        <!-- Attendance System -->
-      </div>
+      <img
+        src="{% static 'images/logo.png' %}"
+        alt="Logo"
+        weight="50"
+        height="50"
+      />
     </li>
+
     <li style="float: left">
       <a
         href="{% url 'home' %}"
-        style="
-          display: block;
-          color: white;
-          text-align: center;
-          padding: 16px;
-          text-decoration: none;
-        "
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
-        >Home</a
+        >Attendance System</a
       >
     </li>
-    {% if request.user.is_authenticated %}
+    <!-- user logged in -->
+    <li style="float: right">
+      <img
+        src="{{request.user.employee.profile_picture.url}}"
+        class="rounded-circle"
+        alt="Cinque Terre"
+        width="50"
+        height="50"
+      />
+    </li>
+    <li style="float: right">
+      <a
+        href="{% url 'view-profile' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >user name ro bezarid</a
+      >
+    </li>
     <li style="float: left">
       <a
         href="{% url 'dashboard' %}"
-        style="
-          display: block;
-          color: white;
-          text-align: center;
-          padding: 16px;
-          text-decoration: none;
-        "
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
         >Dashboard</a
       >
     </li>
+    <!-- super user -->
+    <li style="float: left">
+      <a
+        href="{% url 'employees_list' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Employees' List</a
+      >
+    </li>
+    <li style="float: left">
+      <a
+        href="{% url 'io-report' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Attendance Report</a
+      >
+    </li>
+    <li style="float: left">
+      <a
+        href="{% url 'io-archive-report' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Activities Report</a
+      >
+    </li>
+    <!-- end super user (else)-->
+    <li style="float: left">
+      <a
+        href="{% url 'io' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Activities</a
+      >
+    </li>
+    <li style="float: left">
+      <a
+        href="{% url 'io-archive' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Attendance</a
+      >
+    </li>
     <li style="float: left">
       <a
         href="{% url 'logout' %}"
-        style="
-          display: block;
-          color: white;
-          text-align: center;
-          padding: 16px;
-          text-decoration: none;
-        "
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
         >Logout</a
       >
     </li>
-
-    {% else %}
+    <!-- end user logged in -->
     <li style="float: left">
       <a
         href="{% url 'login' %}"
-        style="
-          display: block;
-          color: white;
-          text-align: center;
-          padding: 16px;
-          text-decoration: none;
-        "
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
         >Login</a
       >
     </li>
   </ul>
-  {% endif %}
 </div>
