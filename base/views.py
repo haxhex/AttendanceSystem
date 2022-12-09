@@ -502,9 +502,7 @@ def export_excel(request, fltr):
 			emps_status.append('Active')
 		else:
 			emps_status.append('Inactive')
-	print(emps_status)
 	snum = 0
-	r_a = 1
 	for row in rows:
 		row_num += 1
 		for col_num in range(len(row)+1):

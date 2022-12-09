@@ -1,0 +1,13 @@
+{
+    "app": "attsys",
+    "disks": [
+        {
+            "name": "sqlite",
+            "mountTo": "data"
+        },
+        {
+            "name": "data",
+            "mountTo": "statics/images"
+        }
+    ]   
+}
