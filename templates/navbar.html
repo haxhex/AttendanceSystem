@@ -37,6 +37,7 @@
         >Attendance System</a
       >
     </li>
+    {% if request.user.is_authenticated %}
     <!-- user logged in -->
     <li style="float: right">
       <img
@@ -52,7 +53,7 @@
         href="{% url 'view-profile' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
-        >user name ro bezarid</a
+        >{{request.user.username}}</a
       >
     </li>
     <li style="float: left">
@@ -63,6 +64,7 @@
         >Dashboard</a
       >
     </li>
+    {% if request.user.is_superuser %}
     <!-- super user -->
     <li style="float: left">
       <a
@@ -89,6 +91,7 @@
       >
     </li>
     <!-- end super user (else)-->
+    {% else %}
     <li style="float: left">
       <a
         href="{% url 'io' %}"
@@ -105,6 +108,7 @@
         >Attendance</a
       >
     </li>
+    {% endif %}
     <li style="float: left">
       <a
         href="{% url 'logout' %}"
@@ -113,6 +117,7 @@
         >Logout</a
       >
     </li>
+    {% else %}
     <!-- end user logged in -->
     <li style="float: left">
       <a
@@ -122,5 +127,6 @@
         >Login</a
       >
     </li>
+    {% endif %}
   </ul>
 </div>
