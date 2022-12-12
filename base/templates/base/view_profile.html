@@ -35,8 +35,8 @@
       <div
         class="card"
         style="
-          width: 50%;
-          margin-left: 25%;
+          width: 56%;
+          margin-left: 22%;
           margin-top: -200px;
           background: hsla(0, 0%, 100%, 0.8);
           backdrop-filter: blur(30px);
@@ -76,8 +76,10 @@
               {{user.employee.mobile_number | default_if_none:"" }}
             </div>
             <b>Face registration status :</b>
-            <span class="badge bg-danger">Not registered!</span>
-            <div style="padding: 1px" class="alert alert-danger">
+            <span class="badge bg-danger" style="margin-bottom: 10px"
+              >Not registered!</span
+            >
+            <div style="padding: 1px; width: 100%" class="alert alert-danger">
               Please upload your pictures, or your attendance won't be
               processed.
             </div>
