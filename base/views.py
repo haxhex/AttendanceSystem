@@ -291,7 +291,7 @@ def department(position):
     return dep
 
 def is_valid_mobile(string):
-    mobile_regex = "^09(1[0-9]|3[1-9])-?[0-9]{3}-?[0-9]{4}$"
+    mobile_regex = "^09(1[0-9]|3[1-9]|0[1-5])-?[0-9]{3}-?[0-9]{4}$"
     if(re.search(mobile_regex, string)):
         return True
     return False
@@ -301,10 +301,14 @@ def accountSettings(request):
 	page = 'accountSettings'
 	employee = request.user.employee
 	form = EmployeeForm(instance=employee)
+	mobile = request.POST.get("mobile_number")
 
 	if request.method == 'POST':
 		form = EmployeeForm(request.POST, request.FILES,instance=employee)
 		if form.is_valid():
+			if is_valid_mobile(str(mobile)) == False and str(mobile) != "":
+				context= {'form': form, 'error':'Your mobile number is not valid'}
+				return render(request, 'base/edit_profile.html', context)
 			employee.department = department(employee.position)
 			form.save()
 			return redirect('view-profile')
