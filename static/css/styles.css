@@ -82,6 +82,7 @@ a {
   padding: 5px;
 }
 
+.gray-button,
 input[type="submit"] {
   /* display: flex; */
   flex-direction: column;
@@ -99,4 +100,43 @@ input[type="submit"] {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
+
+.flex-item {
+  padding-left: 25px;
+}
+
+.white-a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #334180;
 }
