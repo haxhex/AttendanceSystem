@@ -5,6 +5,17 @@
     {% include "header.html" %}
   </head>
 
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto;
+    }
+
+    .grid-item {
+      text-align: center;
+    }
+  </style>
+
   <body>
     {% include "navbar.html" %}
     <section class="text-center">
@@ -12,22 +23,80 @@
         class="p-5 bg-image"
         style="
           background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
-          height: 212px;
+          height: 650px;
           width: inherit;
         "
       ></div>
 
-      <div
-        class="card mx-4 mx-md-5 shadow-5-strong"
-        style="
-          margin-top: -100px;
-          background: hsla(0, 0%, 100%, 0.8);
-          backdrop-filter: blur(30px);
-        "
-      >
-        <h2>Home Page</h2>
+      <div class="grid-container" style="grid-template-columns: auto">
+        <div class="grid-item">
+          <div
+            class="card"
+            style="
+              width: 94%;
+              margin-left: 3%;
+              margin-top: -600px;
+              background: hsla(0, 0%, 100%, 0.8);
+              backdrop-filter: blur(30px);
+            "
+          >
+            <h2>Home Page</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-container">
+        <div class="grid-item">
+          <div
+            class="card"
+            style="
+              width:40%;
+              margin-left: 10%;
+              margin-top: -550px;
+              background: hsla(0, 0%, 100%, 0.8);
+              backdrop-filter: blur(30px);
+            "
+          >
+            <h2>News</h2>
+            <p>New features has been added :)</p>
+            <div class="center">
+              <img src="static/images/new-features.jpg" style="margin: 10px;width:30%; ">
+            </div>
+            
+          </div>
+        </div>
+        <!-- <div class="grid-item">
+          <div
+            class="card mx-4 mx-md-5 shadow-5-strong"
+            style="
+              margin-top: -50px;
+              background: hsla(0, 0%, 100%, 0.8);
+              backdrop-filter: blur(30px);
+            "
+          >
+            <h2>News</h2>
+          </div> -->
+        </div>
+      </div>
+
+      <!-- <div class="grid-container" style="grid-template-columns: auto">
+        <div class="grid-item">
+          <div
+            class="card"
+            style="
+              width: 94%;
+              margin-left: 3%;
+              margin-top: 100px;
+              background: hsla(0, 0%, 100%, 0.8);
+              backdrop-filter: blur(30px);
+            "
+          >
+            <h2>Contact Us</h2>
+          </div>
+        </div> -->
       </div>
     </section>
+    {% include "footer.html" %}
   </body>
   {% endblock %}
 </html>

@@ -1,4 +1,4 @@
-<!-- {% block content %} -->
+{% block content %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,8 +11,9 @@
       }
 
       .calendar {
-        width: 98%;
-        margin: auto;
+        width: 50%;
+        margin-left: 1%;
+        /* margin: auto; */
         font-size: 13px;
       }
 
@@ -29,7 +30,7 @@
 
       .calendar td {
         width: 200px;
-        height: 150px;
+        height: 100px;
         padding: 20px 0px 0px 5px;
         /* color: white; */
       }
@@ -92,45 +93,47 @@
         display: flex;
         flex-direction: column;
       }
+
+      /* .grid-container {
+        display: grid;
+        grid-template-columns: auto auto;
+      }
+
+      .grid-item {
+        text-align: left;
+      } */
     </style>
   </head>
 
   <body>
-    <div class="flex-container2">
-      <div>{%include "navbar.html" %}</div>
-
+    <div>{%include "navbar.html" %}</div>
+    <div class="flex-container">
       <div>
-        <div class="flex-container">
-          <!-- <div>{% include "navbar2.html" %}</div> -->
+        <div class="flex-container2">
           <div>
+            <form action="/action_page.php" style="margin-bottom: 10px">
+              <label for="select date">Select date:</label>
+              <input type="date" id="birthday" name="birthday" />
+              <input type="submit" />
+            </form>
             {{ calendar }}
-            <a
-              class="btn btn-info left"
-              href="{% url 'calendar' %}?{{ prev_month }}"
-            >
-              Previous Month
-            </a>
-            <a
-              class="btn btn-info right"
-              href="{% url 'calendar' %}?{{ next_month }}"
-            >
-              Next Month
-            </a>
-            <!-- <a class="btn btn-info right" href="{% url 'event_new' %}"> New Event </a> -->
           </div>
         </div>
       </div>
-
-      {% endblock %}
+      <!-- because of wifth of image they aren't in a row! -->
+      <!-- if you switch calnder & graph they'll be in same row.because calender is flexible -->
+      <div>
+        <table class="right">
+          <tr>
+            <td>
+              {% if chart %}
+              <img src="data:image/png;base64, {{chart|safe}}" />
+              {% endif %}
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <table class="center">
-      <tr>
-        <td>
-          {% if chart %}
-          <img src="data:image/png;base64, {{chart|safe}}" />
-          {% endif %}
-        </td>
-      </tr>
-    </table>
   </body>
 </html>
+{% endblock %}

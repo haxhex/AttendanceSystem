@@ -60,106 +60,152 @@
     {% endif %}
  
 </head>
-
+<style>
+    .gray-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 6px 14px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+        border-radius: 6px;
+        border: none;
+        background: #6E6D70;
+        box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+        color: #DFDEDF;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+    }
+    table, td, th {
+        border: 1px solid;
+        color:black;
+    }
+</style>
 <body>
-    <div>
-        {% include "navbar.html" %}
-    </div>
-    <div class="flex-container">
-        <div>
+    {% include "navbar.html" %}
+    <section class="text-center">
+        <!-- Background image -->
+        <div
+        class="p-5 bg-image"
+        style="
+        background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+        height: 300px;
+        "></div>
+    <!-- Background image -->
+        <div
+            class="card"
+            style="
+                width: 50%;
+                margin-left: 25%;
+                margin-top: -150px;
+                background: hsla(0, 0%, 100%, 0.8);
+                backdrop-filter: blur(30px);
+            "
+            >
+            <h1>Employee list</h1>
+            <div class="flex-container justify-content-center"">
+                <div>
+                    <div class="flex-container">
+                        <div>
+                            <!-- <form name="form1" id="form1" action=""> -->
+                                Filters:    Status:
+                                <select name="status" id="status">
+                                    <option data-url="{% url 'employees_list' %}" value="All">All</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                                Department:
+                                <select name="dep" id="dep">
+                                    <option value="All">All</option>
+                                    <option value="Human resources">Human resources</option>
+                                    <option value="Accounting">Accounting</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Production">Production</option>
+                                    <option value="IT">IT</option>
+                                    <option value="Sales">Sales</option>
+                                </select>
+
+                        </div>
+                        
+                        <div style="padding-left: 2px;">
+                            <!-- <input type="submit" value="Apply">   -->
+                            <button class="gray-button" role="button" onclick="getOption()" style="padding: 4px 7px;">Apply</button>
+                            <!-- <button onclick="getOption()"> Apply </button> -->
+                        </div>
+                    </div>
+                    <p>
+                        <span class="output"></span>
+                    </p>
+                    <!-- </form> -->
+                    <a href="{% url 'create-user' %}">
+                        <button class="gray-button" role="button">+Add New Employee</button>
+                    </a>
+                    <a href="{% url 'export-excel' fltra fltrd %}">
+                        <button class="gray-button" role="button">Export Excel</button>
+                    </a>
+                    <!-- <a href="{% url 'status-active-filter' %}"> -->
+                        <!-- <button>Filter</button> -->
+                    <!-- </a> -->
+                    <!-- <br><br><br><br><br><br> -->
+                </div>
+                <!-- tabel in right side -->
+                <div style="padding-left: 10px;">
+                    <table>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile Number</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        {% for emps in employees %}
+                        <tr>
+                            <td>
+                                <img src="{{emps.profile_picture.url}}" width="100" height="100">         
+                            </td>
+                            <td>{{emps.first_name}} {{emps.last_name}}</td> 
+                            <td>{{emps.email}}</td> 
+                            <td>{{emps.mobile_number | default_if_none:""}}</td>
+                            <td>{{emps.department}}</td> 
+                            <td>{{emps.position}}</td> 
+                            <form action="" method="POST">
+                                {% if emps.user.is_active %}            
+                                <td>
+                                    <a href="{% url 'change-status' emps.id %}">
+                                        Active
+                                    </a>
+                                </td>
+                                    </label>
+                                {% else %}
+                                <td>
+                                    <a href="{% url 'change-status' emps.id %}">
+                                        Inactive
+                                    </a>
+                                </td>
+                                {% endif %}
+                                <td>
+                            </form>
+                                <a href="{% url 'edit-user' emps.id %}">
+                                    <button>Edit</button>
+                                </a>
+                                <a href="{% url 'change-pass' emps.id %}">
+                                    <button>Change Password</button>
+                                </a>
+                                <a href="{% url 'delete-user' emps.id %}">
+                                    <button>Delete</button>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+
+                        
+                    </table>
+                </div>
+            </div>
         </div>
-        <div>
-            <h1>
-                Employee list
-            </h1>
-            <a href="{% url 'create-user' %}">
-                <button>+Add New Employee</button>
-            </a>
-            <a href="{% url 'export-excel' fltra fltrd %}">
-                <button>Export Excel</button>
-            </a>
-            <form method="GET" action="{% url 'employees_list' %}">
-                <input type="text" name="q" placeholder="" id="q">
-                <button type="submit">Search</button>
-            </form>
-                Filters:    Status:
-                <select name="status" id="status">
-                    <option data-url="{% url 'employees_list' %}" value="All">All</option>
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                </select>
-                Department:
-                <select name="dep" id="dep">
-                    <option value="All">All</option>
-                    <option value="Human resources">Human resources</option>
-                    <option value="Accounting">Accounting</option>
-                    <option value="Marketing">Marketing</option>
-                    <option value="Production">Production</option>
-                    <option value="IT">IT</option>
-                    <option value="Sales">Sales</option>
-                </select>
-    
-                <button onclick="getOption()"> Apply </button>
-                <p>
-                    <span class="output"></span>
-                </p>
-
-
-            <table>
-                <tr>
-                    <th>Photo</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Mobile Number</th>
-                    <th>Department</th>
-                    <th>Position</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-                {% for emps in employees %}
-                <tr>
-                    <td>
-                        <img src="{{emps.profile_picture.url}}" width="100" height="100">         
-                    </td>
-                    <td>{{emps.first_name}} {{emps.last_name}}</td> 
-                    <td>{{emps.email}}</td> 
-                    <td>{{emps.mobile_number | default_if_none:""}}</td>
-                    <td>{{emps.department}}</td> 
-                    <td>{{emps.position}}</td> 
-                    <form action="" method="POST">
-                        {% if emps.user.is_active %}            
-                        <td>
-                            <a href="{% url 'change-status' emps.id %}" style="color: green;"">
-                                Active
-                            </a>
-                        </td>
-                            </label>
-                        {% else %}
-                        <td>
-                            <a href="{% url 'change-status' emps.id %}" style="color: red;">
-                                Inactive
-                            </a>
-                        </td>
-                        {% endif %}
-                        <td>
-                    </form>
-                        <a href="{% url 'edit-user' emps.id %}">
-                            <button>Edit</button>
-                        </a>
-                        <a href="{% url 'change-pass' emps.id %}">
-                            <button>Change Password</button>
-                        </a>
-                        <a href="{% url 'delete-user' emps.id %}">
-                            <button>Delete</button>
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-
-        </div>
-    </div>
-
+    </section>
     <script type="text/javascript">
         function getOption() {
             selectElement_act = document.querySelector('#status');
