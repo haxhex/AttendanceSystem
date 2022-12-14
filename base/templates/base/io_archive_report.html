@@ -2,23 +2,138 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    {% include "header.html" %}
-    <style>
-      .flex-container {
-        display: flex;
-        flex-direction: row;
-        padding: 5px;
-      }
-    </style>
-  </head>
 
-  <body>
-    <div>{% include "navbar.html" %}</div>
-    <div class="flex-container">
+<head>
+  {% include "header.html" %}
+  <style>
+    .flex-container {
+      display: flex;
+      padding: 5px;
+    }
+
+    .calendar {
+      width: 50%;
+      margin-left: 1%;
+      /* margin: auto; */
+      font-size: 13px;
+    }
+
+    .calendar tr,
+    .calendar td {
+      border: 1px solid black;
+    }
+
+    .calendar th {
+      padding: 10px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .calendar td {
+      width: 200px;
+      height: 100px;
+      padding: 20px 0px 0px 5px;
+      /* color: white; */
+    }
+
+    .month {
+      font-size: 25px;
+    }
+
+    .date {
+      font-size: 16px;
+    }
+
+    ul {
+      height: 100%;
+      padding: 0px 5px 0px 20px;
+    }
+
+    a {
+      color: #17a2b8;
+    }
+
+    .left {
+      float: left;
+    }
+
+    .right {
+      float: right;
+    }
+
+    .btn {
+      outline: none;
+      color: black;
+      background-color: transparent;
+      box-shadow: 0 0 0 0;
+    }
+
+    .clearfix {
+      margin: 15px;
+    }
+
+    .form {
+      margin: auto;
+    }
+
+    .form input,
+    .form select,
+    .form textarea {
+      border-radius: 5px;
+      border: 1px solid #17a2b8;
+      outline: none;
+      background: none;
+      padding: 5px;
+      width: 100%;
+    }
+
+    table.center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .flex-container2 {
+      display: flex;
+      flex-direction: column;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <script>
+
+    $(function () {
+      $('input[name="daterange"]').daterangepicker({
+        opens: 'left'
+      }, function (start, end, label) {
+        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div>{% include "navbar.html" %}</div>
+  <div class="flex-container">
+    <div>
+      <h1>IO Archive full report</h1>
+      <form method="GET">
+        <span>Enter username and Select date range</span>
+        <input type="text" name="username">
+        <input type="text" name="daterange" />
+        <button type="submit">
+          submit
+        </button>
+      </form>
       <div>
-        <h1>IO Archive full report</h1>
+        </button>
+      </div>
+      <div>
+        {{calendar}}
       </div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
