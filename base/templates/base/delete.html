@@ -20,7 +20,6 @@
   <body>
     <div>{% include "navbar.html" %}</div>
     <div class="flex-container">
-      <div>{% include 'navbar2.html' %}</div>
 
       <form method="POST" action="">
         {% csrf_token %}
@@ -28,8 +27,10 @@
           Are you sure to delete "{{obj.employee.first_name}}
           {{obj.employee.last_name}}"?
         </p>
-        <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
-        <input type="submit" value="confirm" />
+        <div style="display: flex">
+            <a href="{{request.META.HTTP_REFERER}}" style="color:navy">Go Back</a>
+          <input type="submit" value="confirm" style="height: max-content;"/>
+        </div>
       </form>
     </div>
   </body>

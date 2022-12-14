@@ -6,6 +6,13 @@
 
 <head>
     {% include "header.html" %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
     <style>
         .flex-container {
             display: flex;
@@ -22,6 +29,9 @@
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
+          }
+          .fa-passwd-reset > .fa-lock {
+            font-size: 0.85rem;
           }
 
     </style>
@@ -100,15 +110,22 @@
                 margin-top: -150px;
                 background: hsla(0, 0%, 100%, 0.8);
                 backdrop-filter: blur(30px);
+                display:table;
+                margin-left: auto;
+                margin-right: auto;
             "
             >
-            <h1>Employee list</h1>
+            <h1>Employees' list</h1>
             <div class="flex-container justify-content-center"">
                 <div>
                     <div class="flex-container">
                         <div>
                             <!-- <form name="form1" id="form1" action=""> -->
-                                Filters:    Status:
+                                <form method="GET" action="{% url 'employees_list' %}">
+                                    <input type="text" name="q" placeholder="" id="q">
+                                    <button type="submit"class="gray-button" role="button" style="padding: 4px 7px" >Search</button>
+                                </form>
+                                Filters: Status:
                                 <select name="status" id="status">
                                     <option data-url="{% url 'employees_list' %}" value="All">All</option>
                                     <option value="Active">Active</option>
@@ -126,7 +143,6 @@
                                 </select>
 
                         </div>
-                        
                         <div style="padding-left: 2px;">
                             <!-- <input type="submit" value="Apply">   -->
                             <button class="gray-button" role="button" onclick="getOption()" style="padding: 4px 7px;">Apply</button>
@@ -143,10 +159,6 @@
                     <a href="{% url 'export-excel' fltra fltrd %}">
                         <button class="gray-button" role="button">Export Excel</button>
                     </a>
-                    <!-- <a href="{% url 'status-active-filter' %}"> -->
-                        <!-- <button>Filter</button> -->
-                    <!-- </a> -->
-                    <!-- <br><br><br><br><br><br> -->
                 </div>
                 <!-- tabel in right side -->
                 <div style="padding-left: 10px;">
@@ -156,6 +168,8 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Mobile Number</th>
+                            <th>Department</th>
+                            <th>Position</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -172,28 +186,33 @@
                             <form action="" method="POST">
                                 {% if emps.user.is_active %}            
                                 <td>
-                                    <a href="{% url 'change-status' emps.id %}">
+                                    <a href="{% url 'change-status' emps.id %}" style="color: green;">
                                         Active
                                     </a>
                                 </td>
                                     </label>
                                 {% else %}
                                 <td>
-                                    <a href="{% url 'change-status' emps.id %}">
+                                    <a href="{% url 'change-status' emps.id %}" style="color: red;">
                                         Inactive
                                     </a>
                                 </td>
                                 {% endif %}
                                 <td>
                             </form>
-                                <a href="{% url 'edit-user' emps.id %}">
-                                    <button>Edit</button>
+                                <a href="{% url 'edit-user' emps.id %}" class="edit" title="Edit" data-toggle="tooltip">
+                                    <!-- <button>Edit</button> -->
+                                    <i class="material-icons" style="color: #2196F3;">&#xE8B8;</i>
+                                    
                                 </a>
-                                <a href="{% url 'change-pass' emps.id %}">
-                                    <button>Change Password</button>
+                                <a href="{% url 'change-pass' emps.id %}" class="change-pass" title="Change Password" data-toggle="tooltip">
+                                    <span class="fa-passwd-reset fa-stack">
+                                        <i class="fa fa-undo fa-stack-2x" style="color: navy;"></i>
+                                        <i class="fa fa-lock fa-stack-1x" style="color: navy;"></i>
+                                      </span>
                                 </a>
-                                <a href="{% url 'delete-user' emps.id %}">
-                                    <button>Delete</button>
+                                <a href="{% url 'delete-user' emps.id %}" class="delete" title="Delete" data-toggle="tooltip">
+                                    <i class="material-icons" style="color: #F44336;">&#xE5C9;</i>
                                 </a>
                             </td>
                         </tr>
