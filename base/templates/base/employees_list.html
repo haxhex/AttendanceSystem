@@ -49,6 +49,18 @@
  
 </head>
 <style>
+    table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    td,
+    th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+    }
 
     .fa-passwd-reset > .fa-lock {
         font-size: 0.85rem;
@@ -90,10 +102,10 @@
                                 <div class="flex-container">
                                     <form method="GET" action="{% url 'employees_list' %}"></form>
                                         <div>
-                                            <input type="text" name="q" placeholder="" id="q">
+                                            <input type="text" name="q" placeholder="" id="q" style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7;">
                                         </div>
                                         <div style="padding-left: 5px;"">
-                                            <button type="submit"class="gray-button" role="button" style="padding: 4px 7px" >Search</button>
+                                            <button type="submit"class="gray-button" role="button" style="padding: 4px 7px;" >Search</button>
                                         </div>
                                     </form>
                                 </div>

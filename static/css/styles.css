@@ -102,19 +102,6 @@ input[type="submit"] {
   touch-action: manipulation;
 }
 
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td,
-th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
 .flex-container {
   display: flex;
   flex-direction: row;
@@ -133,10 +120,11 @@ th {
   text-decoration: none;
 }
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #334180;
+select {
+  border: 1px solid #b4b0b7;
+  border-radius: 10px 10px 10px 10px;
+  font-size: 18px;
+  padding: 5px;
+  height: 35px;
+  width: 350px;
 }
