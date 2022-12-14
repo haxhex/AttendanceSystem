@@ -69,11 +69,18 @@
               <label><b>Last name: </b></label>
               {{user.employee.last_name}}
               <br />
+              
               <label><b>Email address: </b></label>
               {{user.employee.email}}
               <br />
               <label><b>Mobile number: </b></label>
               {{user.employee.mobile_number | default_if_none:"" }}
+              <br />
+              <label><b>Department: </b></label>
+              {{user.employee.department}}
+              <br />
+              <label><b>Position: </b></label>
+              {{user.employee.position}}
             </div>
             <b>Face registration status :</b>
             <span class="badge bg-danger" style="margin-bottom: 10px"

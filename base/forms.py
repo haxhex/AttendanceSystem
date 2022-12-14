@@ -11,12 +11,71 @@ from django.contrib.auth import authenticate, get_user_model, password_validatio
 from django.forms import ModelForm, DateInput
 from base.models import Event
 from django import forms
+
+Positions =[
+            (' ', 'Select your position'),
+            ('Accounting', (
+                    ('Auditor', 'Auditor'),
+                    ('CFO', 'CFO'),
+                    ('Payroll specialist', 'Payroll specialist'),
+                    ('Tax specialist', 'Tax specialist'),       
+                )
+            ),
+            ('Marketing', (
+                    ('Advertising manager', 'Advertising manager'),
+                    ('Brand manager', 'Brand manager'),
+                    ('Public relations officer', 'Public relations officer'),
+                    ('Market analyst', 'Market analyst'),           
+                )
+            ),
+            ('Human resources', (
+                    ('Compensation specialist', 'Compensation specialist'),
+                    ('Brand manager', 'Brand manager'),
+                    ('Personnel manager', 'Personnel manager'),
+                    ('Market analyst', 'Market analyst'),
+                    ('Recruiter', 'Recruiter'),  
+                    ('Training manager', 'Training manager'),                             
+                )
+            ),
+            ('Production', (
+                    ('Chief inspector', 'Chief inspector'),
+                    ('Brand manager', 'Brand manager'),
+                    ('Market analyst', 'Market analyst'),
+                    ('Recruiter', 'Recruiter'),  
+                    ('Machinist', 'Machinist'), 
+                    ('Plant manager', 'Plant manager'), 
+                    ('Quality control manager ', 'Quality control manager'), 
+                                                
+                )
+            ),
+            
+            ('IT', (
+                    ('Communications analyst', 'Communications analyst'),
+                    ('Database administrator', 'Database administrator'),
+                    ('E_business specialist', 'E-business specialist'),
+                    ('PC support specialist', 'PC support specialist'), 
+                    ('Programmer', 'Programmer'),
+                    ('Site manager', 'Site manager'),                                        
+                )
+            ),
+            ('Sales', (
+                    ('Branch manager', 'Branch manager'),
+                    ('Retail manager', 'Retail manager'),
+                    ('Telemarketer', 'Telemarketer'),                                        
+                )
+            ),
+    
+        ]     
+
 class EmployeeForm(ModelForm):
     class Meta:
         model = Employee
         fields = '__all__'
         
-        exclude = ['user', 'is_active']
+        exclude = ['user', 'is_active', 'department']
+        widgets = {
+            'position': forms.Select(choices=Positions,attrs={'class': 'form-control'}),
+        }
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:
@@ -67,12 +126,12 @@ class CreateUserForm(UserCreationForm):
     password1 = forms.CharField(
     label=_("Password"),
     strip=False,
-    widget=forms.PasswordInput(attrs={"autocomplete": "new-password", "class" : "form-control","id": "form3Example3"}),
+    widget=forms.PasswordInput(attrs={"autocomplete": "new-password", "class" : "form-control","id": "form3Example4"}),
     help_text=password_validation.password_validators_help_text_html(),
     )
     password2 = forms.CharField(
     label=_("Password confirmation"),
-    widget=forms.PasswordInput(attrs={"autocomplete": "new-password", "class" : "form-control","id": "form3Example3"}),
+    widget=forms.PasswordInput(attrs={"autocomplete": "new-password", "class" : "form-control","id": "form3Example5"}),
     strip=False,
     help_text=_("Enter the same password as before, for verification."),
     )
@@ -80,10 +139,10 @@ class CreateUserForm(UserCreationForm):
         super(CreateUserForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
         self.fields['first_name'].required = True
-        self.fields['last_name'].required = True      
+        self.fields['last_name'].required = True  
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'email','password1', 'password2']
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control','id': 'form3Example0'}),            
             'first_name': forms.TextInput(attrs={'class': 'form-control','id': 'form3Example1'}),
