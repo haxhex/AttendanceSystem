@@ -81,8 +81,7 @@ def io_report(request):
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
-def io_archive_report(request):
-    return render(request,'base/io_archive_report.html')
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
@@ -355,6 +354,54 @@ class CalendarView(generic.ListView):
         context['next_month'] = next_month(d)
         context['chart'] = chart
         return context
+
+class IoArchiveReport(generic.ListView):
+    model = In_out
+    template_name = 'base/io_archive_report.html'
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        d = get_date(self.request.GET.get('month', None))
+        username = self.request.GET.get('username', '')
+        daterange = self.request.GET.get('daterange', '')
+        user_id = 0
+        cal = Calendar(d.year, d.month)
+        in_outs = In_out.objects.all()
+        in_out_list = []
+        dates_ss = []
+        if daterange!= "":
+            (start , end ) = daterange.split("-")
+            (sm , sd , sy ) = start.split("/")
+            (em , ed  , ey) = end.split("/")
+        for in_out in in_outs:
+            if in_out.employee.user.username == username:
+                user_id = in_out.employee.id
+                in_out_list.append(in_out)
+                if str(in_out.start_time.date()) not in dates_ss:
+                   dates_ss.append(str(in_out.start_time.date()))
+        t_vals = []
+        for dte in dates_ss:   
+            total = []
+            for in_out in in_outs:    
+                if in_out.employee.user.username == username:
+                   if str(in_out.start_time.date()) == dte:
+                       FMT = '%H:%M:%S'
+                       tdelta = dt.strptime(str(in_out.end_time.time()), FMT) - dt.strptime(str(in_out.start_time.time()), FMT)
+                       total.append(str(tdelta))
+            mysum = dtt.timedelta()
+            for i in total:
+                (h, m, s) = i.split(':')
+                dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+                mysum += dd
+            date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
+            t_vals.append(date_time)
+
+        html_cal = cal.formatmonth(user_id, withyear=True , )
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        return context
+
+
 def get_date(req_month):
     if req_month:
         year, month = (int(x) for x in req_month.split('-'))
