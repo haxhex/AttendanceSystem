@@ -27,24 +27,35 @@
     </style>
     <script src=
     "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-        </script>
-    {% if fltr == 'sif' %}
-    <script>
-        $(document).ready(()=>{
-            $("#status").val('Inactive');
-        }); 
     </script>
-    {% elif fltr == 'saf' %} 
     <script>
-        $(document).ready(()=>{
-            $("#status").val('Active');
-        }); 
+        $(document).ready(()=>{ 
+            $("#q").val("{{q}}");
+        });      
     </script>
+    {% if fltra == 'Inactive' %}
+    <script>
+        $(document).ready(()=>{ 
+            $("#status").val("Inactive");
+            $("#dep").val("{{fltrd}}")
+        });      
+    </script>
+    {% elif fltra == 'Active' %}
+    <script>
+        $(document).ready(()=>{ 
+            $("#status").val("Active");
+            $("#dep").val("{{fltrd}}")
+        }); 
+        
+    </script>
+
     {% else %}
     <script>
-        $(document).ready(()=>{
-            $("#status").val('All');
+        $(document).ready(()=>{ 
+            $("#status").val("All");
+            $("#dep").val("{{fltrd}}")
         }); 
+        
     </script>
     {% endif %}
  
@@ -56,7 +67,6 @@
     </div>
     <div class="flex-container">
         <div>
-            {% include 'navbar2.html' %}
         </div>
         <div>
             <h1>
@@ -65,33 +75,44 @@
             <a href="{% url 'create-user' %}">
                 <button>+Add New Employee</button>
             </a>
-            <a href="{% url 'export-excel' fltr %}">
+            <a href="{% url 'export-excel' fltra fltrd %}">
                 <button>Export Excel</button>
             </a>
-            <!-- <a href="{% url 'status-active-filter' %}"> -->
-                <!-- <button>Filter</button> -->
-            <!-- </a> -->
-
-            <!-- <form name="form1" id="form1" action=""> -->
+            <form method="GET" action="{% url 'employees_list' %}">
+                <input type="text" name="q" placeholder="" id="q">
+                <button type="submit">Search</button>
+            </form>
                 Filters:    Status:
                 <select name="status" id="status">
                     <option data-url="{% url 'employees_list' %}" value="All">All</option>
-                    <option data-url="{% url 'status-inactive-filter' %}" value="Active">Active</option>
-                    <option data-url="{% url 'status-active-filter' %}" value="Inactive">Inactive</option>
-                  </select>
-                  <!-- <input type="submit" value="Apply">   -->
-                  <button onclick="getOption()"> Apply </button>
-                  <p>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+                Department:
+                <select name="dep" id="dep">
+                    <option value="All">All</option>
+                    <option value="Human resources">Human resources</option>
+                    <option value="Accounting">Accounting</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Production">Production</option>
+                    <option value="IT">IT</option>
+                    <option value="Sales">Sales</option>
+                </select>
+    
+                <button onclick="getOption()"> Apply </button>
+                <p>
                     <span class="output"></span>
                 </p>
-                <!-- </form> -->
-            <!-- <br><br><br><br><br><br> -->
+
+
             <table>
                 <tr>
                     <th>Photo</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Mobile Number</th>
+                    <th>Department</th>
+                    <th>Position</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -103,17 +124,19 @@
                     <td>{{emps.first_name}} {{emps.last_name}}</td> 
                     <td>{{emps.email}}</td> 
                     <td>{{emps.mobile_number | default_if_none:""}}</td>
+                    <td>{{emps.department}}</td> 
+                    <td>{{emps.position}}</td> 
                     <form action="" method="POST">
                         {% if emps.user.is_active %}            
                         <td>
-                            <a href="{% url 'change-status' emps.id %}">
+                            <a href="{% url 'change-status' emps.id %}" style="color: green;"">
                                 Active
                             </a>
                         </td>
                             </label>
                         {% else %}
                         <td>
-                            <a href="{% url 'change-status' emps.id %}">
+                            <a href="{% url 'change-status' emps.id %}" style="color: red;">
                                 Inactive
                             </a>
                         </td>
@@ -138,23 +161,84 @@
     </div>
 
     <script type="text/javascript">
-        $("#status").prop("selectedIndex", 1);
         function getOption() {
-            selectElement = document.querySelector('#status');
-            output = selectElement.value;
-            if (output == 'Active'){
-                location.href = "{% url 'status-active-filter' %}"
+            selectElement_act = document.querySelector('#status');
+            selectElement_dep = document.querySelector('#dep');
+            output_act = selectElement_act.value;
+            output_dep = selectElement_dep.value;
+            if (output_act == 'Active'){
+                if (output_dep == 'Human resources'){
+                   location.href = "{% url 'act-dep-filter' 'Active' 'Human resources' %}"
+                }
+                else if (output_dep == 'Accounting'){
+                    location.href = "{% url 'act-dep-filter' 'Active' 'Accounting' %}"
+                }
+                else if (output_dep == 'Marketing'){
+                    location.href = "{% url 'act-dep-filter' 'Active' 'Marketing' %}"
+                }
+                else if (output_dep == 'Production'){
+                    location.href = "{% url 'act-dep-filter' 'Active' 'Production' %}"
+                }
+                else if (output_dep == 'IT'){
+                    location.href = "{% url 'act-dep-filter' 'Active' 'IT' %}"
+                }
+                else if (output_dep == 'Sales'){
+                    location.href = "{% url 'act-dep-filter' 'Active' 'Sales' %}"
+                }
+                else {
+                   location.href = "{% url 'act-dep-filter' 'Active' 'All' %}"
+                }
+
             }
-            else if (output == 'Inactive')
-            {  
-                location.href = "{% url 'status-inactive-filter' %}"
+            else if (output_act == 'Inactive'){
+                if (output_dep == 'Human resources'){
+                    location.href = "{% url 'act-dep-filter' 'Inactive' 'Human resources' %}"
+                 }
+                 else if (output_dep == 'Accounting'){
+                    location.href = "{% url 'act-dep-filter' 'Inactive' 'Accounting' %}"
+                }
+                else if (output_dep == 'Marketing'){
+                    location.href = "{% url 'act-dep-filter' 'Inactive' 'Marketing' %}"
+                }
+                else if (output_dep == 'Production'){
+                    location.href = "{% url 'act-dep-filter' 'Inactive' 'Production' %}"
+                }
+                else if (output_dep == 'IT'){
+                    location.href = "{% url 'act-dep-filter' 'Inactive' 'IT' %}"
+                }
+                else if (output_dep == 'Sales'){
+                    location.href = "{% url 'act-dep-filter' 'Inactive' 'Sales' %}"
+                }
+                 else {
+                    location.href = "{% url 'act-dep-filter' 'Inactive' 'All' %}"
+                 }
             }
-            else
-            {
-                location.href = "{% url 'employees_list' %}"
+            else {
+                if (output_dep == 'Human resources'){
+                    location.href = "{% url 'act-dep-filter' 'All' 'Human resources' %}"
+                 }
+                 else if (output_dep == 'Accounting'){
+                    location.href = "{% url 'act-dep-filter' 'All' 'Accounting' %}"
+                }
+            
+            else if (output_dep == 'Marketing'){
+                location.href = "{% url 'act-dep-filter' 'All' 'Marketing' %}"
             }
-        }
-        </script>
+            else if (output_dep == 'Production'){
+                location.href = "{% url 'act-dep-filter' 'All' 'Production' %}"
+            }
+            else if (output_dep == 'IT'){
+                location.href = "{% url 'act-dep-filter' 'All' 'IT' %}"
+            }
+            else if (output_dep == 'Sales'){
+                location.href = "{% url 'act-dep-filter' 'All' 'Sales' %}"
+            }
+                 else {
+                    location.href = "{% url 'act-dep-filter' 'All' 'All' %}"
+                 }
+            }
+        }    
+    </script>
 
 </body>
 

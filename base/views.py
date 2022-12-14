@@ -44,8 +44,7 @@ from datetime import datetime as dt
 import datetime as dtt
 from .utils import get_plot
 import xlwt
-
-
+from django.db.models import Q
 
 # User = get_user_model()
 
@@ -83,17 +82,28 @@ def io_report(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def io_archive_report(request):
-    return render(request ,'base/io_archive_report.html')
+    return render(request,'base/io_archive_report.html')
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def employees_list(request):
-    employees = Employee.objects.all()
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    # get all the room in db
+    employees = Employee.objects.filter(
+        Q(user__is_active__icontains =q) |
+        Q(first_name__icontains=q) |
+        Q(last_name__icontains=q) |
+        Q(department__icontains=q) |
+        Q(position__icontains=q) |
+        Q(email__icontains=q) |
+        Q(mobile_number__icontains=q) 
+        )
+    # employees = Employee.objects.all()
     employees_list = []
     for employee in employees:
         if employee.user.id != request.user.id:
-            employees_list.append(employee) 
-    context = {'employees' : employees_list, 'fltr':'all'}
+            employees_list.append(employee)  
+    context = {'employees' : employees_list, 'fltra':'All', 'fltrd' : 'All', 'q':q}
     return render(request, 'base/employees_list.html', context)
 
 
@@ -218,7 +228,8 @@ def registerPage(request):
 							user = user,
 							email = email,
 							first_name = first_name,
-							last_name = last_name
+							last_name = last_name,
+							department = request.POST.get('department')
 						)
 						context= {'form': form}
 						messages.success(request, 'Account was created for ' + username)
@@ -257,6 +268,34 @@ def loginPage(request):
 	context={"form":form}
 	return render(request, "base/log-in.html", context)
 
+def department(position):
+    Accounting = ['Auditor', 'CFO', 'Payroll specialist', 'Tax specialist']
+    Marketing = ['Advertising manager', 'Brand manager', 'Public relations officer', 'Market analyst']
+    HumanResources = ['Compensation specialist', 'Brand manager', 'Personnel manager', 'Market analyst', 'Recruiter', 'Training manager']
+    Production = ['Chief inspector', 'Brand manager', 'Market analyst', 'Recruiter', 'Machinist', 'Plant manager', 'Quality control manager']
+    it = ['Communications analyst', 'Database administrator', 'E-business specialist', 'Programmer', 'Site manager']
+    Sales = ['Branch manager', 'Retail manager', 'Telemarketer']
+    dep = 'No Departrment'
+    if position in Accounting:
+        dep = 'Accounting'
+    elif position in Marketing:
+        dep = 'Accounting'
+    elif position in HumanResources:
+        dep = 'Human resources'
+    elif position in Production:
+        dep = 'Production'
+    elif position in it:
+        dep = 'IT' 
+    elif position in Sales:
+        dep = 'Sales'
+    return dep
+
+def is_valid_mobile(string):
+    mobile_regex = "^09(1[0-9]|3[1-9])-?[0-9]{3}-?[0-9]{4}$"
+    if(re.search(mobile_regex, string)):
+        return True
+    return False
+
 @login_required(login_url='login')
 def accountSettings(request):
 	page = 'accountSettings'
@@ -266,6 +305,7 @@ def accountSettings(request):
 	if request.method == 'POST':
 		form = EmployeeForm(request.POST, request.FILES,instance=employee)
 		if form.is_valid():
+			employee.department = department(employee.position)
 			form.save()
 			return redirect('view-profile')
 	context = {'form':form, 'page':page}
@@ -425,7 +465,7 @@ def createUser(request):
 			return render(request, 'base/create-user.html', context)
 		if valid_username:
 			print("---Invalid Username")
-			context= {'form': form, 'error':'Please enter a valid username.\n150 characters or fewer. Letters, digits and @/./+/-/_ only.'}
+			context= {'form': form, 'error':'Please enter a valid username.'}
 			return render(request, 'base/create-user.html', context)
 	   
 	context = {'form':form}
@@ -438,6 +478,7 @@ def editUser(request, pk):
 	if request.method == 'POST':
 		form = EmployeeForm(request.POST, request.FILES,instance=employee)
 		if form.is_valid():
+			employee.department = department(employee.position)
 			form.save()
 			return redirect('employees_list')
 	context = {'form':form, 'eid': pk, 'page':page}
@@ -478,7 +519,7 @@ def change_status(request, pk):
 	employee.user.save()
 	return redirect('employees_list')
 
-def export_excel(request, fltr):
+def export_excel(request, fltra, fltrd):
 	response = HttpResponse(content_type='application/ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
 		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
@@ -487,73 +528,121 @@ def export_excel(request, fltr):
 	row_num = 0
 	font_style = xlwt.XFStyle()
 	font_style.font.bold = True
-	columns = ['Firstname', 'Lastname', 'Email' ,'Mobile Number', 'Status']
+	columns = ['Firstname', 'Lastname', 'Email' ,'Mobile Number','Department' ,'Position' ,'Status']
 	for col_num in range(len(columns)):
 		ws.write(row_num, col_num, columns[col_num], font_style)
 	
-	font_style = xlwt.XFStyle()
-	rows = Employee.objects.all().values_list(
-		'first_name', 'last_name', 'email', 'mobile_number'
-	)
-	rows1 = Employee.objects.all()
-	emps_status = []
-	for r in rows1:
-		if r.user.is_active:
-			emps_status.append('Active')
-		else:
-			emps_status.append('Inactive')
-	snum = 0
-	for row in rows:
-		row_num += 1
-		for col_num in range(len(row)+1):
-			if fltr == 'saf':
-				if emps_status[snum] == 'Active':
-					if col_num == 4:
-						ws.write(row_num, col_num, 'Active', font_style)
-						snum += 1
-					else:
-						ws.write(row_num, col_num, str(row[col_num]), font_style)
+	employees = Employee.objects.all()
+	employees_list = []
+	for employee in employees:
+		if employee.user.id != request.user.id:
+			if fltra != 'All' and fltrd != 'All':
+				if fltra == 'Active':
+					if employee.user.is_active and employee.department == fltrd:
+						employees_list.append(employee)
 				else:
-					if col_num == 4:
-						snum += 1 
-						row_num -= 1
-			elif fltr == 'sif':
-				if emps_status[snum] == 'Inactive':
-					if col_num == 4:
-						ws.write(row_num, col_num, 'Inactive', font_style)
-						snum += 1
-					else:
-						ws.write(row_num, col_num, str(row[col_num]), font_style)
+					if not employee.user.is_active and employee.department == fltrd:
+						employees_list.append(employee)				
+			elif fltra == 'All' and fltrd != 'All':
+				if employee.department == fltrd:
+					employees_list.append(employee)
+			elif fltrd == 'All' and fltra != 'All':
+				if fltra == 'Active':
+					if employee.user.is_active:
+						employees_list.append(employee)
 				else:
-					if col_num == 4:
-						snum += 1 
-						row_num -= 1
+					if not employee.user.is_active:
+						employees_list.append(employee)	
 			else:
-				if col_num == 4:
-					ws.write(row_num, col_num, str(emps_status[snum]), font_style)
-					snum += 1
-				else:
-					ws.write(row_num, col_num, str(row[col_num]), font_style)
+				employees_list.append(employee)
+
+	for row_num in range(len(employees_list)):
+		rowx = row_num+1
+		ws.write(rowx, 0, employees_list[row_num].first_name, font_style)
+		ws.write(rowx, 1, employees_list[row_num].last_name, font_style)
+		ws.write(rowx, 2, employees_list[row_num].email, font_style)
+		ws.write(rowx, 3, employees_list[row_num].mobile_number, font_style)
+		ws.write(rowx, 4, employees_list[row_num].department, font_style)
+		ws.write(rowx, 5, employees_list[row_num].position, font_style)
+		ws.write(rowx, 6, 'Active' if employees_list[row_num].user.is_active else 'Inactive', font_style)
+  
+  
+  
+		
+
+#    						ws.write(row_num, col_num, 'Active', font_style)
+						# ws.write(row_num, col_num, str(row[col_num]), font_style)
+	# col_num = 0
+	# row_num = 0
+	# for row in rows1:
+	# ws.write(0, 0, str(rows1[0]), font_style)
+	# print(rows1)
 	wb.save(response)
 	return response
 
-def status_active_filter(request):
-    employees = Employee.objects.all()
-    employees_list = []
-    for employee in employees:
-        if employee.user.is_active and employee.user.id != request.user.id:
-            employees_list.append(employee)  
-    context = {'employees' : employees_list, 'fltr':'saf'}
-    return render(request, 'base/employees_list.html', context) 
+def act_dep_filter(request, fltra, fltrd):
+	print("in act_dep_filter")
+	print(f"fltra: {fltra}")
+	print(f"fltrd: {fltrd}")
+	employees = Employee.objects.all()
+	employees_list = []
+	for employee in employees:
+		if employee.user.id != request.user.id:
+			if fltra != 'All' and fltrd != 'All':
+				if fltra == 'Active':
+					if employee.user.is_active and employee.department == fltrd:
+						employees_list.append(employee)
+				else:
+					if not employee.user.is_active and employee.department == fltrd:
+						employees_list.append(employee)				
+			elif fltra == 'All' and fltrd != 'All':
+				if employee.department == fltrd:
+					employees_list.append(employee)
+			elif fltrd == 'All' and fltra != 'All':
+				if fltra == 'Active':
+					if employee.user.is_active:
+						employees_list.append(employee)
+				else:
+					if not employee.user.is_active:
+						employees_list.append(employee)	
+			else:
+				employees_list.append(employee)
+	context = {'employees' : employees_list, 'fltra' : fltra, 'fltrd' : fltrd}
+	return render(request, 'base/employees_list.html', context) 
 
-def status_inactive_filter(request):
-    employees = Employee.objects.all()
-    employees_list = []
-    for employee in employees:
-        if not employee.user.is_active and employee.user.id != request.user.id:
-            employees_list.append(employee) 
-    context = {'employees' : employees_list, 'fltr':'sif'}
-    return render(request, 'base/employees_list.html', context)         
-     
- 
-	
+    				
+# 			employees_list.append(employee)
+# 	if fltrd != 'All':		
+# 		for employee in employees:
+# 			if employee.department == fltrd:
+# 					employees_list.append(employee)
+# 	if fltra != 'All':
+# 		if fltra == 'Active':  
+# 			if employee.user.is_active
+#     employees_list = []
+#     for employee in employees:
+#         if employee.user.is_active and employee.user.id != request.user.id:
+#             employees_list.append(employee)
+              
+#     context = {'employees' : employees_list, 'fltr':'saf'}
+#     return render(request, 'base/employees_list.html', context) 
+
+
+# def status_inactive_filter(request):
+#     employees = Employee.objects.all()
+#     employees_list = []
+#     for employee in employees:
+#         if not employee.user.is_active and employee.user.id != request.user.id:
+#             employees_list.append(employee) 
+#     context = {'employees' : employees_list, 'fltr':'sif'}
+#     return render(request, 'base/employees_list.html', context)   
+
+# def department_fltr(request, fltrd):      
+#     employees = Employee.objects.all()
+#     employees_list = []
+
+#     for employee in employees:
+#         if employee.department == fltrd and employee.user.id != request.user.id:
+#             employees_list.append(employee) 
+#     context = {'employees' : employees_list, 'fltr':'dep'}
+#     return render(request, 'base/employees_list.html', context)
