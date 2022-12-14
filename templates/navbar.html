@@ -1,7 +1,7 @@
 {% load static %}
 
 <style>
-  a {
+  .white-a {
     display: block;
     color: white;
     text-align: center;
@@ -31,6 +31,7 @@
 
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'home' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -50,6 +51,7 @@
     </li>
     <li style="float: right">
       <a
+        class="white-a"
         href="{% url 'view-profile' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -58,6 +60,7 @@
     </li>
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'dashboard' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -68,6 +71,7 @@
     <!-- super user -->
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'employees_list' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -76,6 +80,7 @@
     </li>
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'io-report' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -84,6 +89,7 @@
     </li>
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'io-archive-report' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -94,6 +100,7 @@
     {% else %}
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'io' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -102,6 +109,7 @@
     </li>
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'io-archive' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -111,6 +119,7 @@
     {% endif %}
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'logout' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"
@@ -121,6 +130,7 @@
     <!-- end user logged in -->
     <li style="float: left">
       <a
+        class="white-a"
         href="{% url 'login' %}"
         onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'"

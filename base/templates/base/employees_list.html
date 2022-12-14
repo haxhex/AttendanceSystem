@@ -59,7 +59,7 @@
         border-radius: 6px;
         border: none;
 
-        background: #6E6D70;
+        background: #838284;
         box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
         color: #DFDEDF;
         user-select: none;
@@ -67,10 +67,25 @@
         touch-action: manipulation;
     }
 
-    table, td, th {
-        border: 1px solid;
-        color:black;
+
+    table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        font-family: sans-serif;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     }
+
+
+    table th, td {
+        padding: 12px 15px;
+    }
+
+    table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
+    }
+
 </style>
 <body>
     {% include "navbar.html" %}
@@ -86,8 +101,8 @@
         <div
             class="card"
             style="
-                width: 50%;
-                margin-left: 25%;
+                width: 80%;
+                margin-left: 10%;
                 margin-top: -150px;
                 background: hsla(0, 0%, 100%, 0.8);
                 backdrop-filter: blur(30px);
@@ -117,10 +132,12 @@
                         <span class="output"></span>
                     </p>
                     <!-- </form> -->
-                    <a href="{% url 'create-user' %}">
+                    <a class="white-a" style="padding-top: 1px;
+                    padding-bottom: 1px;" href="{% url 'create-user' %}">
                         <button class="gray-button" role="button">+Add New Employee</button>
                     </a>
-                    <a href="{% url 'export-excel' fltr %}">
+                    <a class="white-a" style="padding-top: 1px;
+                    padding-bottom: 1px;" href="{% url 'export-excel' fltr %}">
                         <button class="gray-button" role="button">Export Excel</button>
                     </a>
                     <!-- <a href="{% url 'status-active-filter' %}"> -->
@@ -164,14 +181,17 @@
                                 {% endif %}
                                 <td>
                             </form>
-                                <a href="{% url 'edit-user' emps.id %}">
-                                    <button>Edit</button>
+                                <a class="white-a" style="padding-top: 1px;
+                                padding-bottom: 1px;" href="{% url 'edit-user' emps.id %}">
+                                    <button class="gray-button" role="button">Edit</button>
                                 </a>
-                                <a href="{% url 'change-pass' emps.id %}">
-                                    <button>Change Password</button>
+                                <a class="white-a" style="padding-top: 1px;
+                                padding-bottom: 1px;" href="{% url 'change-pass' emps.id %}">
+                                    <button class="gray-button" role="button">Change Password</button>
                                 </a>
-                                <a href="{% url 'delete-user' emps.id %}">
-                                    <button>Delete</button>
+                                <a class="white-a" style="padding-top: 1px;
+                                padding-bottom: 1px;" href="{% url 'delete-user' emps.id %}">
+                                    <button class="gray-button" role="button">Delete</button>
                                 </a>
                             </td>
                         </tr>

@@ -14,12 +14,49 @@
       .flex-item {
         padding-left: 25px;
       }
+
+      input[type="submit"]{
+        /* display: flex; */
+        flex-direction: column;
+        align-items: center;
+        padding: 6px 14px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+        border-radius: 6px;
+        border: none;
+
+        background: #838284;
+        box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+        color: #DFDEDF;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
     </style>
   </head>
 
   <body>
-    <div>{% include "navbar.html" %}</div>
-    <div class="flex-container">
+    {% include "navbar.html" %}
+    <section class="text-center">
+      <!-- Background image -->
+      <div
+        class="p-5 bg-image"
+        style="
+          background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+          height: 300px;
+        "
+      ></div>
+      <!-- Background image -->
+      <div
+      class="card"
+      style="
+        width: 50%;
+        margin-left: 25%;
+        margin-top: -150px;
+        background: hsla(0, 0%, 100%, 0.8);
+        backdrop-filter: blur(30px);
+      "
+    >
+    <div class="flex-container justify-content-center">
       <div class="flex-item">
         <h1>Edit Profile</h1>
         <form method="POST" action="" enctype="multipart/form-data">
