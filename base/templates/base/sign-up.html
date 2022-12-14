@@ -1,55 +1,79 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     {% include "header.html" %}
-          
-    <script src=
-    "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
       // Run on page load
-      window.onload = function() {
-  
-          // If sessionStorage is storing default values (ex. name), exit the function and do not restore data
-          //if (sessionStorage.getItem('name') == "name") {
-            //  return;
-         // }
-  
-          // If values are not blank, restore them to the fields
-          var position = localStorage.getItem('position');
-          console.log(position);
-          if (position !== null) $('#position').val(position);
+      window.onload = function () {
+        // If sessionStorage is storing default values (ex. name), exit the function and do not restore data
+        //if (sessionStorage.getItem('name') == "name") {
+        //  return;
+        // }
 
-          var username = localStorage.getItem('username');
-          console.log(username);
-          if (username !== null) $('#form3Example0').val(username);
+        // If values are not blank, restore them to the fields
+        var position = localStorage.getItem("position");
+        console.log(position);
+        if (position !== null) $("#position").val(position);
 
-          var first_name = localStorage.getItem('first_name');
-          console.log(first_name);
-          if (first_name !== null) $('#form3Example1').val(first_name);
+        var username = localStorage.getItem("username");
+        console.log(username);
+        if (username !== null) $("#form3Example0").val(username);
 
-          var last_name = localStorage.getItem('last_name');
-          console.log(last_name);
-          if (last_name !== null) $('#form3Example2').val(last_name);
+        var first_name = localStorage.getItem("first_name");
+        console.log(first_name);
+        if (first_name !== null) $("#form3Example1").val(first_name);
 
-          var email = localStorage.getItem('email');
-          console.log(email);
-          if (email !== null) $('#form3Example3').val(email);
+        var last_name = localStorage.getItem("last_name");
+        console.log(last_name);
+        if (last_name !== null) $("#form3Example2").val(last_name);
 
-          //var password1 = localStorage.getItem('password1');
-          //console.log(password1);
-          //if (password1 !== null) $('#form3Example4').val(password1);
+        var email = localStorage.getItem("email");
+        console.log(email);
+        if (email !== null) $("#form3Example3").val(email);
 
-          //var password2 = localStorage.getItem('password2');
-          //console.log(password2);
-          //if (password2 !== null) $('#form3Example5').val(password2);
+        //var password1 = localStorage.getItem('password1');
+        //console.log(password1);
+        //if (password1 !== null) $('#form3Example4').val(password1);
 
-      }
-  
+        //var password2 = localStorage.getItem('password2');
+        //console.log(password2);
+        //if (password2 !== null) $('#form3Example5').val(password2);
+      };
+
       // Before refreshing the page, save the form data to sessionStorage
-  </script>
+    </script>
   </head>
   <body>
+    <ul
+      style="
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #334180;
+      "
+    >
+      <li style="float: left">
+        <img
+          src="{% static 'images/logo.png' %}"
+          alt="Logo"
+          weight="50"
+          height="50"
+        />
+      </li>
+
+      <li style="float: left">
+        <a
+          class="white-a"
+          href="{% url 'home' %}"
+          onMouseOver="this.style.color='#5d74ba'"
+          onMouseOut="this.style.color='white'"
+          >Attendance System</a
+        >
+      </li>
+    </ul>
     <!-- Section: Design Block -->
     <section class="text-center">
       <!-- Background image -->
@@ -65,8 +89,8 @@
       <div
         class="card"
         style="
-          width: 50%;
-          margin-left: 25%;
+          width: 40%;
+          margin-left: 30%;
           margin-top: -150px;
           background: hsla(0, 0%, 100%, 0.8);
           backdrop-filter: blur(30px);
@@ -118,49 +142,78 @@
                   {{form.email}}
                 </div>
                 <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example6"
-                    >Position</label
-                  >
+                  <label class="form-label" for="form3Example6">Position</label>
                   <!-- <input type="email" name="email" id="form3Example3" class="form-control" /> -->
-                  <select id="position" name="position" required>
-                    <option value="" selected disabled>Select your position</option>
-                     <optgroup label="Accouning">
+                  <select
+                    id="position"
+                    name="position"
+                    required
+                    style="width: 80%"
+                  >
+                    <option value="" selected disabled>
+                      Select your position
+                    </option>
+                    <optgroup label="Accouning">
                       <option value="Auditor">Auditor</option>
-                      <option value="CFO">CFO</option> 
-                      <option value="Payroll specialist">Payroll specialist</option> 
-                      <option value="Tax specialist">Tax specialist</option> 
-                    </optgroup> 
-                    <optgroup label="Marketing"> 
-                      <option value="Advertising manager">Advertising manager</option> 
-                      <option value="Brand manager">Brand manager</option> 
-                      <option value="Public relations officer">Public relations officer</option> 
-                      <option value="Market analyst">Market analyst</option> 
-                    </optgroup> <optgroup label="Human resources"> 
-                      <option value="Compensation specialist">Compensation specialist</option> 
-                      <option value="Brand manager">Brand manager</option> 
-                      <option value="Personnel manager">Personnel manager</option> 
-                      <option value="Market analyst">Market analyst</option> 
-                      <option value="Recruiter">Recruiter</option> 
-                      <option value="Training manager">Training manager</option> 
-                    </optgroup> <optgroup label="Production"> 
-                      <option value="Chief inspector">Chief inspector</option> 
-                      <option value="Brand manager">Brand manager</option> 
-                      <option value="Market analyst">Market analyst</option> 
-                      <option value="Recruiter">Recruiter</option> 
-                      <option value="Machinist">Machinist</option> 
-                      <option value="Plant manager">Plant manager</option> 
-                      <option value="Quality control manager ">Quality control manager</option> 
-                    </optgroup> <optgroup label="IT"> 
-                      <option value="Communications analyst">Communications analyst</option> 
-                      <option value="Database administrator">Database administrator</option> 
-                      <option value="E_business specialist">E-business specialist</option> 
-                      <option value="PC support specialist">PC support specialist</option> 
-                      <option value="Programmer">Programmer</option> 
-                      <option value="Site manager">Site manager</option> 
-                    </optgroup> <optgroup label="Sales"> 
-                      <option value="Branch manager">Branch manager</option> 
-                      <option value="Retail manager">Retail manager</option> 
-                      <option value="Telemarketer">Telemarketer</option> 
+                      <option value="CFO">CFO</option>
+                      <option value="Payroll specialist">
+                        Payroll specialist
+                      </option>
+                      <option value="Tax specialist">Tax specialist</option>
+                    </optgroup>
+                    <optgroup label="Marketing">
+                      <option value="Advertising manager">
+                        Advertising manager
+                      </option>
+                      <option value="Brand manager">Brand manager</option>
+                      <option value="Public relations officer">
+                        Public relations officer
+                      </option>
+                      <option value="Market analyst">Market analyst</option>
+                    </optgroup>
+                    <optgroup label="Human resources">
+                      <option value="Compensation specialist">
+                        Compensation specialist
+                      </option>
+                      <option value="Brand manager">Brand manager</option>
+                      <option value="Personnel manager">
+                        Personnel manager
+                      </option>
+                      <option value="Market analyst">Market analyst</option>
+                      <option value="Recruiter">Recruiter</option>
+                      <option value="Training manager">Training manager</option>
+                    </optgroup>
+                    <optgroup label="Production">
+                      <option value="Chief inspector">Chief inspector</option>
+                      <option value="Brand manager">Brand manager</option>
+                      <option value="Market analyst">Market analyst</option>
+                      <option value="Recruiter">Recruiter</option>
+                      <option value="Machinist">Machinist</option>
+                      <option value="Plant manager">Plant manager</option>
+                      <option value="Quality control manager ">
+                        Quality control manager
+                      </option>
+                    </optgroup>
+                    <optgroup label="IT">
+                      <option value="Communications analyst">
+                        Communications analyst
+                      </option>
+                      <option value="Database administrator">
+                        Database administrator
+                      </option>
+                      <option value="E_business specialist">
+                        E-business specialist
+                      </option>
+                      <option value="PC support specialist">
+                        PC support specialist
+                      </option>
+                      <option value="Programmer">Programmer</option>
+                      <option value="Site manager">Site manager</option>
+                    </optgroup>
+                    <optgroup label="Sales">
+                      <option value="Branch manager">Branch manager</option>
+                      <option value="Retail manager">Retail manager</option>
+                      <option value="Telemarketer">Telemarketer</option>
                     </optgroup>
                   </select>
                 </div>
@@ -194,7 +247,7 @@
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-4">
+                <button type="submit" class="gray-button" role="button">
                   Sign up
                 </button>
 
@@ -231,15 +284,15 @@
     </section>
     <!-- Section: Design Block -->
     <script>
-      window.onbeforeunload = function() {
-        localStorage.setItem("position", $('#position').val());
-        localStorage.setItem("username", $('#form3Example0').val());
-        localStorage.setItem("first_name", $('#form3Example1').val());
-        localStorage.setItem("last_name", $('#form3Example2').val());
-        localStorage.setItem("email", $('#form3Example3').val());
-        localStorage.setItem("password1", $('#form3Example4').val());
-        localStorage.setItem("password2", $('#form3Example5').val());
-    }
+      window.onbeforeunload = function () {
+        localStorage.setItem("position", $("#position").val());
+        localStorage.setItem("username", $("#form3Example0").val());
+        localStorage.setItem("first_name", $("#form3Example1").val());
+        localStorage.setItem("last_name", $("#form3Example2").val());
+        localStorage.setItem("email", $("#form3Example3").val());
+        localStorage.setItem("password1", $("#form3Example4").val());
+        localStorage.setItem("password2", $("#form3Example5").val());
+      };
     </script>
   </body>
 </html>
