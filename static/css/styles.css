@@ -1,6 +1,7 @@
 .calendar {
-  width: 98%;
-  margin: auto;
+  width: 50%;
+  margin-left: 1%;
+  /* margin: auto; */
   font-size: 13px;
 }
 
@@ -17,8 +18,9 @@
 
 .calendar td {
   width: 200px;
-  height: 150px;
+  height: 100px;
   padding: 20px 0px 0px 5px;
+  /* color: white; */
 }
 
 .month {
@@ -27,11 +29,6 @@
 
 .date {
   font-size: 16px;
-}
-
-ul {
-  height: 100%;
-  padding: 0px 5px 0px 20px;
 }
 
 a {
@@ -77,11 +74,6 @@ a {
   grid-template-columns: 1fr 3fr;
 }
 
-.flex-container {
-  display: flex;
-  padding: 5px;
-}
-
 .gray-button,
 input[type="submit"] {
   /* display: flex; */
@@ -120,11 +112,12 @@ input[type="submit"] {
   text-decoration: none;
 }
 
-select {
+select,
+input[type="date"] {
   border: 1px solid #b4b0b7;
   border-radius: 10px 10px 10px 10px;
   font-size: 18px;
   padding: 5px;
   height: 35px;
-  width: 350px;
+  width: 200px;
 }

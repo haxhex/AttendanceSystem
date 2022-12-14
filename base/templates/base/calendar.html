@@ -10,39 +10,6 @@
         padding: 5px;
       }
 
-      .calendar {
-        width: 50%;
-        margin-left: 1%;
-        /* margin: auto; */
-        font-size: 13px;
-      }
-
-      .calendar tr,
-      .calendar td {
-        border: 1px solid black;
-      }
-
-      .calendar th {
-        padding: 10px;
-        text-align: center;
-        font-size: 18px;
-      }
-
-      .calendar td {
-        width: 200px;
-        height: 100px;
-        padding: 20px 0px 0px 5px;
-        /* color: white; */
-      }
-
-      .month {
-        font-size: 25px;
-      }
-
-      .date {
-        font-size: 16px;
-      }
-
       ul {
         height: 100%;
         padding: 0px 5px 0px 20px;
@@ -102,11 +69,12 @@
       <div>
         <div class="flex-container2">
           <div>
-            <form action="/action_page.php" style="margin-bottom: 10px">
-              <label for="select date">Select date:</label>
-              <input type="date" id="birthday" name="birthday" />
-              <input type="submit" />
-            </form>
+            <!-- <form action="/action_page.php" style="margin-bottom: 10px"> -->
+            <label for="select date">Select date:</label>
+            <input type="date" id="date" name="date" />
+            <input type="submit" />
+            <!-- </form> -->
+            <div style="padding-top: 10px"></div>
             {{ calendar }}
           </div>
         </div>
