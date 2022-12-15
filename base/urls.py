@@ -25,6 +25,7 @@ urlpatterns = [
     path("change-status/<str:pk>/" , views.change_status , name="change-status"), 
     path("export-excel/<str:fltra>/<str:fltrd>/" , views.export_excel , name="export-excel"),
     path("act-dep-filter/<str:fltra>/<str:fltrd>/" , views.act_dep_filter , name="act-dep-filter"),  
+    path("dash/", views.dash, name="dash"),
     # path("status-active-filter/" , views.status_active_filter , name="status-active-filter"), 
     # path("status-inactive-filter/" , views.status_inactive_filter , name="status-inactive-filter"), 
     # path("department-fltr/<str:fltrd>/" , views.department_fltr , name="department-fltr"), 

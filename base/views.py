@@ -318,6 +318,7 @@ class CalendarView(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
+        print(d.month)
         user_id = self.request.user.employee
         cal = Calendar(d.year, d.month)
         in_outs = In_out.objects.all()
@@ -326,8 +327,9 @@ class CalendarView(generic.ListView):
         for in_out in in_outs:
             if in_out.employee.id == self.request.user.employee.id:
                 in_out_list.append(in_out)
-                if str(in_out.start_time.date()) not in dates_ss:
+                if str(in_out.start_time.date()) not in dates_ss and in_out.start_time.date().month == d.month:
                    dates_ss.append(str(in_out.start_time.date()))
+                   print(in_out.start_time.date().month)
         t_vals = []
         for dte in dates_ss:   
             total = []
@@ -343,13 +345,17 @@ class CalendarView(generic.ListView):
                 dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
                 mysum += dd
             date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
-            t_vals.append(date_time)    
+            # t_vals.append(date_time)  
+            t_vals.append(date_time.strftime("%H:%M:%S"))  
         chart = get_plot(dates_ss, t_vals)
         html_cal = cal.formatmonth(user_id, withyear=True)
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
         context['next_month'] = next_month(d)
         context['chart'] = chart
+        context['datess'] = dates_ss
+        context['timess'] = t_vals
+        
         return context
 def get_date(req_month):
     if req_month:
@@ -610,6 +616,36 @@ def act_dep_filter(request, fltra, fltrd):
 	context = {'employees' : employees_list, 'fltra' : fltra, 'fltrd' : fltrd}
 	return render(request, 'base/employees_list.html', context) 
 
+def dash(request):
+	in_outs = In_out.objects.all()
+	in_out_list = []
+	dates_ss = []
+	for in_out in in_outs:
+		if in_out.employee.id == request.user.employee.id:
+			in_out_list.append(in_out)
+			if str(in_out.start_time.date()) not in dates_ss:
+				dates_ss.append(str(in_out.start_time.date()))
+	t_vals = []
+	for dte in dates_ss:   
+		total = []
+		for in_out in in_outs:    
+			if in_out.employee.id == request.user.employee.id:
+				if str(in_out.start_time.date()) == dte:
+					FMT = '%H:%M:%S'
+					tdelta = dt.strptime(str(in_out.end_time.time()), FMT) - dt.strptime(str(in_out.start_time.time()), FMT)
+					total.append(str(tdelta))
+		mysum = dtt.timedelta()
+		for i in total:
+			(h, m, s) = i.split(':')
+			dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+			mysum += dd
+		date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
+		# print(date_time.strftime("%H:%M:%S"))
+		t_vals.append(date_time.strftime("%H:%M:%S")) 
+	print(dates_ss)
+	print(t_vals)
+	context = {'_dates':dates_ss, '_times':t_vals}
+	return render(request, "base/chart.html", context)
     				
 # 			employees_list.append(employee)
 # 	if fltrd != 'All':		
