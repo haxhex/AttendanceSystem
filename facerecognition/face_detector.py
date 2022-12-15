@@ -29,10 +29,7 @@ print('Running on device: {}'.format(device))
 
 def load_model():
     # detection_model = torch.load('./Models/detection/embeddings_all.pt')
-    mtcnn = MTCNN(
-        image_size=160, margin=0, min_face_size=20,
-        thresholds=[0.6, 0.7, 0.7], factor=0.709, post_process=True,
-        device=device)
+    mtcnn = MTCNN()
     return mtcnn
 
 
@@ -178,7 +175,7 @@ def warp_and_crop_face(src_img,
 
 
 
-def align_multi(boxes, landmarks,limit=None):
+def align_multi(img,boxes, landmarks,limit=None):
        
         # boxes, landmarks = self.detect_faces(img, min_face_size)
         if limit:
