@@ -70,12 +70,17 @@ Positions =[
 class EmployeeForm(ModelForm):
     class Meta:
         model = Employee
-        fields = '__all__'
-        
-        exclude = ['user', 'is_active', 'department']
+        fields = ['first_name', 'last_name' ,'email','mobile_number','profile_picture','position']
         widgets = {
+            
+            'first_name' : forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name' : forms.TextInput(attrs={'class': 'form-control'}),
+            'email' : forms.EmailInput(attrs={'class': 'form-control'}),
+            'mobile_number' : forms.TextInput(attrs={'class': 'form-control'}),
+            'profile_picture' : forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'position': forms.Select(choices=Positions,attrs={'class': 'form-control'}),
         }
+        
 
 class SetPasswordForm(SetPasswordForm):
     class Meta:
@@ -102,6 +107,38 @@ class UserRegistrationForm(UserCreationForm):
             user.save()
         return user
     
+# class EmployeeForm(forms.ModelForm):
+#     email = forms.EmailField(required=True)
+#     first_name = forms.CharField(required=True)
+#     last_name = forms.CharField(required=True)
+#     mobile_number = forms.EmailField(required=False)
+#     profile_picture = forms.ImageField(required=False)
+#     position = forms.Select(choices=Positions,attrs={'class': 'form-control'})
+
+#     class Meta:
+#         model = Employee
+#         fields = ('first_name', 'last_name' ,'email' , 'mobile_number' , 'profile_picture' , 'position' )
+#         exclude = ['user', 'is_active', 'department']
+#         widgets = {
+#             'position': forms.Select(choices=Positions,attrs={'class': 'form-control'}),
+#         }
+
+#     def clean_email(self):
+#         username = self.cleaned_data.get('username')
+#         email = self.cleaned_data.get('email')
+
+#         if email and User.objects.filter(email=email).exclude(username=username).count():
+#             raise forms.ValidationError('This email address is already in use. Please supply a different email address.')
+#         return email
+
+#     def save(self, commit=True):
+#         user = super(UserRegistrationForm, self).save(commit=False)
+#         user.email = self.cleaned_data['email']
+
+#         if commit:
+#             user.save()
+
+#         return user
 
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):

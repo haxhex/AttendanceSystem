@@ -4,32 +4,47 @@
 <html lang="en">
   <head>
     {% include "header.html" %}
-    <style>
-      .flex-container {
-        display: flex;
-        flex-direction: row;
-        padding: 5px;
-      }
-
-      .flex-item {
-        padding-left: 25px;
-      }
-    </style>
   </head>
 
   <body>
-    <div>{% include "navbar.html" %}</div>
-    <div class="flex-container">
+    {% include "navbar.html" %}
+    <section class="text-center">
+      <!-- Background image -->
+      <div
+        class="p-5 bg-image"
+        style="
+          background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+          height: 300px;
+        "
+      ></div>
+      <!-- Background image -->
 
+      <div
+        class="card"
+        style="
+          width: 50%;
+          margin-left: 25%;
+          margin-top: -150px;
+          background: hsla(0, 0%, 100%, 0.8);
+          backdrop-filter: blur(30px);
+        "
+      >
+    <div class="flex-container justify-content-center">
       <form method="POST" action="">
         {% csrf_token %}
         <p>
           Are you sure to delete "{{obj.employee.first_name}}
           {{obj.employee.last_name}}"?
         </p>
-        <div style="display: flex">
-            <a href="{{request.META.HTTP_REFERER}}" style="color:navy">Go Back</a>
-          <input type="submit" value="confirm" style="height: max-content;"/>
+        <div>
+          <p>
+        </p>
+          <input type="submit" value="confirm" />
+          <p>
+          <a href="{{request.META.HTTP_REFERER}}" style="color: navy"
+            >Go Back</a
+          >
+        </p>
         </div>
       </form>
     </div>

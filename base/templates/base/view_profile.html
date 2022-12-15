@@ -44,18 +44,22 @@
       >
         <div class="grid-container">
           <div class="grid-item" style="text-align: center">
-            <img
-              src="{{request.user.employee.profile_picture.url}}"
-              class="rounded-circle float-left mr-2"
-              alt="profile"
-              width="150"
-              height="150"
-            />
-            <a
-              onMouseOver="this.style.color='#5d74ba'"
-              onMouseOut="this.style.color='black'"
-              >Change profile photo</a
-            >
+            <div>
+              <img
+                src="{{request.user.employee.profile_picture.url}}"
+                class="rounded-circle float-left mr-2"
+                alt="profile"
+                width="150"
+                height="150"
+              />
+            </div>
+            <div>
+              <a
+                onMouseOver="this.style.color='#5d74ba'"
+                onMouseOut="this.style.color='black'"
+                >Change profile photo</a
+              >
+            </div>
           </div>
           <div class="grid-item">
             <div>
@@ -69,7 +73,7 @@
               <label><b>Last name: </b></label>
               {{user.employee.last_name}}
               <br />
-              
+
               <label><b>Email address: </b></label>
               {{user.employee.email}}
               <br />
@@ -83,6 +87,9 @@
               {{user.employee.position}}
             </div>
             <b>Face registration status :</b>
+            <!-- if registered -->
+            <span class="badge bg-success">Registered!</span>
+            <!-- if not registered -->
             <span class="badge bg-danger" style="margin-bottom: 10px"
               >Not registered!</span
             >
@@ -90,9 +97,9 @@
               Please upload your pictures, or your attendance won't be
               processed.
             </div>
-            <br />
+            <!-- else if -->
             <a href="{% url 'edit-profile' %}">
-              <button type="button" class="btn btn-secondary btn-sm">
+              <button type="button" class="gray-button" role="button">
                 Edit Profile
               </button>
             </a>

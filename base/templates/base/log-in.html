@@ -1,9 +1,36 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     {% include "header.html" %}
   </head>
   <body>
+    <ul style="
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #334180;
+  ">
+      <li style="float: left">
+        <img
+          src="{% static 'images/logo.png' %}"
+          alt="Logo"
+          weight="50"
+          height="50"
+        />
+      </li>
+  
+      <li style="float: left">
+        <a
+          class="white-a"
+          href="{% url 'home' %}"
+          onMouseOver="this.style.color='#5d74ba'"
+          onMouseOut="this.style.color='white'"
+          >Attendance System</a
+        >
+      </li>
+    </ul>
     <section class="text-center">
       <!-- Background image -->
       <div
@@ -60,7 +87,7 @@
                 </div> -->
 
                 <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-4">
+                <button type="submit" class="gray-button" role="button">
                   Log in
                 </button>
 
