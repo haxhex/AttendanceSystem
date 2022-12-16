@@ -10,13 +10,13 @@
 /* lines of header of table */
 .calendar tr {
   border-radius: 5px 5px 5px 5px;
-  border: 1px solid #b4b0b7;
+  border: 2px solid #b4b0b7;
 }
 
 /* lines of body of table */
 .calendar td {
   border-radius: 5px 5px 5px 5px;
-  border: 1px solid #b4b0b7;
+  border: 2px solid #b4b0b7;
 }
 
 /*header of table */

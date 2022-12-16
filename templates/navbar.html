@@ -11,10 +11,15 @@
       <img src="{% static 'images/logo.png' %}" alt="Logo" weight="50" height="50" />
     </li>
 
-    <li style="float: left">
-      <a class="white-a" href="{% url 'home' %}" onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'">Attendance System</a>
-    </li>
+    <!-- <li style="float: left">
+      <a
+        class="white-a"
+        href="{% url 'home' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Attendance System</a
+      >
+    </li> -->
     {% if request.user.is_authenticated %}
     <!-- user logged in -->
     <li style="float: right">
@@ -35,10 +40,15 @@
       <a class="white-a" href="{% url 'employees_list' %}" onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'">Employees' List</a>
     </li>
-    <li style="float: left">
-      <a class="white-a" href="{% url 'io-report' %}" onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'">Attendance Report</a>
-    </li>
+    <!-- <li style="float: left">
+      <a
+        class="white-a"
+        href="{% url 'io-report' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Attendance Report</a
+      >
+    </li> -->
     <li style="float: left">
       <a class="white-a" href="{% url 'io-archive-report' %}" onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'">Activities Report</a>
@@ -63,6 +73,8 @@
         onMouseOut="this.style.color='white'">Logout</a>
       {% else %}
       <!-- end user logged in -->
+    </li>
+
     <li style="float: left">
       <a class="white-a" href="{% url 'login' %}" onMouseOver="this.style.color='#5d74ba'"
         onMouseOut="this.style.color='white'">Login</a>
