@@ -1,7 +1,6 @@
-.calendar {
+/* .calendar {
   width: 50%;
   margin-left: 1%;
-  /* margin: auto; */
   font-size: 13px;
 }
 
@@ -20,7 +19,6 @@
   width: 200px;
   height: 100px;
   padding: 20px 0px 0px 5px;
-  /* color: white; */
 }
 
 .month {
@@ -29,7 +27,7 @@
 
 .date {
   font-size: 16px;
-}
+} */
 
 a {
   color: #17a2b8;
@@ -75,7 +73,8 @@ a {
 }
 
 .gray-button,
-input[type="submit"] {
+input[type="submit"],
+button[type="submit"] {
   /* display: flex; */
   flex-direction: column;
   align-items: center;

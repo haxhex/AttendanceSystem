@@ -11,29 +11,38 @@
       padding: 5px;
     }
     .calendar {
-        width: 50%;
-        margin-left: 25%;
-        /* margin: auto; */
-        font-size: 13px;
-      }
+      width: 50%;
+      margin-left: 1%;
+      /* margin: auto; */
+      font-size: 13px;
+      margin: 5%;
+    }
 
-      .calendar tr,
-      .calendar td {
-        border: 1px solid black;
-      }
+    .calendar tr,
+    .calendar td {
+      border: 1px solid black;
+    }
 
-      .calendar th {
-        padding: 10px;
-        text-align: center;
-        font-size: 18px;
-      }
+    .calendar th {
+      padding: 10px;
+      text-align: center;
+      font-size: 18px;
+    }
 
-      .calendar td {
-        width: 200px;
-        height: 100px;
-        padding: 20px 0px 0px 5px;
-        /* color: white; */
-      }
+    .calendar td {
+      width: 200px;
+      height: 100px;
+      padding: 20px 0px 0px 5px;
+      /* color: white; */
+    }
+
+    .month {
+      font-size: 25px;
+    }
+
+    .date {
+      font-size: 16px;
+    }
 
     ul {
       height: 100%;
@@ -111,19 +120,145 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  
   <script>
-
     $(function () {
       $('input[name="daterange"]').daterangepicker({
+        locale: {
+          format: 'YYYY-MM-DD'
+        },
         opens: 'left'
       }, function (start, end, label) {
         console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
       });
     });
+
+
   </script>
+<script>
+  $(document).ready(()=>{ 
+    $("#users").val("{{name}}");
+    $("#daterange").val("{{drange}}");
+    $(function(){
+      $("#users").select2();
+     }); 
+
+
+}); 
+</script>
+
+
+<!-- <script src="https://npmcdn.com/moment@2.14.1"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+  <script>
+    $(function(){
+        const ctx = document.getElementById('myChart').getContext('2d');
+        
+        let dates = {{dates_sss|safe}};
+        let times = {{tt_vals|safe}};
+        
+        let data = dates.map((year, index) => ({
+          x: moment(`${year}-01-01`), 
+          y: moment(`1970-02-01 ${times[index]}`).valueOf()
+        }));
+        
+        let bckColors = ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#565452", "#321456", "#129864", "#326812", "#215984"];
+        
+        let myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              datasets: [
+                  {
+                      label: "Time",
+                      backgroundColor: 'rgba(188, 229, 214, 0.7)',
+                      pointBackgroundColor: bckColors,
+                      data: data,
+                      pointBorderWidth: 2,
+                      pointRadius: 5,
+                      pointHoverRadius: 7
+                  }
+              ]
+          },
+          options: {
+            tooltips: {
+              callbacks: {
+                label: function(tooltipItem, data) {
+                  console.log(tooltipItem.yLabel)
+                  return data.datasets[tooltipItem.datasetIndex].label + ': ' + epoch_to_hh_mm_ss(tooltipItem.yLabel)
+                },
+                title: function(tooltipItem, data) { 
+                  //return formatted date
+                  return tooltipItem.xLabel;
+                },
+                beforeLabel: function(tooltipItem, data) { 
+                  //return formatted date
+                  return "Date: " + epoch_date(tooltipItem.xLabel)
+                }, 
+              }
+            },
+              scales: {
+                  xAxes: [
+                    {
+                      type: 'time',
+                      position: 'bottom',
+                      time: {
+                        displayFormats: {
+                          years: 'YYYY'
+                        },
+                        unit: 'day'
+                      }
+                    }
+                  ],
+                  yAxes: [
+                    {
+                      type: 'linear',
+                      position: 'left',
+                      ticks: {
+                        min: moment('1970-02-01 00:00:00').valueOf(),
+                        max: moment('1970-02-01 23:59:59').valueOf(),
+                        stepSize: 3.6e+6,
+                        beginAtZero: false,
+                        callback: value => {
+                          let date = moment(value);
+                          if(date.diff(moment('1970-02-01 23:59:59'), 'second') === 0) {
+                            return null;
+                          }
+                          
+                          return date.format('HH:mm:ss');
+                        },
+                      }
+                    }
+                  ]
+              },
+          }
+        });
+        function epoch_to_hh_mm_ss(epoch) {
+          console.log(epoch)
+          //console.log(new Date(epoch*1000).toISOString())
+          var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+          var localISOTime = (new Date(epoch - tzoffset)).toISOString().slice(0, -1);
+
+          return localISOTime.substring(11,19)
+        }
+
+        function epoch_date(epoch) {
+          console.log(epoch)
+          //console.log(new Date(epoch*1000).toISOString())
+          var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+          var localISOTime = (new Date(epoch - tzoffset)).toISOString().slice(0, -1);
+
+          return localISOTime.substring(0,10)
+        }
+      });
+</script> -->
+
 </head>
 
 <body>
+<<<<<<< HEAD
   {% include "navbar.html" %}
     <!-- Background image -->
     <div
@@ -161,10 +296,55 @@
             </div>
           </div>
         </section>
+=======
+  <div>{% include "navbar.html" %}</div>
+  <div class="flex-container">
+    <div>
+      <h1>IO Archive full report</h1>
+      <form method="GET" style="display: flex;" action="{% url 'io-archive-report' %}">
+        <div id="user-select" name="user-select">
+          <label for="users">User:</label>
+          <select name="users" id="users">
+            <option value="">Select a user</option>
+            {% for emp in employees %}
+            <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div id="date-range" name="date-range">
+          <span>Date range:</span>
+          <input type="text" name="daterange" id="daterange"/>
+        </div>
+        <button type="submit" onclick="getOption()">
+          submit
+        </button>
+      </form>
+      {% if name != '' and  drange != '' %}
+      <a href="{% url 'export-act-excel' name drange %}">
+          <button>Activity Report</button>
+      </a>
+      <a href="{% url 'export-io-excel' name drange %}">
+        <button>IO Report</button>
+    </a>
+      {% endif %}
+
+      <div>
+      </div>
+>>>>>>> c8fd892e9329dfbee08ed0f7ff31eb76c01ba274
       <div>
         {{calendar}}
+        <!-- <canvas id="myChart" width="500" height="300"></canvas> -->
       </div>
     </div>
 </body>
 
+<script type="text/javascript">
+  function getOption() {
+    selectElement_drange = document.querySelector('#daterange');
+    output_drange = selectElement_drange.value
+
+  }
+</script>
+
 </html>
+
