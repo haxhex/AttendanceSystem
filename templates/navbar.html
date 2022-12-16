@@ -1,132 +1,71 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
-
 <div>
-  <ul
-    style="
+  <ul style="
       list-style-type: none;
       margin: 0;
       padding: 0;
       overflow: hidden;
       background-color: #334180;
-    "
-  >
+    ">
     <li style="float: left">
-      <img
-        src="{% static 'images/logo.png' %}"
-        alt="Logo"
-        weight="50"
-        height="50"
-      />
+      <img src="{% static 'images/logo.png' %}" alt="Logo" weight="50" height="50" />
     </li>
 
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'home' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Attendance System</a
-      >
+      <a class="white-a" href="{% url 'home' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Attendance System</a>
     </li>
     {% if request.user.is_authenticated %}
     <!-- user logged in -->
     <li style="float: right">
-      <img
-        src="{{request.user.employee.profile_picture.url}}"
-        class="rounded-circle"
-        alt="Cinque Terre"
-        width="50"
-        height="50"
-      />
+      <img src="{{request.user.employee.profile_picture.url}}" class="rounded-circle" alt="Cinque Terre" width="50"
+        height="50" />
     </li>
     <li style="float: right">
-      <a
-        class="white-a"
-        href="{% url 'view-profile' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >{{request.user.username}}</a
-      >
+      <a class="white-a" href="{% url 'view-profile' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">{{request.user.username}}</a>
     </li>
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'dashboard' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Dashboard</a
-      >
+      <a class="white-a" href="{% url 'dashboard' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Dashboard</a>
     </li>
     {% if request.user.is_superuser %}
     <!-- super user -->
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'employees_list' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Employees' List</a
-      >
+      <a class="white-a" href="{% url 'employees_list' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Employees' List</a>
     </li>
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'io-report' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Attendance Report</a
-      >
+      <a class="white-a" href="{% url 'io-report' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Attendance Report</a>
     </li>
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'io-archive-report' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Activities Report</a
-      >
+      <a class="white-a" href="{% url 'io-archive-report' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Activities Report</a>
     </li>
     <!-- end super user (else)-->
     {% else %}
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'io' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Activities</a
-      >
+      <a class="white-a" href="{% url 'io' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Activities</a>
     </li>
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'io-archive' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Attendance</a
-      >
+      <a class="white-a" href="{% url 'io-archive' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Attendance</a>
     </li>
     {% endif %}
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'logout' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Logout</a
-      >
+      <a class="white-a" href="{% url 'face-recognition' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">face recognition</a>
     </li>
-    {% else %}
-    <!-- end user logged in -->
     <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'login' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Login</a
-      >
+      <a class="white-a" href="{% url 'logout' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Logout</a>
+      {% else %}
+      <!-- end user logged in -->
+    <li style="float: left">
+      <a class="white-a" href="{% url 'login' %}" onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'">Login</a>
     </li>
     {% endif %}
   </ul>
