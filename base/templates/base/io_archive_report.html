@@ -5,45 +5,15 @@
 
 <head>
   {% include "header.html" %}
+  <link rel="stylesheet" href="{% static 'css/calender.css' %}" />
+</head>
+
   <style>
     .flex-container {
       display: flex;
       padding: 5px;
     }
-    .calendar {
-      width: 50%;
-      margin-left: 1%;
-      /* margin: auto; */
-      font-size: 13px;
-      margin: 5%;
-    }
-
-    .calendar tr,
-    .calendar td {
-      border: 1px solid black;
-    }
-
-    .calendar th {
-      padding: 10px;
-      text-align: center;
-      font-size: 18px;
-    }
-
-    .calendar td {
-      width: 200px;
-      height: 100px;
-      padding: 20px 0px 0px 5px;
-      /* color: white; */
-    }
-
-    .month {
-      font-size: 25px;
-    }
-
-    .date {
-      font-size: 16px;
-    }
-
+    
     ul {
       height: 100%;
       padding: 0px 5px 0px 20px;

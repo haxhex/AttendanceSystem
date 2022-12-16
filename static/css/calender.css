@@ -1,0 +1,34 @@
+.calendar {
+  width: 50%;
+  /* margin-left: 1%; */
+  font-size: 13px;
+  margin: auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+/* lines of header of table */
+.calendar tr {
+  border-radius: 5px 5px 5px 5px;
+  border: 1px solid #b4b0b7;
+}
+
+/* lines of body of table */
+.calendar td {
+  border-radius: 5px 5px 5px 5px;
+  border: 1px solid #b4b0b7;
+}
+
+/*header of table */
+.calendar th {
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/*body of table */
+.calendar td {
+  width: 400px;
+  height: 100px;
+  padding: 20px 0px 0px 5px;
+}
