@@ -100,7 +100,7 @@
     button[type="submit"] {
       flex-direction: column;
       align-items: center;
-      padding: 6px 14px;
+      padding: 4px 7px;
       font-family: -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
       border-radius: 6px;
       border: none;
@@ -258,44 +258,70 @@
 </head>
 
 <body>
-  <div>{% include "navbar.html" %}</div>
-  <div class="flex-container">
-    <div>
-      <h1>IO Archive full report</h1>
-      <form method="GET" style="display: flex;" action="{% url 'io-archive-report' %}">
-        <div id="user-select" name="user-select">
-          <label for="users">User:</label>
-          <select name="users" id="users">
-            <option value="">Select a user</option>
-            {% for emp in employees %}
-            <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div id="date-range" name="date-range">
-          <span>Date range:</span>
-          <input type="text" name="daterange" id="daterange"/>
-        </div>
-        <button type="submit" onclick="getOption()">
-          submit
-        </button>
-      </form>
-      {% if name != '' and  drange != '' %}
-      <a href="{% url 'export-act-excel' name drange %}">
-          <button>Activity Report</button>
-      </a>
-      <a href="{% url 'export-io-excel' name drange %}">
-        <button>IO Report</button>
-    </a>
-      {% endif %}
+  {% include "navbar.html" %}
+  <!-- Background image -->
+  <div
+    class="p-5 bg-image"
+    style="
+      background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+      height: 300px;
+    "
+  ></div>
 
-      <div>
+  <div
+    class="card"
+    style="
+    width: 80%;
+    margin-left: 10%;
+    margin-top: -150px;
+    background: hsla(0, 0%, 100%, 0.8);
+    backdrop-filter: blur(30px);
+    "
+  >
+    <section class="text-center">
+      <h1>IO Archive full report</h1>
+    </section>
+      <!-- first row -->
+      <div class="flex-container justify-content-center">
+          <form method="GET" style="display: flex;" action="{% url 'io-archive-report' %}">
+            <div id="user-select" name="user-select">
+              <label for="users">User:</label>
+              <select name="users" id="users" style="margin: 3px;">
+                <option value="">Select a user</option>
+                {% for emp in employees %}
+                <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div id="date-range" name="date-range">
+              <span>Date range:</span>
+              <input type="text" name="daterange" id="daterange" style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7; margin: 3px;"/>
+            </div>
+            <button type="submit" onclick="getOption()">
+              submit
+            </button>
+          </form>
       </div>
+
+      <!-- second row -->
+      <div class="flex-container justify-content-center">
+          {% if name != '' and  drange != '' %}
+          <a href="{% url 'export-act-excel' name drange %}">
+              <button class="gray-button" role="button">Activity Report</button>
+          </a>
+          <a href="{% url 'export-io-excel' name drange %}">
+            <button class="gray-button" role="button">IO Report</button>
+          </a>
+          {% endif %}
+      </div>
+
+      <!-- third row -->
       <div>
         {{calendar}}
         <!-- <canvas id="myChart" width="500" height="300"></canvas> -->
       </div>
-    </div>
+
+
 </body>
 
 <script type="text/javascript">
