@@ -45,6 +45,8 @@ import datetime as dtt
 from .utils import get_plot
 import xlwt
 from django.db.models import Q
+from dateutil import rrule, parser
+
 
 # User = get_user_model()
 
@@ -87,7 +89,7 @@ def io_report(request):
 @allowed_users(allowed_roles=['admin'])
 def employees_list(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    # get all the room in db
+
     employees = Employee.objects.filter(
         Q(user__is_active__icontains =q) |
         Q(first_name__icontains=q) |
@@ -321,7 +323,6 @@ class CalendarView(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
-        print(d.month)
         user_id = self.request.user.employee
         cal = Calendar(d.year, d.month)
         in_outs = In_out.objects.all()
@@ -332,7 +333,6 @@ class CalendarView(generic.ListView):
                 in_out_list.append(in_out)
                 if str(in_out.start_time.date()) not in dates_ss and in_out.start_time.date().month == d.month:
                    dates_ss.append(str(in_out.start_time.date()))
-                   print(in_out.start_time.date().month)
         t_vals = []
         for dte in dates_ss:   
             total = []
@@ -358,7 +358,6 @@ class CalendarView(generic.ListView):
         context['chart'] = chart
         context['datess'] = dates_ss
         context['timess'] = t_vals
-        
         return context
 
 class IoArchiveReport(generic.ListView):
@@ -622,18 +621,6 @@ def export_excel(request, fltra, fltrd):
 		ws.write(rowx, 4, employees_list[row_num].department, font_style)
 		ws.write(rowx, 5, employees_list[row_num].position, font_style)
 		ws.write(rowx, 6, 'Active' if employees_list[row_num].user.is_active else 'Inactive', font_style)
-  
-  
-  
-		
-
-#    						ws.write(row_num, col_num, 'Active', font_style)
-						# ws.write(row_num, col_num, str(row[col_num]), font_style)
-	# col_num = 0
-	# row_num = 0
-	# for row in rows1:
-	# ws.write(0, 0, str(rows1[0]), font_style)
-	# print(rows1)
 	wb.save(response)
 	return response
 
@@ -667,21 +654,105 @@ def act_dep_filter(request, fltra, fltrd):
 	context = {'employees' : employees_list, 'fltra' : fltra, 'fltrd' : fltrd}
 	return render(request, 'base/employees_list.html', context) 
 
-def dash(request):
+class ActRep(generic.ListView):
+    model = In_out
+    template_name = "base/io_archive_report.html"
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        daterange = self.request.GET.get('daterange') if self.request.GET.get('daterange') != None else ''
+        sel_user = self.request.GET.get('users') if self.request.GET.get('users') != None else ''
+        # s_date = str(datetime.today().strftime('%Y-%m-%d'))
+        # e_date = str(datetime.today().strftime('%Y-%m-%d'))
+        s_date = ''
+        e_date = ''
+        if daterange != '':
+           s_date =  daterange.split(' - ')[0]
+           e_date =  daterange.split(' - ')[1]
+        # user_id = self.request.user.employee
+        user_id = ''
+        employees = Employee.objects.all()
+        if sel_user != '':
+           for emp in employees:
+               if emp.id == int(sel_user):
+                  user_id = emp
+                  break
+           
+    
+        d = get_date(self.request.GET.get('month', None))
+        cal = Calendar(d.year, d.month)
+        in_outs = In_out.objects.all()
+        in_out_list = []
+        dates_ss = []
+        print(f"***{sel_user}")
+        for in_out in in_outs:
+            if sel_user != '' and in_out.employee.id == int(sel_user):
+                in_out_list.append(in_out)
+                if str(in_out.start_time.date()) not in dates_ss and in_out.start_time.date().month == d.month:
+                   dates_ss.append(str(in_out.start_time.date()))
+                   print(in_out.start_time.date().month)
+        t_vals = []
+        for dte in dates_ss:   
+            total = []
+            for in_out in in_outs:
+                if user_id != '':    
+                   if in_out.employee.id == user_id.id:
+                      if str(in_out.start_time.date()) == dte:
+                         FMT = '%H:%M:%S'
+                         tdelta = dt.strptime(str(in_out.end_time.time()), FMT) - dt.strptime(str(in_out.start_time.time()), FMT)
+                         total.append(str(tdelta))
+            mysum = dtt.timedelta()
+            for i in total:
+                (h, m, s) = i.split(':')
+                dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+                mysum += dd
+            date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
+            # t_vals.append(date_time)  
+            t_vals.append(date_time.strftime("%H:%M:%S")) 
+        
+        emps_list = []    
+        for emp in employees:
+            # if emp.user != self.request.user:
+            emps_list.append(emp)
+        chart = get_plot(dates_ss, t_vals)
+        html_cal = cal.formatmonth_rep(user_id, s_date, e_date ,withyear=True)
+        context['calendar'] = mark_safe(html_cal)
+        context['prev_month'] = prev_month(d)
+        context['next_month'] = next_month(d)
+        context['chart'] = chart
+        context['datess'] = dates_ss
+        context['timess'] = t_vals
+        context['employees'] = emps_list
+        try:
+           context['name'] = str(user_id.id)
+        except:
+             context['name'] = '' 
+        try:
+           context['drange'] = daterange
+        except:
+           context['drange'] = '' 
+        return context
+    
+
+def export_act_excel(request, name, drange):
+	sdate = dtt.datetime.strptime(drange.split(' - ')[0], '%Y-%m-%d').date()
+	edate = dtt.datetime.strptime(drange.split(' - ')[1], '%Y-%m-%d').date()
+	date_generated = [sdate + dtt.timedelta(days=x) for x in range(0, (edate-sdate).days+1)]
 	in_outs = In_out.objects.all()
 	in_out_list = []
 	dates_ss = []
 	for in_out in in_outs:
-		if in_out.employee.id == request.user.employee.id:
+		if in_out.employee.id == int(name):
 			in_out_list.append(in_out)
 			if str(in_out.start_time.date()) not in dates_ss:
-				dates_ss.append(str(in_out.start_time.date()))
+				dates_ss.append(in_out.start_time.date())
+	print(dates_ss)
 	t_vals = []
+	dh = []
 	for dte in dates_ss:   
 		total = []
-		for in_out in in_outs:    
-			if in_out.employee.id == request.user.employee.id:
-				if str(in_out.start_time.date()) == dte:
+		for in_out in in_outs:
+			if in_out.employee.id == int(name):
+				if str(in_out.start_time.date()) == str(dte):
 					FMT = '%H:%M:%S'
 					tdelta = dt.strptime(str(in_out.end_time.time()), FMT) - dt.strptime(str(in_out.start_time.time()), FMT)
 					total.append(str(tdelta))
@@ -690,46 +761,120 @@ def dash(request):
 			(h, m, s) = i.split(':')
 			dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
 			mysum += dd
-		date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
-		# print(date_time.strftime("%H:%M:%S"))
-		t_vals.append(date_time.strftime("%H:%M:%S")) 
-	print(dates_ss)
+		if dte not in dh:
+			dh.append(dte)
+			date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
+			# t_vals.append(date_time)  
+			t_vals.append(date_time.strftime("%H:%M:%S"))
 	print(t_vals)
-	context = {'_dates':dates_ss, '_times':t_vals}
-	return render(request, "base/chart.html", context)
-    				
-# 			employees_list.append(employee)
-# 	if fltrd != 'All':		
-# 		for employee in employees:
-# 			if employee.department == fltrd:
-# 					employees_list.append(employee)
-# 	if fltra != 'All':
-# 		if fltra == 'Active':  
-# 			if employee.user.is_active
-#     employees_list = []
-#     for employee in employees:
-#         if employee.user.is_active and employee.user.id != request.user.id:
-#             employees_list.append(employee)
-              
-#     context = {'employees' : employees_list, 'fltr':'saf'}
-#     return render(request, 'base/employees_list.html', context) 
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
+		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Employees')
+	row_num = 0
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+	columns = ['Date', 'Status', 'Working Hours']
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style)
+	
+	employees = Employee.objects.all()
+	employees_list = []
+	for employee in employees:
+		employees_list.append(employee)
+	i = 0
+	for row_num in range(len(date_generated)):
+		rowx = row_num+1
+		ws.write(rowx, 0, str(date_generated[row_num]), font_style)
+		if date_generated[row_num] not in dates_ss:
+			ws.write(rowx, 1, "Absent", font_style)
+			ws.write(rowx, 2, "00:00:00", font_style)
+
+		else:
+			ws.write(rowx, 1, "Present", font_style)
+			ws.write(rowx, 2, t_vals[i], font_style)
+			i += 1
+				
+	wb.save(response)
+	return response
 
 
-# def status_inactive_filter(request):
-#     employees = Employee.objects.all()
-#     employees_list = []
-#     for employee in employees:
-#         if not employee.user.is_active and employee.user.id != request.user.id:
-#             employees_list.append(employee) 
-#     context = {'employees' : employees_list, 'fltr':'sif'}
-#     return render(request, 'base/employees_list.html', context)   
+def export_io_excel(request, name, drange):
+	sdate = dtt.datetime.strptime(drange.split(' - ')[0], '%Y-%m-%d').date()
+	edate = dtt.datetime.strptime(drange.split(' - ')[1], '%Y-%m-%d').date()
+	date_generated = [sdate + dtt.timedelta(days=x) for x in range(0, (edate-sdate).days+1)]
+	in_outs = In_out.objects.all()
+	in_out_list = []
+	dates_ss = []
+	max_io = 0
+	for in_out in in_outs:
+		if in_out.employee.id == int(name):
+			in_out_list.append(in_out)
+			if str(in_out.start_time.date()) not in dates_ss:
+				dates_ss.append(in_out.start_time.date())
+	print("--------------")
+	print(dates_ss)
+	t_vals = []
+	dh = []
+	for dte in dates_ss:   
+		total = []
+		for in_out in in_outs:
+			if in_out.employee.id == int(name):
+				if str(in_out.start_time.date()) == str(dte):
+					FMT = '%H:%M:%S'
+					tdelta = dt.strptime(str(in_out.end_time.time()), FMT) - dt.strptime(str(in_out.start_time.time()), FMT)
+					total.append(str(tdelta))
+		mysum = dtt.timedelta()
+		for i in total:
+			(h, m, s) = i.split(':')
+			dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+			mysum += dd
+		if dte not in dh:
+			dh.append(dte)
+			date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
+			# t_vals.append(date_time)  
+			t_vals.append(date_time.strftime("%H:%M:%S"))
+		else:
+			max_io += 1
+	print(t_vals)
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
+		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Employees')
+	row_num = 0
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+	columns = ['Date', 'Working Hours']
+	for i in range(1, max_io+1):
+		columns.append(f"Entry {i}")
+		columns.append(f"Exit {i}")
+	
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style)
+	
+	employees = Employee.objects.all()
+	employees_list = []
+	for employee in employees:
+		employees_list.append(employee)
+	i = 0
+	for row_num in range(len(date_generated)):
+		rowx = row_num+1
+		ws.write(rowx, 0, str(date_generated[row_num]), font_style)
+		if date_generated[row_num] not in dates_ss:
+			ws.write(rowx, 1, "00:00:00", font_style)
 
-# def department_fltr(request, fltrd):      
-#     employees = Employee.objects.all()
-#     employees_list = []
-
-#     for employee in employees:
-#         if employee.department == fltrd and employee.user.id != request.user.id:
-#             employees_list.append(employee) 
-#     context = {'employees' : employees_list, 'fltr':'dep'}
-#     return render(request, 'base/employees_list.html', context)
+		else:
+			ws.write(rowx, 1, t_vals[i], font_style)
+			ii = 0
+			for io in in_out_list:
+				print(io.start_time.date())
+				if str(io.start_time.date()) == str(dates_ss[i]):
+					ws.write(rowx, 2 + 2*ii, str(io.start_time.time()), font_style)
+					ws.write(rowx, 3 + 2*ii, str(io.end_time.time()), font_style)
+					ii += 1
+			i += 1
+	
+	wb.save(response)
+	return response
