@@ -112,6 +112,11 @@ def employees_list(request):
 def view_profile(request):
     return render(request, 'base/view_profile.html')
 
+@login_required(login_url='login')
+def face(request):
+
+	return render(request , "base/face.html")
+
 @login_required
 def password_change(request):
     user = request.user
