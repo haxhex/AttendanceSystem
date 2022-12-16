@@ -12,6 +12,7 @@ urlpatterns = [
     path("io/", views.io, name="io"),
     path("io-archive/", views.io_archive, name="io-archive"),
     path("io-report/", views.io_report, name="io-report"),
+    path("face-recognition" , views.face , name="face-recognition"),
     path("io-archive-report/", views.ActRep.as_view(), name="io-archive-report"),
     path("view-profile/", views.view_profile, name="view-profile"),
     path("edit-profile/", login_required(views.accountSettings), name="edit-profile"),
