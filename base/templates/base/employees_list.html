@@ -84,8 +84,8 @@
         <div
             class="card"
             style="
-                width: 80%;
-                margin-left: 10%;
+                width: 76%;
+                margin-left: 12%;
                 margin-top: -150px;
                 background: hsla(0, 0%, 100%, 0.8);
                 backdrop-filter: blur(30px);
@@ -102,15 +102,6 @@
                         <div>
                             <!-- <form name="form1" id="form1" action=""> -->
                                 <!-- first row -->
-                                <div class="flex-container">
-                                    <form method="GET" action="{% url 'employees_list' %}">
-                                        <div>
-                                            <input type="text" name="q" placeholder="" id="q" style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7;">
-                                            <button type="submit"class="gray-button" role="button" style="padding: 4px 7px;" >Search</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- second row -->
                                 <div class="flex-container">
                                     <div>
                                         Filters: Status:
@@ -131,29 +122,26 @@
                                         </select>
                                     </div>
                                     <div style="padding-left: 5px;">
-                                        <button class="gray-button" role="button" onclick="getOption()" style="padding: 4px 7px;">Apply</button>
+                                        <button class="gray-button" role="button" onclick="getOption()" style="padding: 4px 7px; margin-right: 50px;">Apply</button>
                                     </div>
-                            </div>
-
+                                    <form method="GET" action="{% url 'employees_list' %}">
+                                        <div>
+                                            <input type="text" name="q" placeholder="Search employee" id="q" style="border-radius: 7px 7px 7px 7px; border: 1px solid #b4b0b7; height: 34px;">
+                                            <button type="submit" class="gray-button" role="button" style="padding: 4px 7px;" >Search</button>
+                                        </div>
+                                    </form>
+                                </div>
                         </div>
                     </div>
                     <p>
                         <span class="output"></span>
                     </p>
                     <!-- </form> -->
-                    <!-- third row -->
+                    <!-- second row -->
                     <div class="flex-container">
                         <div>
-                            <a href="{% url 'create-user' %}">
-                                <button class="gray-button" role="button">+Add New Employee</button>
-                            </a>
-                            <a href="{% url 'export-excel' fltra fltrd %}">
-                                <button class="gray-button" role="button">Export Excel</button>
-                            </a>
-                        </div>
-                        <div style="padding-left:10px;">
-                            <table>
-                                <tr>
+                            <table style="margin-bottom: 20px;">
+                                <tr">
                                     <th>Photo</th>
                                     <th>Name</th>
                                     <th>Email</th>
@@ -211,6 +199,18 @@
                                 </tr>
                                 {% endfor %}
                             </table>
+                        </div>
+                        <div class="flex-container2">
+                            <div style="padding-left:10px; padding-bottom: 5px;">
+                                <a href="{% url 'create-user' %}">
+                                    <button class="gray-button" role="button">New Employee</button>
+                                </a>
+                            </div>
+                            <div style="padding-left:10px;">
+                                <a href="{% url 'export-excel' fltra fltrd %}">
+                                    <button class="gray-button" role="button">Export Excel</button>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
