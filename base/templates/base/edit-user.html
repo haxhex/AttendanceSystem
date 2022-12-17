@@ -5,10 +5,17 @@
   <head>
     {% include "header.html" %}
   </head>
+<style>
+  h1{
+    padding-top: 15px;
+    text-align: center;
+    padding-bottom: 15px;
+  }
 
+</style>
   <body>
     {% include "navbar.html" %}
-    <section class="text-center">
+    <!-- <section class="text-center"> -->
       <!-- Background image -->
       <div
         class="p-5 bg-image"
@@ -21,9 +28,9 @@
       <div
       class="card"
       style="
-        width: 50%;
-        margin-left: 25%;
-        margin-top: -150px;
+        width: 40%;
+        margin-left: 30%;
+        margin-top: -250px;
         background: hsla(0, 0%, 100%, 0.8);
         backdrop-filter: blur(30px);
       "
@@ -32,12 +39,130 @@
       <div class="flex-item">
         <h1>Edit Profile</h1>
         <form method="POST" action="" enctype="multipart/form-data">
-          <div>{% csrf_token %} {{form|crispy}}</div>
+          <div>{% csrf_token %}
+            <!-- first & last name -->
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <label class="form-label" for="form3Example1"
+                    >First name</label
+                  >
+                  {{form.first_name}}
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-outline">
+                  <label class="form-label" for="form3Example2"
+                    >Last name</label
+                  >
+                  {{form.last_name}}
+                </div>
+              </div>
+            </div>
+            <!-- email -->
+            <div class="form-outline mb-4">
+              <label class="form-label" for="form3Example3"
+                >Email address</label
+              >
+              {{form.email}}
+            </div>
+            <!-- mobile number -->
+            <div class="form-outline mb-4">
+              <label class="form-label" for="form3Example4"
+                >Mobile number</label
+              >
+              {{form.mobile_number}}
+            </div>
+            <!-- position -->
+            <section class="text-center">
+              <div class="form-outline mb-4">
+                <label class="form-label" for="form3Example6">Position</label>
+                <!-- <input type="email" name="email" id="form3Example3" class="form-control" /> -->
+                <select id="position" name="position" required>
+                  <option value="" selected disabled>
+                    Select your position
+                  </option>
+                  <optgroup label="Accouning">
+                    <option value="Auditor">Auditor</option>
+                    <option value="CFO">CFO</option>
+                    <option value="Payroll specialist">
+                      Payroll specialist
+                    </option>
+                    <option value="Tax specialist">Tax specialist</option>
+                  </optgroup>
+                  <optgroup label="Marketing">
+                    <option value="Advertising manager">
+                      Advertising manager
+                    </option>
+                    <option value="Brand manager">Brand manager</option>
+                    <option value="Public relations officer">
+                      Public relations officer
+                    </option>
+                    <option value="Market analyst">Market analyst</option>
+                  </optgroup>
+                  <optgroup label="Human resources">
+                    <option value="Compensation specialist">
+                      Compensation specialist
+                    </option>
+                    <option value="Brand manager">Brand manager</option>
+                    <option value="Personnel manager">
+                      Personnel manager
+                    </option>
+                    <option value="Market analyst">Market analyst</option>
+                    <option value="Recruiter">Recruiter</option>
+                    <option value="Training manager">Training manager</option>
+                  </optgroup>
+                  <optgroup label="Production">
+                    <option value="Chief inspector">Chief inspector</option>
+                    <option value="Brand manager">Brand manager</option>
+                    <option value="Market analyst">Market analyst</option>
+                    <option value="Recruiter">Recruiter</option>
+                    <option value="Machinist">Machinist</option>
+                    <option value="Plant manager">Plant manager</option>
+                    <option value="Quality control manager ">
+                      Quality control manager
+                    </option>
+                  </optgroup>
+                  <optgroup label="IT">
+                    <option value="Communications analyst">
+                      Communications analyst
+                    </option>
+                    <option value="Database administrator">
+                      Database administrator
+                    </option>
+                    <option value="E_business specialist">
+                      E-business specialist
+                    </option>
+                    <option value="PC support specialist">
+                      PC support specialist
+                    </option>
+                    <option value="Programmer">Programmer</option>
+                    <option value="Site manager">Site manager</option>
+                  </optgroup>
+                  <optgroup label="Sales">
+                    <option value="Branch manager">Branch manager</option>
+                    <option value="Retail manager">Retail manager</option>
+                    <option value="Telemarketer">Telemarketer</option>
+                  </optgroup>
+                </select>
+              </div>
+            </section>
+            <!-- profile photo -->
+            <div class="form-outline mb-4">
+              <label class="form-label" for="form3Example5"
+                >Profile photo</label
+              >
+              <br>
+              {{form.profile_picture}}
+            </div>
+          </div>
           {% if page == 'accountSettings' %}
           <a href="{% url 'change-pass' eid %}">Change Password</a>
           {% endif %}
           <br />
-          <input type="submit" value="submit" />
+          <section class="text-center">
+            <input type="submit" value="submit" />
+          </section>
         </form>
       </div>
     </div>
