@@ -1,10 +1,13 @@
 from django.urls import path, re_path
 from . import views
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
-    path("", views.home, name="home"),
-    path("login/", views.loginPage, name="login"),
+    # path("", views.home, name="home"),
+    path("", views.loginPage, name="login"),
     path("logout/", views.logoutUser, name="logout"),
     path('register/', views.registerPage, name="register"),
     path("dashboard/", login_required(views.CalendarView.as_view()), name="dashboard"),
@@ -31,5 +34,5 @@ urlpatterns = [
     re_path(r'^calendar/$', views.CalendarView.as_view(), name='calendar'),
     re_path(r'^event/new/$', views.event, name='event_new'),
 	re_path(r'^event/edit/(?P<event_id>\d+)/$', views.event, name='event_edit'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

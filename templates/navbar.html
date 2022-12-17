@@ -10,16 +10,6 @@
     <li style="float: left">
       <img src="{% static 'images/logo.png' %}" alt="Logo" weight="50" height="50" />
     </li>
-
-    <!-- <li style="float: left">
-      <a
-        class="white-a"
-        href="{% url 'home' %}"
-        onMouseOver="this.style.color='#5d74ba'"
-        onMouseOut="this.style.color='white'"
-        >Attendance System</a
-      >
-    </li> -->
     {% if request.user.is_authenticated %}
     <!-- user logged in -->
     <li style="float: right">

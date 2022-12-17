@@ -76,12 +76,12 @@ def face(request):
 
 # User = get_user_model()
 
-def home(request):
-    return render(request, 'base/home.html')
+# def home(request):
+#     return render(request, 'base/home.html')
 
 def logoutUser(request):
     logout(request)
-    return redirect('home')
+    return redirect('login')
 
 # Dashboard
 @login_required(login_url='login')
@@ -192,6 +192,7 @@ def password_reset_request(request):
 
 @unauthenticated_user
 def registerPage(request):
+	er = False
 	valid_username = True
 	emailvalue=''
 	uservalue=''
@@ -207,39 +208,54 @@ def registerPage(request):
 		passwordvalue2 = request.POST.get('password2')
 		fname = request.POST.get('first_name')
 		lname = request.POST.get('last_name')
+		errors = []
 		if passwordvalue1 == passwordvalue2:
 			print("----Password Matched")
 			if passwordvalue1 == uservalue:
-				context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
-				print("----Password match username")
-				return render(request, 'base/sign-up.html', context)
+				# context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
+				# print("----Password match username")
+				# return render(request, 'base/sign-up.html', context)
+				er = True
+				errors.append('Your password can\'t be too similar to your other personal information. Please try another password.')
 			if len(passwordvalue1) < 8:
-				context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
-				print("----Password is too short")
-				return render(request, 'base/sign-up.html', context)
+				# context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
+				# print("----Password is too short")
+				# return render(request, 'base/sign-up.html', context)
+				er = True
+				errors.append('Your password must contain at least 8 characters. Please try another password.')
 			if not re.match('.*[0-9]', passwordvalue1):
-				print("---Your password must contain a number")
-				context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
-				return render(request, 'base/sign-up.html', context)
+				# print("---Your password must contain a number")
+				# context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
+				# return render(request, 'base/sign-up.html', context)
+				er = True
+				errors.append('Your password must contain a number. Please try another password.')
 			if not re.match('.*[A-Z]', passwordvalue1):
-				print("---Your password must contain at least 1 upper case character.")
-				context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
-				return render(request, 'base/sign-up.html', context)
+				# print("---Your password must contain at least 1 upper case character.")
+				# context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
+				# return render(request, 'base/sign-up.html', context)
+				er = True
+				errors.append('Your password must contain at least 1 upper case character. Please try another password.')
 			if not re.match('.*[a-z]', passwordvalue1):
-				print("Your password must contain at least 1 lower case character." )
-				context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
-				return render(request, 'base/sign-up.html', context)			
+				# print("Your password must contain at least 1 lower case character." )
+				# context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
+				# return render(request, 'base/sign-up.html', context)
+				er = True
+				errors.append('Your password must contain at least 1 lower case character. Please try another password.')			
 			try:
 				user= User.objects.get(username=uservalue)
-				context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
-				print("----User Exist")
-				return render(request, 'base/sign-up.html', context)
+				# context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
+				# print("----User Exist")
+				# return render(request, 'base/sign-up.html', context)
+				er = True
+				errors.append('The username you entered has already been taken. Please try another username.')			
 			except User.DoesNotExist:
 				print("-----User Not Exist")
 				try:
 					user= User.objects.get(email=emailvalue)
-					context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
-					return render(request, 'base/sign-up.html', context)
+					# context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
+					# return render(request, 'base/sign-up.html', context)
+					er = True
+					errors.append('The email you entered has already been taken. Please try another email.')			
 				except:
 					print("Email not repeated")
           			
@@ -264,14 +280,21 @@ def registerPage(request):
 						valid_username = False
 						return redirect('login')
 		else:
-			print("---Password not match")
-			context= {'form': form, 'error':'The passwords that you provided don\'t match'}
-			return render(request, 'base/sign-up.html', context)
+			# print("---Password not match")
+			# context= {'form': form, 'error':'The passwords that you provided don\'t match'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('The passwords that you provided don\'t match')			
 		if valid_username:
-			print("---Invalid Username")
-			context= {'form': form, 'error':'Please enter a valid username.\n150 characters or fewer. Letters, digits and @/./+/-/_ only.'}
-			return render(request, 'base/sign-up.html', context)
+			# print("---Invalid Username")
+			# context= {'form': form, 'error':'Please enter a valid username.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Please enter a valid username.')			
 
+	if er:
+		context= {'form': form, 'errors':errors}
+		return render(request, 'base/sign-up.html', context)
    
 	context = {'form':form}
 	return render(request, 'base/sign-up.html', context)

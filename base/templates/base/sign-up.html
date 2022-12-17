@@ -15,23 +15,23 @@
         // If values are not blank, restore them to the fields
         var position = localStorage.getItem("position");
         console.log(position);
-        if (position !== null) $("#position").val(position);
+        if (position !== null && position != 'undefined') $("#position").val(position);
 
         var username = localStorage.getItem("username");
         console.log(username);
-        if (username !== null) $("#form3Example0").val(username);
+        if (username !== null && username != 'undefined') $("#form3Example0").val(username);
 
         var first_name = localStorage.getItem("first_name");
         console.log(first_name);
-        if (first_name !== null) $("#form3Example1").val(first_name);
+        if (first_name !== null && first_name != 'undefined') $("#form3Example1").val(first_name);
 
         var last_name = localStorage.getItem("last_name");
         console.log(last_name);
-        if (last_name !== null) $("#form3Example2").val(last_name);
+        if (last_name !== null && last_name != 'undefined') $("#form3Example2").val(last_name);
 
         var email = localStorage.getItem("email");
         console.log(email);
-        if (email !== null) $("#form3Example3").val(email);
+        if (email !== null && email != 'undefined') $("#form3Example3").val(email);
 
         //var password1 = localStorage.getItem('password1');
         //console.log(password1);
@@ -62,16 +62,6 @@
           weight="50"
           height="50"
         />
-      </li>
-
-      <li style="float: left">
-        <a
-          class="white-a"
-          href="{% url 'home' %}"
-          onMouseOver="this.style.color='#5d74ba'"
-          onMouseOut="this.style.color='white'"
-          >Attendance System</a
-        >
       </li>
     </ul>
     <!-- Section: Design Block -->
@@ -275,7 +265,11 @@
                     <i class="fab fa-github"></i>
                   </button>
                 </div>
-                <div style="color: red">{{error}}</div>
+                <div style="color: red">
+                  {% for error in errors %}
+                    {{error}}
+                  {% endfor %}
+                </div>
               </form>
             </div>
           </div>

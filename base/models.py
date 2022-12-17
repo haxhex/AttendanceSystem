@@ -3,6 +3,9 @@ from django.contrib.auth.models import User, AbstractUser
 import datetime
 from django.urls import reverse
 
+def mentor_photos(instance, filename):
+    return 'mentor/photos/%s' % filename
+
 
     
 class Employee(models.Model):
@@ -11,7 +14,7 @@ class Employee(models.Model):
 	last_name = models.CharField(max_length=200, null=True)
 	mobile_number = models.CharField(max_length=200, null=True, blank=True)
 	email = models.EmailField(max_length=200, null=True, unique=True)
-	profile_picture = models.ImageField(default="default_profile.png", null=True, blank=True)	
+	profile_picture = models.ImageField(default="default_profile.png", null=True, blank=True, upload_to=mentor_photos)	
 	department = models.CharField(max_length=200, null=True)	
 	position = models.CharField(max_length=200, null=True)
 
