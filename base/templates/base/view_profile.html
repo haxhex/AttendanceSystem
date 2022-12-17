@@ -53,13 +53,13 @@
                 height="150"
               />
             </div>
-            <div>
+            <!-- <div>
               <a
                 onMouseOver="this.style.color='#5d74ba'"
                 onMouseOut="this.style.color='black'"
                 >Change profile photo</a
               >
-            </div>
+            </div> -->
           </div>
           <div class="grid-item">
             <div>
@@ -86,10 +86,10 @@
               <label><b>Position: </b></label>
               {{user.employee.position}}
             </div>
-            <b>Face registration status :</b>
-            <!-- if registered -->
+            <!-- <b>Face registration status :</b>
+            if registered
             <span class="badge bg-success">Registered!</span>
-            <!-- if not registered -->
+            if not registered
             <span class="badge bg-danger" style="margin-bottom: 10px"
               >Not registered!</span
             >
@@ -97,9 +97,10 @@
               Please upload your pictures, or your attendance won't be
               processed.
             </div>
-            <!-- else if -->
+            else if -->
+            <br />
             <a href="{% url 'edit-profile' %}">
-              <button type="button" class="gray-button" role="button">
+              <button type="button" class="dark-blue-button" role="button">
                 Edit Profile
               </button>
             </a>
