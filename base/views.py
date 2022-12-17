@@ -67,10 +67,6 @@ from .camera import *
 
 
 @login_required(login_url='login')
-def face_recognition(request):
-    return StreamingHttpResponse(gen(VideoCamera()),
-                                                     content_type='multipart/x-mixed-replace; boundary=frame')
-@login_required(login_url='login')
 def face(request):
 	return render (request , "base/face.html")
 
