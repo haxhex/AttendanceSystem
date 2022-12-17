@@ -50,7 +50,17 @@ from dateutil import rrule, parser
 
 @login_required(login_url='login')
 def face(request):
-	return render (request , "base/face.html")
+	context = {'page':'take'}
+	return render (request , "base/face.html", context)
+
+def register_face(request):
+	print("reg_pic")
+	img = request.GET.get('pic') if request.GET.get('pic') != None else ''
+	print(img)
+	context = {'page':'reg', 'msg':'Your picture register successfully!'} 
+	return render (request , "base/face.html", context)
+
+
 
 # User = get_user_model()
 
