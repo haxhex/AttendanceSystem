@@ -79,3 +79,8 @@ input[type="date"] {
 .grid-item {
   text-align: center;
 }
+
+h1 {
+  /* color: red; */
+  padding-top: 15px;
+}
