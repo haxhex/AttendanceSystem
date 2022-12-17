@@ -8,120 +8,119 @@
   <link rel="stylesheet" href="{% static 'css/calender.css' %}" />
 </head>
 
-  <style>
-    h1{
-      padding-top: 15px;
-    }
-    
-    .flex-container {
-      display: flex;
-      padding: 5px;
-      margin: auto;
-    }
-    
-    ul {
-      height: 100%;
-      padding: 0px 5px 0px 20px;
-    }
+<style>
+  h1 {
+    padding-top: 15px;
+  }
 
-    a {
-      color: #17a2b8;
-    }
+  .flex-container {
+    display: flex;
+    padding: 5px;
+    margin: auto;
+  }
 
-    .left {
-      float: left;
-    }
+  ul {
+    height: 100%;
+    padding: 0px 5px 0px 20px;
+  }
 
-    .right {
-      float: right;
-    }
+  a {
+    color: #17a2b8;
+  }
 
-    /* .btn {
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+  }
+
+  /* .btn {
       outline: none;
       color: black;
       background-color: transparent;
       box-shadow: 0 0 0 0;
     } */
 
-    .clearfix {
-      margin: 15px;
-    }
+  .clearfix {
+    margin: 15px;
+  }
 
-    .form {
-      margin: auto;
-    }
+  .form {
+    margin: auto;
+  }
 
-    .form input,
-    .form select,
-    .form textarea {
-      border-radius: 5px;
-      border: 1px solid #17a2b8;
-      outline: none;
-      background: none;
-      padding: 5px;
-      width: 100%;
-    }
+  .form input,
+  .form select,
+  .form textarea {
+    border-radius: 5px;
+    border: 1px solid #17a2b8;
+    outline: none;
+    background: none;
+    padding: 5px;
+    width: 100%;
+  }
 
-    table.center {
-      margin-left: auto;
-      margin-right: auto;
-    }
+  table.center {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-    .flex-container2 {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    button[type="submit"] {
-      flex-direction: column;
-      align-items: center;
-      padding: 4px 7px;
-      font-family: -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
-      border-radius: 6px;
-      border: none;
+  .flex-container2 {
+    display: flex;
+    flex-direction: column;
+  }
 
-      background: #838284;
-      box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1),
-        inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5),
-        0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
-      color: #dfdedf;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-    }
+  button[type="submit"] {
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 7px;
+    font-family: -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
+    border-radius: 6px;
+    border: none;
 
-  </style>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  
-  <script>
+    background: #838284;
+    box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1),
+      inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5),
+      0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+    color: #dfdedf;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+</style>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+  $(function () {
+    $('input[name="daterange"]').daterangepicker({
+      locale: {
+        format: 'YYYY-MM-DD'
+      },
+      opens: 'left'
+    }, function (start, end, label) {
+      console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
+  });
+
+
+</script>
+<script>
+  $(document).ready(() => {
+    $("#users").val("{{name}}");
+    $("#daterange").val("{{drange}}");
     $(function () {
-      $('input[name="daterange"]').daterangepicker({
-        locale: {
-          format: 'YYYY-MM-DD'
-        },
-        opens: 'left'
-      }, function (start, end, label) {
-        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-      });
+      $("#users").select2();
     });
 
 
-  </script>
-<script>
-  $(document).ready(()=>{ 
-    $("#users").val("{{name}}");
-    $("#daterange").val("{{drange}}");
-    $(function(){
-      $("#users").select2();
-     }); 
-
-
-}); 
+  }); 
 </script>
 
 
@@ -235,65 +234,60 @@
 <body>
   {% include "navbar.html" %}
   <!-- Background image -->
-  <div
-    class="p-5 bg-image"
-    style="
+  <div class="p-5 bg-image" style="
       background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
       height: 300px;
-    "
-  ></div>
+    "></div>
 
-  <div
-    class="card"
-    style="
+  <div class="card" style="
     width: 80%;
     margin-left: 10%;
     margin-top: -150px;
     background: hsla(0, 0%, 100%, 0.8);
     backdrop-filter: blur(30px);
-    "
-  >
+    ">
     <section class="text-center">
       <h1>IO Archive full report</h1>
     </section>
-      <!-- first row -->
-      <div class="flex-container justify-content-center">
-          <form method="GET" style="display: flex;" action="{% url 'io-archive-report' %}">
-            <div id="user-select" name="user-select">
-              <label for="users">User:</label>
-              <select name="users" id="users" style="margin: 3px;">
-                <option value="">Select a user</option>
-                {% for emp in employees %}
-                <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div id="date-range" name="date-range">
-              <span>Date range:</span>
-              <input type="text" name="daterange" id="daterange" style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7; margin: 3px;"/>
-            </div>
-            <button type="submit" onclick="getOption()">
-              submit
-            </button>
-          </form>
-      </div>
-      <!-- second row -->
-      <div class="flex-container justify-content-center">
-          {% if name != '' and  drange != '' %}
-          <a href="{% url 'export-act-excel' name drange %}">
-              <button class="gray-button" role="button">Activity Report</button>
-          </a>
-          <a href="{% url 'export-io-excel' name drange %}">
-            <button class="gray-button" role="button">IO Report</button>
-          </a>
-          {% endif %}
-      </div>
+    <!-- first row -->
+    <div class="flex-container justify-content-center">
+      <form method="GET" style="display: flex; gap:15px" action="{% url 'io-archive-report' %}">
+        <div id="user-select" name="user-select">
+          <label for="users">User:</label>
+          <select name="users" id="users" style="margin: 3px;">
+            <option value="">Select a user</option>
+            {% for emp in employees %}
+            <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div id="date-range" name="date-range">
+          <span>Date range:</span>
+          <input type="text" name="daterange" id="daterange"
+            style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7; margin: 3px;" />
+        </div>
+        <button type="submit" onclick="getOption()">
+          submit
+        </button>
+      </form>
+    </div>
+    <!-- second row -->
+    <div class="flex-container justify-content-center" style="gap:15px">
+      {% if name != '' and drange != '' %}
+      <a href="{% url 'export-act-excel' name drange %}">
+        <button class="gray-button" role="button">Activity Report</button>
+      </a>
+      <a href="{% url 'export-io-excel' name drange %}">
+        <button class="gray-button" role="button">IO Report</button>
+      </a>
+      {% endif %}
+    </div>
 
-      <!-- third row -->
-      <div>
-        {{calendar}}
-        <!-- <canvas id="myChart" width="500" height="300"></canvas> -->
-      </div>
+    <!-- third row -->
+    <div>
+      {{calendar}}
+      <!-- <canvas id="myChart" width="500" height="300"></canvas> -->
+    </div>
 
 
 </body>
@@ -307,4 +301,3 @@
 </script>
 
 </html>
-

@@ -46,30 +46,8 @@ from .utils import get_plot
 import xlwt
 from django.db.models import Q
 from dateutil import rrule, parser
-import cv2
-import numpy as np
-from PIL import ImageDraw,Image
-from PIL import Image
-import numpy as np
-import cv2
-from facenet_pytorch import MTCNN
-from django.http import StreamingHttpResponse
-import cv2
-import numpy as np
-from PIL import ImageDraw,Image
-from PIL import Image
-import numpy as np
-import cv2
-from facenet_pytorch import MTCNN
-from django.http import StreamingHttpResponse
-from facerecognition.FaceDetector import *
-from .camera import *
 
 
-@login_required(login_url='login')
-def face_recognition(request):
-    return StreamingHttpResponse(gen(VideoCamera()),
-                                                     content_type='multipart/x-mixed-replace; boundary=frame')
 @login_required(login_url='login')
 def face(request):
 	return render (request , "base/face.html")

@@ -14,7 +14,6 @@ urlpatterns = [
     path("io/", views.io, name="io"),
     path("io-archive/", views.io_archive, name="io-archive"),
     path("io-report/", views.io_report, name="io-report"),
-    path("face_recognition/" , views.face_recognition , name="face_recognition"),
     path("face/" , views.face , name = "face"),
     path("io-archive-report/", views.ActRep.as_view(), name="io-archive-report"),
     path("view-profile/", views.view_profile, name="view-profile"),
