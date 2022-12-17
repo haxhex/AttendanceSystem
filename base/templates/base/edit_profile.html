@@ -49,7 +49,6 @@
   <body>
     {% include "navbar.html" %}
     <!-- Section: Design Block -->
-    <section class="text-center">
       <!-- Background image -->
       <div
         class="p-5 bg-image"
@@ -63,53 +62,55 @@
       <div
         class="card"
         style="
-          width: 50%;
-          margin-left: 25%;
+          width: 40%;
+          margin-left: 30%;
           margin-top: -150px;
           background: hsla(0, 0%, 100%, 0.8);
           backdrop-filter: blur(30px);
         "
       >
-        <div class="card-body py-5 px-md-5">
-          <div class="row d-flex justify-content-center">
-            <div class="col-lg-8">
-              <h2 class="fw-bold mb-5">Edit your Profile</h2>
-              <form method="POST" action="" enctype="multipart/form-data">
-                {% csrf_token %}
-                <!-- 2 column grid layout with text inputs for the first and last names -->
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline">
-                      <label class="form-label" for="form3Example1"
-                        >First name</label
-                      >
-                      {{form.first_name}}
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline">
-                      <label class="form-label" for="form3Example2"
-                        >Last name</label
-                      >
-                      {{form.last_name}}
-                    </div>
+      <div class="flex-container justify-content-center">
+        <div class="flex-item">
+          <section class="text-center">
+            <h1 style="padding-bottom:15px;">Edit your Profile</h1>
+          </section>
+          <form method="POST" action="" enctype="multipart/form-data">
+            <div>{% csrf_token %}
+              <!-- first & last name -->
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label" for="form3Example1"
+                      >First name</label
+                    >
+                    {{form.first_name}}
                   </div>
                 </div>
-
-                <!-- Username input -->
-                <!-- <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example3">Username</label>
-                  <input type="email" id="form3Example3" class="form-control" />
-                </div> -->
-
-                <!-- Email input -->
-                <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example3"
-                    >Email address</label
-                  >
-                  <!-- <input type="email" name="email" id="form3Example3" class="form-control" /> -->
-                  {{form.email}}
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label" for="form3Example2"
+                      >Last name</label
+                    >
+                    {{form.last_name}}
+                  </div>
                 </div>
+              </div>
+              <!-- email -->
+              <div class="form-outline mb-4">
+                <label class="form-label" for="form3Example3"
+                  >Email address</label
+                >
+                {{form.email}}
+              </div>
+              <!-- mobile number -->
+              <div class="form-outline mb-4">
+                <label class="form-label" for="form3Example4"
+                  >Mobile number</label
+                >
+                {{form.mobile_number}}
+              </div>
+              <!-- position -->
+              <section class="text-center">
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example6">Position</label>
                   <!-- <input type="email" name="email" id="form3Example3" class="form-control" /> -->
@@ -181,67 +182,42 @@
                     </optgroup>
                   </select>
                 </div>
-
-                <!-- Password input -->
-                <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example4"
-                    >mobile number</label
-                  >
-                  <!-- <input
-                    name="password1"
-                    type="password"
-                    id="form3Example4"
-                    class="form-control"
-                  /> -->
-                  {{form.mobile_number}}
-                </div>
-
-                <!-- Password input -->
-                <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example5"
-                    >profile photo</label
-                  >
-                  <!-- <input
-                    name="password2"
-                    type="password"
-                    id="form3Example4"
-                    class="form-control"
-                  /> -->
-                  {{form.profile_picture}}
-                </div>
-
-                <!-- Submit button -->
-                <button type="submit" class="gray-button" role="button">
-                  Submit
-                </button>
-
-                <!-- Register buttons -->
-                <div class="text-center">
-                  <!-- <p>or sign up with:</p> -->
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-facebook-f"></i>
-                  </button>
-
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-google"></i>
-                  </button>
-
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-twitter"></i>
-                  </button>
-
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-github"></i>
-                  </button>
-                </div>
-                <div style="color: red">{{error}}</div>
-              </form>
+              </section>
+              <!-- profile photo -->
+              <div class="form-outline mb-4">
+                <label class="form-label" for="form3Example5"
+                  >Profile photo</label
+                >
+                <br>
+                {{form.profile_picture}}
+              </div>
             </div>
-          </div>
+            <section class="text-center">
+              <input type="submit" value="submit" />
+            </section>
+            <!-- Register buttons -->
+            <div class="text-center">
+              <!-- <p>or sign up with:</p> -->
+              <button type="button" class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-facebook-f"></i>
+              </button>
+              <button type="button" class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-google"></i>
+              </button>
+              <button type="button" class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-twitter"></i>
+              </button>
+              <button type="button" class="btn btn-link btn-floating mx-1">
+                <i class="fab fa-github"></i>
+              </button>
+            </div>
+            <div style="color: red">{{error}}</div>
+          </form>
         </div>
       </div>
+      </div>
     </section>
-    <!-- Section: Design Block -->
+
     <script>
       window.onbeforeunload = function () {
         localStorage.setItem("position", $("#position").val());

@@ -5,6 +5,7 @@
   <head>
     {% include "header.html" %}
     <link rel="stylesheet" href="{% static 'css/calender.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
     <style>
       .flex-container {
         display: flex;
@@ -41,7 +42,8 @@
         border-radius: 6px;
         border: none;
 
-        background: #838284;
+        /* background: #838284; */
+        background-color: #334180;
         box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1),
           inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5),
           0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
@@ -52,7 +54,8 @@
       }
 
       .btn:hover{
-        background: #838284;
+        /* background: #838284; */
+        background-color: #334180;
         color: #dfdedf;
       }
 
@@ -246,7 +249,7 @@
 
       <div class="flex-container">
         <div style="width:50%; margin-right:10px; margin-top:10px; margin-left:10px;">
-          <canvas id="myChart" width="500" height="494" style="border:2px solid #b4b0b7;;"></canvas>
+          <canvas id="myChart" width="500" height="494" style="border:2px solid #b4b0b7; padding: 10px;"></canvas>
         </div>
         <div style="width:50%; margin-left:0; margin-right: 10px;">
           {{ calendar }}

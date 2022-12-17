@@ -46,30 +46,30 @@
         
     </script>
     {% endif %}
- 
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <style>
+        h1{
+            padding-top: 15px;
+        }
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+    
+        td,
+        th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+    
+        .fa-passwd-reset > .fa-lock {
+            font-size: 0.85rem;
+        }
+    
+    </style>
 </head>
-<style>
-    h1{
-        padding-top: 15px;
-    }
-    table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    }
-
-    td,
-    th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-    }
-
-    .fa-passwd-reset > .fa-lock {
-        font-size: 0.85rem;
-    }
-
-</style>
 <body>
     {% include "navbar.html" %}
     <section class="text-center">
@@ -203,12 +203,12 @@
                         <div class="flex-container2">
                             <div style="padding-left:10px; padding-bottom: 5px;">
                                 <a href="{% url 'create-user' %}">
-                                    <button class="gray-button" role="button">New Employee</button>
+                                    <button class="dark-blue-button" role="button">New Employee</button>
                                 </a>
                             </div>
                             <div style="padding-left:10px;">
                                 <a href="{% url 'export-excel' fltra fltrd %}">
-                                    <button class="gray-button" role="button">Export Excel</button>
+                                    <button class="dark-blue-button" role="button">Export Excel</button>
                                 </a>
                             </div>
                         </div>

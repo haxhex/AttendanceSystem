@@ -12,12 +12,14 @@
 .calendar tr {
   border-radius: 5px 5px 5px 5px;
   border: 2px solid #b4b0b7;
+  /* border: 2px solid #334180; */
 }
 
 /* lines of body of table */
 .calendar td {
   border-radius: 5px 5px 5px 5px;
   border: 2px solid #b4b0b7;
+  /* border: 2px solid #334180; */
 }
 
 /*header of table */
