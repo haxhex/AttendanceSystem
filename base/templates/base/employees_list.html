@@ -122,11 +122,11 @@
                                         </select>
                                     </div>
                                     <div style="padding-left: 5px;">
-                                        <button class="gray-button" role="button" onclick="getOption()" style="padding: 4px 7px; margin-right: 50px;">Apply</button>
+                                        <button class="gray-button" role="button" onclick="getOption()" style="padding: 4px 7px; margin-right: 135px;">Apply</button>
                                     </div>
                                     <form method="GET" action="{% url 'employees_list' %}">
                                         <div>
-                                            <input type="text" name="q" placeholder="Search employee" id="q" style="border-radius: 7px 7px 7px 7px; border: 1px solid #b4b0b7; height: 34px;">
+                                            <input type="text" name="q" placeholder="Search employee" id="q" style="border-radius: 9px 9px 9px 9px; border: 1px solid #b4b0b7; height: 34px;">
                                             <button type="submit" class="gray-button" role="button" style="padding: 4px 7px;" >Search</button>
                                         </div>
                                     </form>
@@ -140,7 +140,7 @@
                     <!-- second row -->
                     <div class="flex-container">
                         <div>
-                            <table style="margin-bottom: 20px;">
+                            <table style="margin-bottom: 20px; width:900px;">
                                 <tr">
                                     <th>Photo</th>
                                     <th>Name</th>
@@ -200,15 +200,15 @@
                                 {% endfor %}
                             </table>
                         </div>
-                        <div class="flex-container2">
+                        <div class="flex-container2" style="align-items:left">
                             <div style="padding-left:10px; padding-bottom: 5px;">
                                 <a href="{% url 'create-user' %}">
-                                    <button class="dark-blue-button" role="button">New Employee</button>
+                                    <button class="dark-blue-button" role="button" style="width: 140px;">New Employee</button>
                                 </a>
                             </div>
-                            <div style="padding-left:10px;">
+                            <div style="padding-left:10px; ">
                                 <a href="{% url 'export-excel' fltra fltrd %}">
-                                    <button class="dark-blue-button" role="button">Export Excel</button>
+                                    <button class="dark-blue-button" role="button" style="width: 140px;">Export Excel</button>
                                 </a>
                             </div>
                         </div>
