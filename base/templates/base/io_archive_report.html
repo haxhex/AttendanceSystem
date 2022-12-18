@@ -259,7 +259,7 @@
         </div>
         <div id="user-select" name="user-select">
           <!-- <label for="users">User:</label> -->
-          <select name="users" id="users" style="margin: 3px;">
+          <select name="users" id="users" style="margin: 3px; color:rgb(93, 87, 87)">
             <option value="">Select a user</option>
             {% for emp in employees %}
             <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>

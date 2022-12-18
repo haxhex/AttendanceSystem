@@ -13,7 +13,6 @@
   <body>
     <div>{%include "navbar.html" %}</div>
     <!-- Section: Design Block -->
-    <section class="text-center">
       <!-- Background image -->
       <div
         class="p-5 bg-image"
@@ -27,9 +26,9 @@
       <div
         class="card"
         style="
-          width: 50%;
-          margin-left: 25%;
-          margin-top: -150px;
+          width: 40%;
+          margin-left: 30%;
+          margin-top: -250px;
           background: hsla(0, 0%, 100%, 0.8);
           backdrop-filter: blur(30px);
         "
@@ -37,7 +36,9 @@
         <div class="card-body py-5 px-md-5">
           <div class="row d-flex justify-content-center">
             <div class="col-lg-8">
-              <h2 class="fw-bold mb-5">Create a User</h2>
+              <section class="text-center">
+                <h2 class="fw-bold mb-5">Create a User</h2>
+              </section>
               <form method="POST" action="">
                 {% csrf_token %}
                 <!-- 2 column grid layout with text inputs for the first and last names -->
@@ -89,7 +90,7 @@
                     id="position"
                     name="position"
                     required
-                    style="width: 80%"
+                    style="width: 80%; color:rgb(93, 87, 87);"
                     required
                   >
                     <option value="" selected disabled>
@@ -190,10 +191,11 @@
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" style="background-color: #334180;">
-                  Create
-                </button>
-
+                <section class="text-center">
+                  <button type="submit" style="background-color: #334180;">
+                    Create
+                  </button>
+                </section>
                 <!-- switch to login-->
                 </div>
                 <div style="width: 100%; text-align: center;">

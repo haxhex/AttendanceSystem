@@ -80,14 +80,13 @@ button[type="submit"] {
 }
 
 select,
-input[type="date"],
-input[type="text"] {
-  border: 1px solid #b4b0b7;
-  border-radius: 10px 10px 10px 10px;
+input {
+  border: 1px solid #bbb7bf;
+  border-radius: 5px 5px 5px 5px;
   font-size: 18px;
   padding: 5px;
   height: 35px;
-  width: 200px;
+  /* width: 200px; */
 }
 
 .grid-container {

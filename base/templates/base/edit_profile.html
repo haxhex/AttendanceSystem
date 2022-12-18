@@ -162,7 +162,7 @@
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
                     <label class="form-label" for="form3Example1"
-                      >Firstooo name</label
+                      >First name</label
                     >
                     {{form.first_name}}
                   </div>
@@ -195,7 +195,7 @@
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example6">Position</label>
                   <!-- <input type="email" name="email" id="form3Example3" class="form-control" /> -->
-                  <select id="position" name="position" required>
+                  <select id="position" name="position" required style="width:85%; color:rgb(93, 87, 87)">
                     <option value="" selected disabled>
                       Select your position
                     </option>
@@ -266,24 +266,8 @@
               </section>
              
             <section class="text-center">
-              <input type="submit" value="submit" />
+              <input type="submit" value="Save changes" />
             </section>
-            <!-- Register buttons -->
-            <div class="text-center">
-              <!-- <p>or sign up with:</p> -->
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-google"></i>
-              </button>
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-twitter"></i>
-              </button>
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-github"></i>
-              </button>
-            </div>
             <div style="color: red">{{error}}</div>
           </form>
         </div>
