@@ -127,7 +127,8 @@ def employees_list(request):
         Q(department__icontains=q) |
         Q(position__icontains=q) |
         Q(email__icontains=q) |
-        Q(mobile_number__icontains=q) 
+        Q(mobile_number__icontains=q) |
+        Q(user__username__icontains =q)
         )
     # employees = Employee.objects.all()
     employees_list = []
