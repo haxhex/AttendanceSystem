@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',
-    'crispy_forms'
+    'crispy_forms',
+    'favicon'
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -149,3 +150,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = 'login'
+
+FAVICON_PATH = STATIC_URL + 'images/logo.png'

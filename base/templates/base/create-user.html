@@ -2,6 +2,13 @@
 <html lang="en">
   <head>
     {% include "header.html" %}
+    <script>
+      window.onload = function () {
+        var position = localStorage.getItem("position");
+        console.log(position);
+        if (position !== null && position != 'undefined') $("#position").val(position);
+      }
+    </script>
   </head>
   <body>
     <div>{%include "navbar.html" %}</div>
@@ -74,6 +81,86 @@
                   {{form.email}}
                 </div>
 
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example6">Position</label>
+                  <!-- <input type="email" name="email" id="form3Example3" class="form-control" /> -->
+                  <select
+                    id="position"
+                    name="position"
+                    required
+                    style="width: 80%"
+                    required
+                  >
+                    <option value="" selected disabled>
+                      Select your position
+                    </option>
+                    <optgroup label="Accouning">
+                      <option value="Auditor">Auditor</option>
+                      <option value="CFO">CFO</option>
+                      <option value="Payroll specialist">
+                        Payroll specialist
+                      </option>
+                      <option value="Tax specialist">Tax specialist</option>
+                    </optgroup>
+                    <optgroup label="Marketing">
+                      <option value="Advertising manager">
+                        Advertising manager
+                      </option>
+                      <option value="Brand manager">Brand manager</option>
+                      <option value="Public relations officer">
+                        Public relations officer
+                      </option>
+                      <option value="Market analyst">Market analyst</option>
+                    </optgroup>
+                    <optgroup label="Human resources">
+                      <option value="Compensation specialist">
+                        Compensation specialist
+                      </option>
+                      <option value="Brand manager">Brand manager</option>
+                      <option value="Personnel manager">
+                        Personnel manager
+                      </option>
+                      <option value="Market analyst">Market analyst</option>
+                      <option value="Recruiter">Recruiter</option>
+                      <option value="Training manager">Training manager</option>
+                    </optgroup>
+                    <optgroup label="Production">
+                      <option value="Chief inspector">Chief inspector</option>
+                      <option value="Brand manager">Brand manager</option>
+                      <option value="Market analyst">Market analyst</option>
+                      <option value="Recruiter">Recruiter</option>
+                      <option value="Machinist">Machinist</option>
+                      <option value="Plant manager">Plant manager</option>
+                      <option value="Quality control manager ">
+                        Quality control manager
+                      </option>
+                    </optgroup>
+                    <optgroup label="IT">
+                      <option value="Communications analyst">
+                        Communications analyst
+                      </option>
+                      <option value="Database administrator">
+                        Database administrator
+                      </option>
+                      <option value="E_business specialist">
+                        E-business specialist
+                      </option>
+                      <option value="PC support specialist">
+                        PC support specialist
+                      </option>
+                      <option value="Programmer">Programmer</option>
+                      <option value="Site manager">Site manager</option>
+                    </optgroup>
+                    <optgroup label="Sales">
+                      <option value="Branch manager">Branch manager</option>
+                      <option value="Retail manager">Retail manager</option>
+                      <option value="Telemarketer">Telemarketer</option>
+                    </optgroup>
+                  </select>
+                </div>
+
+
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example4"
@@ -109,7 +196,16 @@
 
                 <!-- switch to login-->
                 </div>
-                <div style="color: red">{{error}}</div>
+                <div style="width: 100%; text-align: center;">
+                  <div style="color: red; text-align:left; display: inline-block; margin: 0 auto; padding: 3px;">
+                    <ul>
+                      {% for error in errors  %}
+                      <li>{{error}}</li>
+                    {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+
               </form>
             </div>
           </div>
@@ -117,5 +213,10 @@
       </div>
     </section>
     <!-- Section: Design Block -->
+    <script>
+      window.onbeforeunload = function () {
+        localStorage.setItem("position", $("#position").val());
+      }
+    </script>
   </body>
 </html>

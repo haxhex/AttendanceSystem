@@ -117,6 +117,7 @@ urlpatterns = [
     url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     path('face-recognition/', lambda r: StreamingHttpResponse(gen(VideoCamera()),
                                                      content_type='multipart/x-mixed-replace; boundary=frame')),
+    url(r'^', include('favicon.urls')),
 
 ]
       

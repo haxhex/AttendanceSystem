@@ -82,6 +82,7 @@ class EmployeeForm(ModelForm):
         }
         
 
+    
 class SetPasswordForm(SetPasswordForm):
     class Meta:
         model = get_user_model()
@@ -215,6 +216,15 @@ class InOutForm(ModelForm):
     # input_formats parses HTML5 datetime-local input to datetime field
     self.fields['start_time'].input_formats = ('%Y-%m-%dT%H:%M',)
     self.fields['end_time'].input_formats = ('%Y-%m-%dT%H:%M',)
+    
+
+class FaceForm(ModelForm):
+     class Meta:
+         model = Employee
+         fields = ['face_rec']
+    
+
+
 
 
         

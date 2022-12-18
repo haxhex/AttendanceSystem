@@ -139,6 +139,7 @@
                     name="position"
                     required
                     style="width: 80%"
+                    required
                   >
                     <option value="" selected disabled>
                       Select your position
@@ -265,10 +266,14 @@
                     <i class="fab fa-github"></i>
                   </button>
                 </div>
-                <div style="color: red">
-                  {% for error in errors %}
-                    {{error}}
-                  {% endfor %}
+                <div style="width: 100%; text-align: center;">
+                  <div style="color: red; text-align:left; display: inline-block; margin: 0 auto; padding: 3px;">
+                    <ul>
+                      {% for error in errors  %}
+                      <li>{{error}}</li>
+                    {% endfor %}
+                    </ul>
+                  </div>
                 </div>
               </form>
             </div>

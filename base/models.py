@@ -15,8 +15,9 @@ class Employee(models.Model):
 	mobile_number = models.CharField(max_length=200, null=True, blank=True)
 	email = models.EmailField(max_length=200, null=True, unique=True)
 	profile_picture = models.ImageField(default="default_profile.png", null=True, blank=True, upload_to=mentor_photos)	
-	department = models.CharField(max_length=200, null=True)	
-	position = models.CharField(max_length=200, null=True)
+	department = models.CharField(max_length=200, null=True, default="No Department")	
+	position = models.CharField(max_length=200, null=True, default="No Position")
+	face_rec = models.TextField(null=True, blank=True)
 
 	def __str__(self):
 		return str(self.user)
