@@ -15,23 +15,28 @@
         // If values are not blank, restore them to the fields
         var position = localStorage.getItem("position");
         console.log(position);
-        if (position !== null && position != 'undefined') $("#position").val(position);
+        if (position !== null && position != "undefined")
+          $("#position").val(position);
 
         var username = localStorage.getItem("username");
         console.log(username);
-        if (username !== null && username != 'undefined') $("#form3Example0").val(username);
+        if (username !== null && username != "undefined")
+          $("#form3Example0").val(username);
 
         var first_name = localStorage.getItem("first_name");
         console.log(first_name);
-        if (first_name !== null && first_name != 'undefined') $("#form3Example1").val(first_name);
+        if (first_name !== null && first_name != "undefined")
+          $("#form3Example1").val(first_name);
 
         var last_name = localStorage.getItem("last_name");
         console.log(last_name);
-        if (last_name !== null && last_name != 'undefined') $("#form3Example2").val(last_name);
+        if (last_name !== null && last_name != "undefined")
+          $("#form3Example2").val(last_name);
 
         var email = localStorage.getItem("email");
         console.log(email);
-        if (email !== null && email != 'undefined') $("#form3Example3").val(email);
+        if (email !== null && email != "undefined")
+          $("#form3Example3").val(email);
 
         //var password1 = localStorage.getItem('password1');
         //console.log(password1);
@@ -46,7 +51,8 @@
     </script>
   </head>
   <body>
-    <ul
+    <!-- navbar -->
+    <!-- <ul
       style="
         list-style-type: none;
         margin: 0;
@@ -63,9 +69,8 @@
           height="50"
         />
       </li>
-    </ul>
-    <!-- Section: Design Block -->
-    <section class="text-center">
+    </ul> -->
+
       <!-- Background image -->
       <div
         class="p-5 bg-image"
@@ -81,7 +86,7 @@
         style="
           width: 40%;
           margin-left: 30%;
-          margin-top: -150px;
+          margin-top: -250px;
           background: hsla(0, 0%, 100%, 0.8);
           backdrop-filter: blur(30px);
         "
@@ -89,7 +94,10 @@
         <div class="card-body py-5 px-md-5">
           <div class="row d-flex justify-content-center">
             <div class="col-lg-8">
-              <h2 class="fw-bold mb-5">Sign up now</h2>
+              <section class="text-center">
+                <h2 class="fw-bold mb-5">Sign up now</h2>
+              </section>
+
               <form method="POST" action="">
                 {% csrf_token %}
                 <!-- 2 column grid layout with text inputs for the first and last names -->
@@ -139,6 +147,7 @@
                     name="position"
                     required
                     style="width: 80%"
+                    required
                   >
                     <option value="" selected disabled>
                       Select your position
@@ -237,18 +246,20 @@
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" class="gray-button" role="button">
-                  Sign up
-                </button>
+                <section class="text-center">
+                  <button type="submit" style="background-color: #334180;">
+                    Sign up
+                  </button>
 
-                <!-- switch to login-->
-                <br />
-                Already a member?
-                <a href="{% url 'login' %}">Login</a>
-                <br />
+                  <!-- switch to login-->
+                  <br />
+                  Already a member?
+                  <a href="{% url 'login' %}">Login</a>
+                  <br />
+                </section>
                 <!-- Register buttons -->
-                <div class="text-center">
-                  <!-- <p>or sign up with:</p> -->
+                <!-- <div class="text-center">
+                  <p>or sign up with:</p>
                   <button type="button" class="btn btn-link btn-floating mx-1">
                     <i class="fab fa-facebook-f"></i>
                   </button>
@@ -264,11 +275,23 @@
                   <button type="button" class="btn btn-link btn-floating mx-1">
                     <i class="fab fa-github"></i>
                   </button>
-                </div>
-                <div style="color: red">
-                  {% for error in errors %}
-                    {{error}}
-                  {% endfor %}
+                </div> -->
+                <div style="width: 100%; text-align: center">
+                  <div
+                    style="
+                      color: red;
+                      text-align: left;
+                      display: inline-block;
+                      margin: 0 auto;
+                      padding: 3px;
+                    "
+                  >
+                    <ul>
+                      {% for error in errors %}
+                      <li>{{error}}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
                 </div>
               </form>
             </div>

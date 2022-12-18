@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet" />
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -27,6 +27,11 @@
 
   h1 {
     padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  #id_face_rec {
+    display: none;
   }
 </style>
 
@@ -45,15 +50,16 @@
     var startbutton = null;
 
     function startup() {
-      video = document.getElementById('video');
-      canvas = document.getElementById('canvas');
-      photo = document.getElementById('photo');
-      startbutton = document.getElementById('startbutton');
+      video = document.getElementById("video");
+      canvas = document.getElementById("canvas");
+      photo = document.getElementById("photo");
+      startbutton = document.getElementById("startbutton");
 
-      navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false
-      })
+      navigator.mediaDevices
+        .getUserMedia({
+          video: true,
+          audio: false,
+        })
         .then(function (stream) {
           video.srcObject = stream;
           video.play();
@@ -62,55 +68,62 @@
           console.log("An error occurred: " + err);
         });
 
-      video.addEventListener('canplay', function (ev) {
-        if (!streaming) {
-          height = video.videoHeight / (video.videoWidth / width);
+      video.addEventListener(
+        "canplay",
+        function (ev) {
+          if (!streaming) {
+            height = video.videoHeight / (video.videoWidth / width);
 
-          if (isNaN(height)) {
-            height = width / (4 / 3);
+            if (isNaN(height)) {
+              height = width / (4 / 3);
+            }
+
+            video.setAttribute("width", width);
+            video.setAttribute("height", height);
+            canvas.setAttribute("width", width);
+            canvas.setAttribute("height", height);
+            streaming = true;
           }
+        },
+        false
+      );
 
-          video.setAttribute('width', width);
-          video.setAttribute('height', height);
-          canvas.setAttribute('width', width);
-          canvas.setAttribute('height', height);
-          streaming = true;
-        }
-      }, false);
-
-      startbutton.addEventListener('click', function (ev) {
-        takepicture();
-        ev.preventDefault();
-      }, false);
+      startbutton.addEventListener(
+        "click",
+        function (ev) {
+          takepicture();
+          ev.preventDefault();
+        },
+        false
+      );
 
       clearphoto();
     }
 
-
     function clearphoto() {
-      var context = canvas.getContext('2d');
+      var context = canvas.getContext("2d");
       context.fillStyle = "#AAA";
       context.fillRect(0, 0, canvas.width, canvas.height);
 
-      var data = canvas.toDataURL('image/png');
-      photo.setAttribute('src', data);
+      var data = canvas.toDataURL("image/png");
+      photo.setAttribute("src", data);
     }
 
     function takepicture() {
-      var context = canvas.getContext('2d');
+      var context = canvas.getContext("2d");
       if (width && height) {
         canvas.width = width;
         canvas.height = height;
         context.drawImage(video, 0, 0, width, height);
 
-        var data = canvas.toDataURL('image/png');
-        photo.setAttribute('src', data);
+        var data = canvas.toDataURL("image/png");
+        photo.setAttribute("src", data);
       } else {
         clearphoto();
       }
     }
 
-    window.addEventListener('load', startup, false);
+    window.addEventListener("load", startup, false);
   })();
 </script>
 
@@ -119,9 +132,9 @@
   <section class="text-center">
     <!-- Background image -->
     <div class="p-5 bg-image" style="
-            background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
-            height: 300px;
-          "></div>
+          background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+          height: 300px;
+        "></div>
 
     <div class="card" style="
             width: 50%;

@@ -45,13 +45,25 @@
         <div class="grid-container">
           <div class="grid-item" style="text-align: center">
             <div>
+
+              {% if request.user.employee.profile_picture %} 
               <img
-                src="{{request.user.employee.profile_picture.url}}"
-                class="rounded-circle float-left mr-2"
-                alt="profile"
-                width="150"
-                height="150"
-              />
+              src="{{request.user.employee.profile_picture.url}}"
+              class="rounded-circle float-left mr-2"
+              alt="profile"
+              width="150"
+              height="150"
+            /> 
+              {% else %} 
+              <img
+              src="{% static 'images/default_prof.png' %}"
+              class="rounded-circle float-left mr-2"
+              alt="profile"
+              width="150"
+              height="150"
+            /> 
+            {% endif %}
+
             </div>
             <!-- <div>
               <a

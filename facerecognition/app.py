@@ -18,8 +18,8 @@ def main():
         try:
             # detect face box, probability and landmarks
             image = Image.fromarray(frame)
-            fcd.run(image)
-            # fcr.apply_model(image)
+            # fcd.run(image)
+            print("applied model to frame => ",fcr.apply_model(image))
         except:
             pass
 

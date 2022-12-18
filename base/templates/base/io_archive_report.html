@@ -252,36 +252,44 @@
     <!-- first row -->
     <div class="flex-container justify-content-center">
       <form method="GET" style="display: flex; gap:15px" action="{% url 'io-archive-report' %}">
+        <div id="date-range" name="date-range">
+          <span>Date range:</span>
+          <input type="text" name="daterange" id="daterange"
+            style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7; margin: 3px; margin-top:2px;" />
+        </div>
         <div id="user-select" name="user-select">
-          <label for="users">User:</label>
-          <select name="users" id="users" style="margin: 3px;">
+          <!-- <label for="users">User:</label> -->
+          <select name="users" id="users" style="margin: 3px; color:rgb(93, 87, 87)">
             <option value="">Select a user</option>
             {% for emp in employees %}
             <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>
             {% endfor %}
           </select>
         </div>
-        <div id="date-range" name="date-range">
-          <span>Date range:</span>
-          <input type="text" name="daterange" id="daterange"
-            style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7; margin: 3px;" />
-        </div>
-        <button type="submit" onclick="getOption()">
+        <button type="submit" onclick="getOption()" style="margin-right:120px">
           submit
         </button>
       </form>
-    </div>
-    <!-- second row -->
-    <div class="flex-container justify-content-center" style="gap:15px">
       {% if name != '' and drange != '' %}
       <a href="{% url 'export-act-excel' name drange %}">
-        <button class="gray-button" role="button">Activity Report</button>
+        <button class="dark-blue-button" role="button" style="margin-right:10px">Activity Report</button>
       </a>
       <a href="{% url 'export-io-excel' name drange %}">
-        <button class="gray-button" role="button">IO Report</button>
+        <button class="dark-blue-button" role="button">IO Report</button>
       </a>
       {% endif %}
     </div>
+    <!-- second row -->
+    <!-- <div class="flex-container justify-content-center" style="gap:15px">
+      {% if name != '' and drange != '' %}
+      <a href="{% url 'export-act-excel' name drange %}">
+        <button class="dark-blue-button" role="button">Activity Report</button>
+      </a>
+      <a href="{% url 'export-io-excel' name drange %}">
+        <button class="dark-blue-button" role="button">IO Report</button>
+      </a>
+      {% endif %}
+    </div> -->
 
     <!-- third row -->
     <div>

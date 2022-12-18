@@ -4,15 +4,69 @@
 <html lang="en">
   <head>
     {% include "header.html" %}
-  </head>
-<style>
-  h1{
-    padding-top: 15px;
-    text-align: center;
-    padding-bottom: 15px;
-  }
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-</style>
+    <style>
+      h1{
+        padding-top: 15px;
+        text-align: center;
+        padding-bottom: 15px;
+      }
+      .profile-pic {
+        border-radius: 100%;
+        width: 200px;
+        max-height: 200px;
+        display: inline-block;
+    }
+    
+    .circle {
+      border-radius: 100% !important;
+      overflow: hidden;
+      border: none;
+      top: 72px;
+    }
+    
+    .upload-button {
+    font-size: 1.2em;
+    }
+    
+    .upload-button:hover {
+    transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+    color: #999;
+    }
+    
+    #id_profile_picture{
+    margin-top: 15px;
+    }
+    
+    
+    </style>
+    <script>
+      $(document).ready(function() {    
+        var readURL = function(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();    
+                reader.onload = function (e) {
+                    $('.profile-pic').attr('src', e.target.result);
+                }
+        
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+    
+        $("#id_profile_picture").on('change', function(){
+            readURL(this);
+        });
+        
+        $(".upload-button").on('click', function() {
+           $(".file-upload").click();
+        });
+    });
+    </script>
+
+</head>
+
   <body>
     {% include "navbar.html" %}
     <!-- <section class="text-center"> -->
@@ -40,6 +94,25 @@
         <h1>Edit Profile</h1>
         <form method="POST" action="" enctype="multipart/form-data">
           <div>{% csrf_token %}
+             <!-- profile photo -->
+             <div class="form-outline mb-4" style="text-align: center;">
+              <!-- <label class="form-label" for="form3Example5"
+                >Profile photo</label
+              > -->
+              <br>
+              <div class="circle">
+
+                {% if emp.profile_picture %} 
+                <img class="profile-pic" src="{{emp.profile_picture.url}}" alt="profile picture">
+                {% else %}
+                <img class="profile-pic" src="{% static 'images/default_prof.png' %}" alt="profile picture">
+                {% endif %}  
+              </div>
+              <div class="p-image">
+                {{form.profile_picture}}
+              </div>
+            </div>
+          </div>
             <!-- first & last name -->
             <div class="row">
               <div class="col-md-6 mb-4">
@@ -147,21 +220,12 @@
                 </select>
               </div>
             </section>
-            <!-- profile photo -->
-            <div class="form-outline mb-4">
-              <label class="form-label" for="form3Example5"
-                >Profile photo</label
-              >
-              <br>
-              {{form.profile_picture}}
-            </div>
-          </div>
           {% if page == 'accountSettings' %}
           <a href="{% url 'change-pass' eid %}">Change Password</a>
           {% endif %}
           <br />
           <section class="text-center">
-            <input type="submit" value="submit" />
+            <input type="submit" value="Save changes" />
           </section>
         </form>
       </div>
