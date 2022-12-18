@@ -939,7 +939,7 @@ def export_act_excel(request, name, drange):
 			t_vals.append(date_time.strftime("%H:%M:%S"))
 	print(t_vals)
 	response = HttpResponse(content_type='application/ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
+	response['Content-Disposition'] = 'attachment; filename=Activities_Report ' + \
 		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
 	wb = xlwt.Workbook(encoding='utf-8')
 	ws = wb.add_sheet('Employees')
@@ -1010,7 +1010,7 @@ def export_io_excel(request, name, drange):
 			max_io += 1
 	print(t_vals)
 	response = HttpResponse(content_type='application/ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
+	response['Content-Disposition'] = 'attachment; filename=IO_Report ' + \
 		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
 	wb = xlwt.Workbook(encoding='utf-8')
 	ws = wb.add_sheet('Employees')
