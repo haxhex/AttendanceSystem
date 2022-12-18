@@ -60,7 +60,6 @@ import urllib.request
 # 	return render (request , "base/face.html", context)
 
 def face(request):
-<<<<<<< HEAD
 
 	if request.method == "GET":
 		context = {'page' :'take'}
@@ -74,67 +73,12 @@ def face(request):
 		image = Image.fromarray(numpydata)
 		print(type(image))
 		mtcnn = MTCNN()
-		fcd = FaceDetector(mtcnn)
-		fcd.run(image)
+		#fcd = FaceDetector(mtcnn)
+		#fcd.run(image)
 		image.save("2.png")
 		context = {'page':'reg', 'msg':'Your picture register successfully!'} 
 		return render (request , "base/face.html", context)
-=======
-	context = {'page':'take'}
-	ok = True
-	# img = request.GET.get('pic') if request.GET.get('pic') != None else '' 
-	employee = request.user.employee
-	form = FaceForm(instance=employee) 
-	if request.method == 'POST':
-		form = FaceForm(request.POST,instance=employee)
-		if ok:
-			if form.is_valid():
-				form.save()
-				msg = 'Your picture register successfully!'
-				context = {'page':'reg', 'msg': msg} 
-				return render (request , "base/face_registered.html", context)
-		else:
-			msg = "Your face did't detect. Please try again!"
-			context = {'page':'reg', 'msg': msg, 'form':form} 
-			return render (request , "base/face.html", context)
-	context = {'form':form}  
-	return render (request , "base/face.html", context) 
-	# print("img")
-	# # print(img)
 
-	# if ok:
-	# 	msg = 'Your picture register successfully!'
-	# 	context = {'page':'reg', 'msg': msg} 
-	# 	return render (request , "base/face_registered.html", context)
-	# else:
-	# 	msg = "Your face did't detect. Please try again!"
-	# 	context = {'page':'reg', 'msg': msg} 
-	# 	return render (request , "base/face.html", context)
-
-	# return render (request , "base/face.html", context)
-
-def register_face(request):
-	ok = True
-	# img = request.GET.get('pic') if request.GET.get('pic') != None else '' 
-	employee = request.user.employee
-	form = FaceForm(instance=employee) 
-	if request.method == 'POST':
-		form = FaceForm(request.POST,instance=employee)
-		if form.is_valid():
-			form.save()
-	context = {'form':form}   
-	print("img")
-	# print(img)
->>>>>>> 12dfbf0cbf73b24ed7dac5d83ac842b933039716
-
-	if ok:
-		msg = 'Your picture register successfully!'
-		context = {'page':'reg', 'msg': msg} 
-		return render (request , "base/face_registered.html", context)
-	else:
-		msg = "Your face did't detect. Please try again!"
-		context = {'page':'reg', 'msg': msg} 
-		return render (request , "base/face.html", context)
 
 
 # User = get_user_model()
@@ -347,7 +291,7 @@ def registerPage(request):
 			# context= {'form': form, 'error':'The passwords that you provided don\'t match'}
 			# return render(request, 'base/sign-up.html', context)
 			er = True
-			errors.append("The passwords that you provided don't match.")			
+			errors.append('The passwords that you provided don\'t match')			
 		if valid_username:
 			# print("---Invalid Username")
 			# context= {'form': form, 'error':'Please enter a valid username.'}
@@ -476,7 +420,6 @@ class CalendarView(generic.ListView):
 class IoArchiveReport(generic.ListView):
     model = In_out
     template_name = 'base/io_archive_report.html'
-    @allowed_users(allowed_roles=['admin'])
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
@@ -554,13 +497,10 @@ def event(request, inOut_id=None):
 def handle_not_found(request, exception):
     return render(request, 'base/not-found.html')
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
 def createUser(request):
     return render(request, 'base/create-user.html')
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+
 def createUser(request):
 	valid_username = True
 	emailvalue=''
@@ -577,47 +517,39 @@ def createUser(request):
 		passwordvalue2 = request.POST.get('password2')
 		fname = request.POST.get('first_name')
 		lname = request.POST.get('last_name')
-		errors = []
 		if passwordvalue1 == passwordvalue2:
 			print("----Password Matched")
 			if passwordvalue1 == uservalue:
-				# context= {'form': form, 'error':'Your password can\'t be too similar to your other personal information. Please try another password.'}
+				context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
 				print("----Password match username")
-				errors.append('Your password can\'t be too similar to your other personal information. Please try another password.')
-				# return render(request, 'base/create-user.html', context)
+				return render(request, 'base/create-user.html', context)
 			if len(passwordvalue1) < 8:
-				# context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
+				context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
 				print("----Password is too short")
-				errors.append('Your password must contain at least 8 characters. Please try another password.')
-				# return render(request, 'base/create-user.html', context)
+				return render(request, 'base/create-user.html', context)
 			if not re.match('.*[0-9]', passwordvalue1):
 				print("---Your password must contain a number")
-				# context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
-				errors.append('Your password must contain a number. Please try another password.')
-				# return render(request, 'base/create-user.html', context)
+				context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
+				return render(request, 'base/create-user.html', context)
 			if not re.match('.*[A-Z]', passwordvalue1):
 				print("---Your password must contain at least 1 upper case character.")
-				# context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
-				errors.append('Your password must contain at least 1 upper case character. Please try another password.')
-				# return render(request, 'base/create-user.html', context)
+				context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
+				return render(request, 'base/create-user.html', context)
 			if not re.match('.*[a-z]', passwordvalue1):
 				print("Your password must contain at least 1 lower case character." )
-				# context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
-				errors.append('Your password must contain at least 1 lower case character. Please try another password.')
-				# return render(request, 'base/create-user.html', context)			
+				context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
+				return render(request, 'base/create-user.html', context)			
 			try:
 				user= User.objects.get(username=uservalue)
-				# context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
-				errors.append('The username you entered has already been taken. Please try another username.')
+				context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
 				print("----User Exist")
-				# return render(request, 'base/create-user.html', context)
+				return render(request, 'base/create-user.html', context)
 			except User.DoesNotExist:
 				print("-----User Not Exist")
 				try:
 					user= User.objects.get(email=emailvalue)
-					# context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
-					errors.append('The email you entered has already been taken. Please try another email.')
-					# return render(request, 'base/create-user.html', context)
+					context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
+					return render(request, 'base/create-user.html', context)
 				except:
 					print("Email not repeated")
           			
@@ -642,21 +574,16 @@ def createUser(request):
 						return redirect('employees_list')
 		else:
 			print("---Password not match")
-			# context= {'form': form, 'error':'The passwords that you provided don\'t match'}
-			errors.append('The passwords that you provided don\'t match.')
-			# return render(request, 'base/create-user.html', context)
+			context= {'form': form, 'error':'The passwords that you provided don\'t match'}
+			return render(request, 'base/create-user.html', context)
 		if valid_username:
 			print("---Invalid Username")
-			# context= {'form': form, 'error':'Please enter a valid username.'}
-			errors.append('Please enter a valid username.')
-			# return render(request, 'base/create-user.html', context)
-		context = {'form':form, 'errors':errors}
-		return render(request, 'base/create-user.html', context)
+			context= {'form': form, 'error':'Please enter a valid username.'}
+			return render(request, 'base/create-user.html', context)
+	   
 	context = {'form':form}
 	return render(request, 'base/create-user.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
 def editUser(request, pk):
 	page = 'editUser'
 	employee = Employee.objects.get(id=pk)
@@ -667,11 +594,10 @@ def editUser(request, pk):
 			employee.department = department(employee.position)
 			form.save()
 			return redirect('employees_list')
-	context = {'form':form, 'eid': pk, 'page':page, 'emp':employee}
+	context = {'form':form, 'eid': pk, 'page':page}
 	return render(request, 'base/edit-user.html', context)
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+
 def changeUserPass(request, pk):
     employee = Employee.objects.get(id=pk)
     if request.method == 'POST':
@@ -691,8 +617,7 @@ def changeUserPass(request, pk):
     form = SetPasswordForm(employee.user)
     return render(request, 'base/password_reset_confirm.html', {'form': form})
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+
 def deleteUser(request, pk):
     employee = Employee.objects.get(id=pk)
     if request.method == 'POST':
@@ -701,16 +626,12 @@ def deleteUser(request, pk):
         return redirect('employees_list')
     return render(request, 'base/delete.html', {'obj' :  employee.user})
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
 def change_status(request, pk):
 	employee = Employee.objects.get(id=pk)
 	employee.user.is_active = not employee.user.is_active
 	employee.user.save()
 	return redirect('employees_list')
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
 def export_excel(request, fltra, fltrd):
 	response = HttpResponse(content_type='application/ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
@@ -760,8 +681,6 @@ def export_excel(request, fltra, fltrd):
 	wb.save(response)
 	return response
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
 def act_dep_filter(request, fltra, fltrd):
 	print("in act_dep_filter")
 	print(f"fltra: {fltra}")
@@ -795,7 +714,6 @@ def act_dep_filter(request, fltra, fltrd):
 class ActRep(generic.ListView):
     model = In_out
     template_name = "base/io_archive_report.html"
-    @allowed_users(allowed_roles=['admin'])	
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         daterange = self.request.GET.get('daterange') if self.request.GET.get('daterange') != None else ''
@@ -871,8 +789,7 @@ class ActRep(generic.ListView):
            context['drange'] = '' 
         return context
     
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+
 def export_act_excel(request, name, drange):
 	sdate = dtt.datetime.strptime(drange.split(' - ')[0], '%Y-%m-%d').date()
 	edate = dtt.datetime.strptime(drange.split(' - ')[1], '%Y-%m-%d').date()
@@ -939,8 +856,7 @@ def export_act_excel(request, name, drange):
 	wb.save(response)
 	return response
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['admin'])
+
 def export_io_excel(request, name, drange):
 	sdate = dtt.datetime.strptime(drange.split(' - ')[0], '%Y-%m-%d').date()
 	edate = dtt.datetime.strptime(drange.split(' - ')[1], '%Y-%m-%d').date()
