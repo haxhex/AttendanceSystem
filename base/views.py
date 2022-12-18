@@ -68,14 +68,11 @@ def face(request):
 		img = request.POST.get('pic')
 		print(img)
 		urllib.request.urlretrieve(img, "1.png")
-		img = Image.open('1.png')
-		numpydata = np.asarray(img)
-		image = Image.fromarray(numpydata)
-		print(type(image))
+		img = Image.open('1.png').convert('RGB')
 		mtcnn = MTCNN()
-		#fcd = FaceDetector(mtcnn)
-		#fcd.run(image)
-		image.save("2.png")
+		fcd = FaceDetector(mtcnn)
+		detected = fcd.run(img)
+		detected.save("2.png")
 		context = {'page':'reg', 'msg':'Your picture register successfully!'} 
 		return render (request , "base/face.html", context)
 
