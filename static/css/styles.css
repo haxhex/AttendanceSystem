@@ -80,7 +80,8 @@ button[type="submit"] {
 }
 
 select,
-input[type="date"] {
+input[type="date"],
+input[type="text"] {
   border: 1px solid #b4b0b7;
   border-radius: 10px 10px 10px 10px;
   font-size: 18px;
