@@ -34,7 +34,7 @@
   /* JS comes here */
   (function () {
 
-    var width = 320; // We will scale the photo width to this
+    var width = 220; // We will scale the photo width to this
     var height = 0; // This will be computed based on the input stream
 
     var streaming = false;
@@ -132,28 +132,37 @@
             backdrop-filter: blur(30px);
           ">
       <h1>Face Recognition</h1>
-        <div class="contentarea">
-          <div class="camera">
-            <video id="video">Video stream not available.</video>
-          </div>
-          <div><button id="startbutton" onclick="getPic()">Take photo</button></div>
-          <canvas id="canvas"></canvas>
-          {% if page == 'reg' %}
-            <h5>{{msg}}</h5>
-          {% endif %}
-          <!-- <div class="output">
-            <img id="photo" alt="The screen capture will appear in this box.">
-          </div> -->
-  <!-- <a id="download" download="myImage.jpg" href="" onclick="download_img(this);">Download to myImage.jpg</a> -->
-        </div> 
-        <form mathod="GET" action="{% url 'register-face' %}">
-        <input id="pic" name="pic" value="" hidden>
-        <button type="submit">
+
+      <div class="contentarea">
+        <div class="camera">
+          <video id="video">Video stream not available.</video>
+        </div>
+        <div><button id="startbutton">Take photo</button></div>
+        <canvas id="canvas"></canvas>
+        {% if page == 'reg' %}
+        <h5>{{msg}}</h5>
+        {% endif %}
+        <div class="output">
+          <img id="photo" alt="The screen capture will appear in this box.">
+        </div>
+        <!-- <a id="download" download="myImage.jpg" href="" onclick="download_img(this);">Download to myImage.jpg</a> -->
+      </div>
+      <form method="POST" action="" id="form1">
+        {%csrf_token %}
+        <input id="pic" name="pic" value="klmmk">
+        <button type="submit" name="submit" value="submit" onclick="save()">
           submit
         </button>
       </form>
 </body>
+<script> function save() {
+    console.log("hello");
+    var canvas = document.getElementById('canvas');
+    document.getElementById('pic').value = canvas.toDataURL('image/png');
+    document.forms["form1"].submit();
 
+  } 
+</script>
 <script>
   var canvas = document.getElementById("canvas");
   var ctx = canvas.getContext("2d");
@@ -166,16 +175,16 @@
   ctx.fillRect(ox / 2, oy / 2, ox, oy);
 
 
-  download_img = function(el) {
+  download_img = function (el) {
     // get image URI from canvas object
     var imageURI = canvas.toDataURL("image/jpg");
     console.log(imageURI)
     el.href = imageURI;
   };
 
-  function getPic(){
+  function getPic() {
     var imageURI = canvas.toDataURL("image/jpg");
-    var pic = document.getElementById("pic"); 
+    var pic = document.getElementById("pic");
     pic.value = imageURI;
   }
 </script>

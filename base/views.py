@@ -46,19 +46,38 @@ from .utils import get_plot
 import xlwt
 from django.db.models import Q
 from dateutil import rrule, parser
+from PIL import Image
+import numpy as np
+from facerecognition.FaceDetector import *
+from facenet_pytorch import MTCNN
+import urllib.request
 
 
-@login_required(login_url='login')
+
+# @login_required(login_url='login')
+# def face(request):
+# 	context = {'page':'take'}
+# 	return render (request , "base/face.html", context)
+
 def face(request):
-	context = {'page':'take'}
-	return render (request , "base/face.html", context)
 
-def register_face(request):
-	print("reg_pic")
-	img = request.GET.get('pic') if request.GET.get('pic') != None else ''
-	print(img)
-	context = {'page':'reg', 'msg':'Your picture register successfully!'} 
-	return render (request , "base/face.html", context)
+	if request.method == "GET":
+		context = {'page' :'take'}
+		return render (request , "base/face.html" , context)
+	if request.method == "POST":
+		img = request.POST.get('pic')
+		print(img)
+		urllib.request.urlretrieve(img, "1.png")
+		img = Image.open('1.png')
+		numpydata = np.asarray(img)
+		image = Image.fromarray(numpydata)
+		print(type(image))
+		mtcnn = MTCNN()
+		fcd = FaceDetector(mtcnn)
+		fcd.run(image)
+		image.save("2.png")
+		context = {'page':'reg', 'msg':'Your picture register successfully!'} 
+		return render (request , "base/face.html", context)
 
 
 
