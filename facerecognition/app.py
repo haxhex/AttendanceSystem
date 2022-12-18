@@ -15,10 +15,15 @@ def main():
     fcr = fr([],model,fcd)
     while True:
         ret, frame = cap.read()
+    # frame = cv2.imread('facerecognition/img0.jpg')
+    # frame = Image.open('facerecognition/img0.jpg')
+    
         try:
             # detect face box, probability and landmarks
             image = Image.fromarray(frame)
-            # fcd.run(image)
+    # image = Image.fromarray(frame)
+    # new = fcd.run(frame)
+    # cv2.imwrite('facerecognition/new.jpg',np.asarray(new))
             print("applied model to frame => ",fcr.apply_model(image))
         except:
             pass

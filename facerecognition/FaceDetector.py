@@ -36,7 +36,8 @@ class FaceDetector(object):
         """
             Run the FaceDetector and draw landmarks and boxes around detected faces
         """
-        # draw on frame
+        
         boxes, probs, landmarks = self.detect(frame)
-        self._draw(frame, boxes, probs, landmarks)
+        
+        return self._draw(frame, boxes, probs, landmarks)
         
