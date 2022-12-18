@@ -65,17 +65,24 @@ def face(request):
 		context = {'page' :'take'}
 		return render (request , "base/face.html" , context)
 	if request.method == "POST":
-		img = request.POST.get('pic')
-		print(img)
-		urllib.request.urlretrieve(img, "1.png")
-		img = Image.open('1.png').convert('RGB')
-		mtcnn = MTCNN()
-		fcd = FaceDetector(mtcnn)
-		detected = fcd.run(img)
-		detected.save("2.png")
-		context = {'page':'reg', 'msg':'Your picture register successfully!'} 
-		return render (request , "base/face.html", context)
-
+		try:
+			img = request.POST.get('pic')
+			print(img)
+			img_name1 = "1.png"
+			img_name1 = "static/images/faces/" + img_name1
+			urllib.request.urlretrieve(img, img_name1)
+			img = Image.open(img_name1).convert('RGB')
+			mtcnn = MTCNN()
+			fcd = FaceDetector(mtcnn)
+			detected = fcd.run(img)
+			img_name2 = "2.png"
+			img_name2 = "static/images/faces/" + img_name2
+			detected.save(img_name2)
+			context = {'page':'reg', 'msg':'Your face detected and your picture registered successfully!'} 
+			return render (request , "base/face_registered.html", context)
+		except:			
+			context = {'page':'reg', 'msg':"There's problem in face recognition. Please try a gain!"} 
+			return render (request , "base/face.html", context)
 
 
 # User = get_user_model()
