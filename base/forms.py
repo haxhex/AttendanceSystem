@@ -218,10 +218,10 @@ class InOutForm(ModelForm):
     self.fields['end_time'].input_formats = ('%Y-%m-%dT%H:%M',)
     
 
-class FaceForm(ModelForm):
-     class Meta:
-         model = Employee
-         fields = ['face_rec']
+# class FaceForm(ModelForm):
+#      class Meta:
+#          model = Employee
+#          fields = ['face_rec']
     
 
 

@@ -73,8 +73,8 @@ def face(request):
 		image = Image.fromarray(numpydata)
 		print(type(image))
 		mtcnn = MTCNN()
-		#fcd = FaceDetector(mtcnn)
-		#fcd.run(image)
+		fcd = FaceDetector(mtcnn)
+		fcd.run(image)
 		image.save("2.png")
 		context = {'page':'reg', 'msg':'Your picture register successfully!'} 
 		return render (request , "base/face.html", context)
@@ -130,7 +130,8 @@ def employees_list(request):
         Q(department__icontains=q) |
         Q(position__icontains=q) |
         Q(email__icontains=q) |
-        Q(mobile_number__icontains=q) 
+        Q(mobile_number__icontains=q) |
+        Q(user__username__icontains =q)
         )
     # employees = Employee.objects.all()
     employees_list = []

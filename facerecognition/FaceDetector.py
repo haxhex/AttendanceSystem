@@ -38,6 +38,5 @@ class FaceDetector(object):
         """
         # draw on frame
         boxes, probs, landmarks = self.detect(frame)
-        
         self._draw(frame, boxes, probs, landmarks)
         
