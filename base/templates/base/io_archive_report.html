@@ -256,21 +256,22 @@
     <!-- first row -->
     <div class="flex-container justify-content-center">
       <form method="GET" style="display: flex; gap:15px" action="{% url 'io-archive-report' %}">
-        <div id="date-range" name="date-range">
+        <div id="date-range" name="date-range" style="color:rgb(93, 87, 87);">
           <span>Date range:</span>
           <input type="text" name="daterange" id="daterange"
-            style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7; margin: 3px; margin-top:2px;" />
+            style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7;color:rgb(93, 87, 87); margin: 3px; margin-top:0px; height:28px;" />
         </div>
         {% if user.is_superuser %}
         <div id="user-select" name="user-select">
           <!-- <label for="users">User:</label> -->
-          <select name="users" id="users" style="margin: 3px; color:rgb(93, 87, 87)">
+          <select name="users" id="users" style="margin: 3px; color:rgb(93, 87, 87);">
             <option value="">Select a user</option>
             {% for emp in employees %}
             <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>
             {% endfor %}
           </select>
         </div>
+        <button type="submit" onclick="getOption()" style="margin-right:120px; height:28px;">
         {% endif %}
         <button type="submit" onclick="getOption()" style="margin-right:120px">
           submit
