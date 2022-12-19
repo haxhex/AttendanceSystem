@@ -10,6 +10,7 @@ class FaceDetector(object):
 
     def __init__(self, mtcnn):
         self.mtcnn = mtcnn
+        self.detected = False
 
     def _draw(self, frame, boxes, probs, landmarks):
         """
@@ -29,6 +30,8 @@ class FaceDetector(object):
     
     def detect(self,frame):
         boxes, probs, landmarks = self.mtcnn.detect(frame, landmarks=True)
+        if len(boxes) != 0 :
+            self.detected = True
         return boxes, probs, landmarks
 
 

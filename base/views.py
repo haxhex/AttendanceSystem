@@ -76,6 +76,7 @@ def face(request):
 			mtcnn = MTCNN()
 			fcd = FaceDetector(mtcnn)
 			detected = fcd.run(img)
+			isFace = fcd.detected
 			img_name2 = "2.png"
 			img_name2 = "static/images/faces/" + img_name2
 			detected.save(img_name2)
