@@ -59,6 +59,7 @@ import urllib.request
 # 	context = {'page':'take'}
 # 	return render (request , "base/face.html", context)
 
+@login_required(login_url='login')
 def face(request):
 
 	if request.method == "GET":
@@ -831,7 +832,10 @@ class ActRep(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         daterange = self.request.GET.get('daterange') if self.request.GET.get('daterange') != None else ''
-        sel_user = self.request.GET.get('users') if self.request.GET.get('users') != None else ''
+        if self.request.user.is_superuser:
+            sel_user = self.request.GET.get('users') if self.request.GET.get('users') != None else ''
+        else:
+            sel_user = self.request.user.employee.id
         # s_date = str(datetime.today().strftime('%Y-%m-%d'))
         # e_date = str(datetime.today().strftime('%Y-%m-%d'))
         s_date = ''
@@ -1021,6 +1025,9 @@ def export_io_excel(request, name, drange):
 	for i in range(1, max_io+1):
 		columns.append(f"Entry {i}")
 		columns.append(f"Exit {i}")
+	if max_io == 0:
+		columns.append(f"Entry 1")
+		columns.append(f"Exit 1")
 	
 	for col_num in range(len(columns)):
 		ws.write(row_num, col_num, columns[col_num], font_style)
