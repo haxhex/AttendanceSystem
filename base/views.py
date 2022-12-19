@@ -75,13 +75,21 @@ def face(request):
 			img = Image.open(img_name1).convert('RGB')
 			mtcnn = MTCNN()
 			fcd = FaceDetector(mtcnn)
-			detected = fcd.run(img)
+			detect = fcd.run(img)
 			isFace = fcd.detected
-			img_name2 = "2.png"
-			img_name2 = "static/images/faces/" + img_name2
-			detected.save(img_name2)
-			context = {'page':'reg', 'msg':'Your face detected and your picture registered successfully!'} 
-			return render (request , "base/face_registered.html", context)
+			if isFace == True:
+				img_name2 = "2.png"
+				img_name2 = "static/images/faces/" + img_name2
+				detect.save(img_name2)
+				context = {'page':'reg', 'msg':'Your face detected and your picture registered successfully!'} 
+				return render (request , "base/face_registered.html", context)
+			elif isFace == False:
+				context = {'page':'reg', 'msg': 'No face has been detected. Please try a gain!'} 
+				return render (request , "base/face.html", context)
+
+
+
+
 		except:			
 			context = {'page':'reg', 'msg':"There's problem in face recognition. Please try a gain!"} 
 			return render (request , "base/face.html", context)
