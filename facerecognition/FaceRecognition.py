@@ -1,13 +1,13 @@
 import torch
 import numpy as np
-from PIL import Image
+from PIL import Image,ImageDraw,ImageFont
 from tensorflow.keras.preprocessing import image
+from scipy import spatial
 import cv2
 
 class FaceRecognition(object):
     
-    def __init__(self,database,model,fcd):
-        self.database = database
+    def __init__(self,model,fcd):
         self.model = model
         self.fcd = fcd
     
@@ -50,5 +50,23 @@ class FaceRecognition(object):
         # print('predicted type = ',type(predicted))
         return predicted
     
-    def similarity_check(self):
-        pass
+    def similarity_check(self,frame,db,verification_threshhold,):
+        min_dist = -1000
+        prd = self.apply_model(frame)
+
+        for (name, db_enc) in db.items():
+
+            for i in range(len(db_enc)):
+                dist =  1 - spatial.distance.cosine(prd , db_enc[i])
+                
+                # If this distance is less than the min_dist, then set min_dist to dist, and identity to name. (≈ 3 lines)
+                if min_dist < dist:
+                    min_dist = dist
+                    identity = name
+                    
+
+
+                if min_dist < verification_threshhold:
+                    identity = "Unknown"
+        
+        return identity , min_dist
