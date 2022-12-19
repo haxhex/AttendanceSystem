@@ -247,36 +247,52 @@
     backdrop-filter: blur(30px);
     ">
     <section class="text-center">
+      {% if user.is_superuser %}
       <h1>IO Archive full report</h1>
+      {% else %}
+      <h1>IO Archive</h1>
+      {% endif %}
     </section>
     <!-- first row -->
     <div class="flex-container justify-content-center">
       <form method="GET" style="display: flex; gap:15px" action="{% url 'io-archive-report' %}">
-        <div id="date-range" name="date-range">
+        <div id="date-range" name="date-range" style="color:rgb(93, 87, 87);">
           <span>Date range:</span>
           <input type="text" name="daterange" id="daterange"
-            style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7; margin: 3px; margin-top:2px;" />
+            style="border-radius: 5px 5px 5px 5px; border: 1px solid #b4b0b7;color:rgb(93, 87, 87); margin: 3px; margin-top:0px; height:28px;" />
         </div>
+        {% if user.is_superuser %}
         <div id="user-select" name="user-select">
           <!-- <label for="users">User:</label> -->
-          <select name="users" id="users" style="margin: 3px; color:rgb(93, 87, 87)">
+          <select name="users" id="users" style="margin: 3px; color:rgb(93, 87, 87);">
             <option value="">Select a user</option>
             {% for emp in employees %}
             <option value="{{emp.id}}">{{emp.first_name}} {{emp.last_name}}</option>
             {% endfor %}
           </select>
         </div>
+        <button type="submit" onclick="getOption()" style="margin-right:120px; height:28px;">
+        {% endif %}
         <button type="submit" onclick="getOption()" style="margin-right:120px">
           submit
         </button>
       </form>
       {% if name != '' and drange != '' %}
+      {% if request.user.is_superuser %}
       <a href="{% url 'export-act-excel' name drange %}">
         <button class="dark-blue-button" role="button" style="margin-right:10px">Activity Report</button>
       </a>
       <a href="{% url 'export-io-excel' name drange %}">
         <button class="dark-blue-button" role="button">IO Report</button>
       </a>
+      {% else %}
+      <a href="{% url 'export-act-excel' request.user.employee.id drange %}">
+        <button class="dark-blue-button" role="button" style="margin-right:10px">Activity Report</button>
+      </a>
+      <a href="{% url 'export-io-excel' request.user.employee.id drange %}">
+        <button class="dark-blue-button" role="button">IO Report</button>
+      </a>
+      {% endif %}
       {% endif %}
     </div>
     <!-- second row -->

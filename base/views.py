@@ -59,23 +59,31 @@ import urllib.request
 # 	context = {'page':'take'}
 # 	return render (request , "base/face.html", context)
 
+@login_required(login_url='login')
 def face(request):
 
 	if request.method == "GET":
 		context = {'page' :'take'}
 		return render (request , "base/face.html" , context)
 	if request.method == "POST":
-		img = request.POST.get('pic')
-		print(img)
-		urllib.request.urlretrieve(img, "1.png")
-		img = Image.open('1.png').convert('RGB')
-		mtcnn = MTCNN()
-		fcd = FaceDetector(mtcnn)
-		detected = fcd.run(img)
-		detected.save("2.png")
-		context = {'page':'reg', 'msg':'Your picture register successfully!'} 
-		return render (request , "base/face.html", context)
-
+		try:
+			img = request.POST.get('pic')
+			print(img)
+			img_name1 = "1.png"
+			img_name1 = "static/images/faces/" + img_name1
+			urllib.request.urlretrieve(img, img_name1)
+			img = Image.open(img_name1).convert('RGB')
+			mtcnn = MTCNN()
+			fcd = FaceDetector(mtcnn)
+			detected = fcd.run(img)
+			img_name2 = "2.png"
+			img_name2 = "static/images/faces/" + img_name2
+			detected.save(img_name2)
+			context = {'page':'reg', 'msg':'Your face detected and your picture registered successfully!'} 
+			return render (request , "base/face_registered.html", context)
+		except:			
+			context = {'page':'reg', 'msg':"There's problem in face recognition. Please try a gain!"} 
+			return render (request , "base/face.html", context)
 
 
 # User = get_user_model()
@@ -214,83 +222,83 @@ def registerPage(request):
 		fname = request.POST.get('first_name')
 		lname = request.POST.get('last_name')
 		errors = []
-		if passwordvalue1 == passwordvalue2:
-			print("----Password Matched")
-			if passwordvalue1 == uservalue:
-				# context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
-				# print("----Password match username")
-				# return render(request, 'base/sign-up.html', context)
-				er = True
-				errors.append('Your password can\'t be too similar to your other personal information. Please try another password.')
-			if len(passwordvalue1) < 8:
-				# context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
-				# print("----Password is too short")
-				# return render(request, 'base/sign-up.html', context)
-				er = True
-				errors.append('Your password must contain at least 8 characters. Please try another password.')
-			if not re.match('.*[0-9]', passwordvalue1):
-				# print("---Your password must contain a number")
-				# context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
-				# return render(request, 'base/sign-up.html', context)
-				er = True
-				errors.append('Your password must contain a number. Please try another password.')
-			if not re.match('.*[A-Z]', passwordvalue1):
-				# print("---Your password must contain at least 1 upper case character.")
-				# context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
-				# return render(request, 'base/sign-up.html', context)
-				er = True
-				errors.append('Your password must contain at least 1 upper case character. Please try another password.')
-			if not re.match('.*[a-z]', passwordvalue1):
-				# print("Your password must contain at least 1 lower case character." )
-				# context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
-				# return render(request, 'base/sign-up.html', context)
-				er = True
-				errors.append('Your password must contain at least 1 lower case character. Please try another password.')			
-			try:
-				user= User.objects.get(username=uservalue)
-				# context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
-				# print("----User Exist")
-				# return render(request, 'base/sign-up.html', context)
-				er = True
-				errors.append('The username you entered has already been taken. Please try another username.')			
-			except User.DoesNotExist:
-				print("-----User Not Exist")
-				try:
-					user= User.objects.get(email=emailvalue)
-					# context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
-					# return render(request, 'base/sign-up.html', context)
-					er = True
-					errors.append('The email you entered has already been taken. Please try another email.')			
-				except:
-					print("Email not repeated")
-          			
-					if form.is_valid():
-						print("----Form is Valid")
-						user = form.save()
-						username = request.POST.get('username')
-						email = request.POST.get('email')
-						first_name = request.POST.get('first_name')
-						last_name = request.POST.get('last_name')
-						group = Group.objects.get(name='employee')
-						user.groups.add(group)
-						Employee.objects.create(
-							user = user,
-							email = email,
-							first_name = first_name,
-							last_name = last_name,
-							department = request.POST.get('department')
-						)
-						context= {'form': form}
-						messages.success(request, 'Account was created for ' + username)
-						valid_username = False
-						return redirect('login')
-		else:
+		if passwordvalue1 != passwordvalue2:
 			# print("---Password not match")
 			# context= {'form': form, 'error':'The passwords that you provided don\'t match'}
 			# return render(request, 'base/sign-up.html', context)
 			er = True
-			errors.append('The passwords that you provided don\'t match')			
-		if valid_username:
+			errors.append('The passwords that you provided don\'t match')	
+			# print("----Password Matched")
+		if passwordvalue1 == uservalue:
+			# context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
+			# print("----Password match username")
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password can\'t be too similar to your other personal information. Please try another password.')
+		if len(passwordvalue1) < 8:
+			# context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
+			# print("----Password is too short")
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password must contain at least 8 characters. Please try another password.')
+		if not re.match('.*[0-9]', passwordvalue1):
+			# print("---Your password must contain a number")
+			# context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password must contain a number. Please try another password.')
+		if not re.match('.*[A-Z]', passwordvalue1):
+			# print("---Your password must contain at least 1 upper case character.")
+			# context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password must contain at least 1 upper case character. Please try another password.')
+		if not re.match('.*[a-z]', passwordvalue1):
+			# print("Your password must contain at least 1 lower case character." )
+			# context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password must contain at least 1 lower case character. Please try another password.')			
+		try:
+			user= User.objects.get(username=uservalue)
+			print("User Exist")
+			# context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
+			# print("----User Exist")
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('The username you entered has already been taken. Please try another username.')			
+		except User.DoesNotExist:
+			print("-----User Not Exist")
+		try:
+			user= User.objects.get(email=emailvalue)
+			# context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('The email you entered has already been taken. Please try another email.')			
+		except:
+			print("Email not repeated")          			
+			if form.is_valid():
+				print("----Form is Valid")
+				user = form.save()
+				username = request.POST.get('username')
+				email = request.POST.get('email')
+				first_name = request.POST.get('first_name')
+				last_name = request.POST.get('last_name')
+				group = Group.objects.get(name='employee')
+				user.groups.add(group)
+				Employee.objects.create(
+					user = user,
+					email = email,
+					first_name = first_name,
+					last_name = last_name,
+					department = request.POST.get('department')
+				)
+				context= {'form': form}
+				messages.success(request, 'Account was created for ' + username)
+				valid_username = False
+				return redirect('login')
+		
+		if er == False and valid_username and not form.is_valid():
 			# print("---Invalid Username")
 			# context= {'form': form, 'error':'Please enter a valid username.'}
 			# return render(request, 'base/sign-up.html', context)
@@ -499,7 +507,8 @@ def createUser(request):
     return render(request, 'base/create-user.html')
 
 
-def createUser(request):
+def createUser(request):   
+	er = False
 	valid_username = True
 	emailvalue=''
 	uservalue=''
@@ -515,72 +524,180 @@ def createUser(request):
 		passwordvalue2 = request.POST.get('password2')
 		fname = request.POST.get('first_name')
 		lname = request.POST.get('last_name')
-		if passwordvalue1 == passwordvalue2:
-			print("----Password Matched")
-			if passwordvalue1 == uservalue:
-				context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
-				print("----Password match username")
-				return render(request, 'base/create-user.html', context)
-			if len(passwordvalue1) < 8:
-				context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
-				print("----Password is too short")
-				return render(request, 'base/create-user.html', context)
-			if not re.match('.*[0-9]', passwordvalue1):
-				print("---Your password must contain a number")
-				context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
-				return render(request, 'base/create-user.html', context)
-			if not re.match('.*[A-Z]', passwordvalue1):
-				print("---Your password must contain at least 1 upper case character.")
-				context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
-				return render(request, 'base/create-user.html', context)
-			if not re.match('.*[a-z]', passwordvalue1):
-				print("Your password must contain at least 1 lower case character." )
-				context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
-				return render(request, 'base/create-user.html', context)			
-			try:
-				user= User.objects.get(username=uservalue)
-				context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
-				print("----User Exist")
-				return render(request, 'base/create-user.html', context)
-			except User.DoesNotExist:
-				print("-----User Not Exist")
-				try:
-					user= User.objects.get(email=emailvalue)
-					context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
-					return render(request, 'base/create-user.html', context)
-				except:
-					print("Email not repeated")
-          			
-					if form.is_valid():
-						print("----Form is Valid")
-						user = form.save()
-						username = request.POST.get('username')
-						email = request.POST.get('email')
-						first_name = request.POST.get('first_name')
-						last_name = request.POST.get('last_name')
-						group = Group.objects.get(name='employee')
-						user.groups.add(group)
-						Employee.objects.create(
-							user = user,
-							email = email,
-							first_name = first_name,
-							last_name = last_name
-						)
-						context= {'form': form}
-						messages.success(request, 'Account was created for ' + username)
-						valid_username = False
-						return redirect('employees_list')
-		else:
-			print("---Password not match")
-			context= {'form': form, 'error':'The passwords that you provided don\'t match'}
-			return render(request, 'base/create-user.html', context)
-		if valid_username:
-			print("---Invalid Username")
-			context= {'form': form, 'error':'Please enter a valid username.'}
-			return render(request, 'base/create-user.html', context)
-	   
+		errors = []
+		if passwordvalue1 != passwordvalue2:
+			# print("---Password not match")
+			# context= {'form': form, 'error':'The passwords that you provided don\'t match'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('The passwords that you provided don\'t match')	
+			# print("----Password Matched")
+		if passwordvalue1 == uservalue:
+			# context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
+			# print("----Password match username")
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password can\'t be too similar to your other personal information. Please try another password.')
+		if len(passwordvalue1) < 8:
+			# context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
+			# print("----Password is too short")
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password must contain at least 8 characters. Please try another password.')
+		if not re.match('.*[0-9]', passwordvalue1):
+			# print("---Your password must contain a number")
+			# context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password must contain a number. Please try another password.')
+		if not re.match('.*[A-Z]', passwordvalue1):
+			# print("---Your password must contain at least 1 upper case character.")
+			# context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password must contain at least 1 upper case character. Please try another password.')
+		if not re.match('.*[a-z]', passwordvalue1):
+			# print("Your password must contain at least 1 lower case character." )
+			# context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Your password must contain at least 1 lower case character. Please try another password.')			
+		try:
+			user= User.objects.get(username=uservalue)
+			print("User Exist")
+			# context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
+			# print("----User Exist")
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('The username you entered has already been taken. Please try another username.')			
+		except User.DoesNotExist:
+			print("-----User Not Exist")
+		try:
+			user= User.objects.get(email=emailvalue)
+			# context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('The email you entered has already been taken. Please try another email.')			
+		except:
+			print("Email not repeated")          			
+			if form.is_valid():
+				print("----Form is Valid")
+				user = form.save()
+				username = request.POST.get('username')
+				email = request.POST.get('email')
+				first_name = request.POST.get('first_name')
+				last_name = request.POST.get('last_name')
+				group = Group.objects.get(name='employee')
+				user.groups.add(group)
+				Employee.objects.create(
+					user = user,
+					email = email,
+					first_name = first_name,
+					last_name = last_name,
+					department = request.POST.get('department')
+				)
+				context= {'form': form}
+				messages.success(request, 'Account was created for ' + username)
+				valid_username = False
+				return redirect('employees_list')
+		
+		if er == False and valid_username and not form.is_valid():
+			# print("---Invalid Username")
+			# context= {'form': form, 'error':'Please enter a valid username.'}
+			# return render(request, 'base/sign-up.html', context)
+			er = True
+			errors.append('Please enter a valid username.')			
+
+	if er:
+		context= {'form': form, 'errors':errors}
+		return render(request, 'base/create-user.html', context)
+
 	context = {'form':form}
 	return render(request, 'base/create-user.html', context)
+    
+    
+    
+	# valid_username = True
+	# emailvalue=''
+	# uservalue=''
+	# passwordvalue1=''
+	# passwordvalue2=''
+	# form = CreateUserForm()
+	# if request.method == 'POST':
+	# 	form = CreateUserForm(request.POST)
+	# 	print("Form Created")
+	# 	uservalue = request.POST.get('username')
+	# 	emailvalue = request.POST.get('email')
+	# 	passwordvalue1 = request.POST.get('password1')
+	# 	passwordvalue2 = request.POST.get('password2')
+	# 	fname = request.POST.get('first_name')
+	# 	lname = request.POST.get('last_name')
+	# 	if passwordvalue1 == passwordvalue2:
+	# 		print("----Password Matched")
+	# 		if passwordvalue1 == uservalue:
+	# 			context= {'form': form, 'error':'Your password can’t be too similar to your other personal information. Please try another password.'}
+	# 			print("----Password match username")
+	# 			return render(request, 'base/create-user.html', context)
+	# 		if len(passwordvalue1) < 8:
+	# 			context= {'form': form, 'error':'Your password must contain at least 8 characters. Please try another password.'}
+	# 			print("----Password is too short")
+	# 			return render(request, 'base/create-user.html', context)
+	# 		if not re.match('.*[0-9]', passwordvalue1):
+	# 			print("---Your password must contain a number")
+	# 			context= {'form': form, 'error':'Your password must contain a number. Please try another password.'}
+	# 			return render(request, 'base/create-user.html', context)
+	# 		if not re.match('.*[A-Z]', passwordvalue1):
+	# 			print("---Your password must contain at least 1 upper case character.")
+	# 			context= {'form': form, 'error':'Your password must contain at least 1 upper case character. Please try another password.'}
+	# 			return render(request, 'base/create-user.html', context)
+	# 		if not re.match('.*[a-z]', passwordvalue1):
+	# 			print("Your password must contain at least 1 lower case character." )
+	# 			context= {'form': form, 'error':'Your password must contain at least 1 lower case character. Please try another password.'}
+	# 			return render(request, 'base/create-user.html', context)			
+	# 		try:
+	# 			user= User.objects.get(username=uservalue)
+	# 			context= {'form': form, 'error':'The username you entered has already been taken. Please try another username.'}
+	# 			print("----User Exist")
+	# 			return render(request, 'base/create-user.html', context)
+	# 		except User.DoesNotExist:
+	# 			print("-----User Not Exist")
+	# 			try:
+	# 				user= User.objects.get(email=emailvalue)
+	# 				context= {'form': form, 'error':'The email you entered has already been taken. Please try another email.'}
+	# 				return render(request, 'base/create-user.html', context)
+	# 			except:
+	# 				print("Email not repeated")
+          			
+	# 				if form.is_valid():
+	# 					print("----Form is Valid")
+	# 					user = form.save()
+	# 					username = request.POST.get('username')
+	# 					email = request.POST.get('email')
+	# 					first_name = request.POST.get('first_name')
+	# 					last_name = request.POST.get('last_name')
+	# 					group = Group.objects.get(name='employee')
+	# 					user.groups.add(group)
+	# 					Employee.objects.create(
+	# 						user = user,
+	# 						email = email,
+	# 						first_name = first_name,
+	# 						last_name = last_name
+	# 					)
+	# 					context= {'form': form}
+	# 					messages.success(request, 'Account was created for ' + username)
+	# 					valid_username = False
+	# 					return redirect('employees_list')
+	# 	else:
+	# 		print("---Password not match")
+	# 		context= {'form': form, 'error':'The passwords that you provided don\'t match'}
+	# 		return render(request, 'base/create-user.html', context)
+	# 	if valid_username:
+	# 		print("---Invalid Username")
+	# 		context= {'form': form, 'error':'Please enter a valid username.'}
+	# 		return render(request, 'base/create-user.html', context)
+	   
+	# context = {'form':form}
+	# return render(request, 'base/create-user.html', context)
 
 def editUser(request, pk):
 	page = 'editUser'
@@ -715,7 +832,10 @@ class ActRep(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         daterange = self.request.GET.get('daterange') if self.request.GET.get('daterange') != None else ''
-        sel_user = self.request.GET.get('users') if self.request.GET.get('users') != None else ''
+        if self.request.user.is_superuser:
+            sel_user = self.request.GET.get('users') if self.request.GET.get('users') != None else ''
+        else:
+            sel_user = self.request.user.employee.id
         # s_date = str(datetime.today().strftime('%Y-%m-%d'))
         # e_date = str(datetime.today().strftime('%Y-%m-%d'))
         s_date = ''
@@ -823,7 +943,7 @@ def export_act_excel(request, name, drange):
 			t_vals.append(date_time.strftime("%H:%M:%S"))
 	print(t_vals)
 	response = HttpResponse(content_type='application/ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
+	response['Content-Disposition'] = 'attachment; filename=Activities_Report ' + \
 		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
 	wb = xlwt.Workbook(encoding='utf-8')
 	ws = wb.add_sheet('Employees')
@@ -894,7 +1014,7 @@ def export_io_excel(request, name, drange):
 			max_io += 1
 	print(t_vals)
 	response = HttpResponse(content_type='application/ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=Employees_List ' + \
+	response['Content-Disposition'] = 'attachment; filename=IO_Report ' + \
 		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
 	wb = xlwt.Workbook(encoding='utf-8')
 	ws = wb.add_sheet('Employees')
@@ -905,6 +1025,9 @@ def export_io_excel(request, name, drange):
 	for i in range(1, max_io+1):
 		columns.append(f"Entry {i}")
 		columns.append(f"Exit {i}")
+	if max_io == 0:
+		columns.append(f"Entry 1")
+		columns.append(f"Exit 1")
 	
 	for col_num in range(len(columns)):
 		ws.write(row_num, col_num, columns[col_num], font_style)

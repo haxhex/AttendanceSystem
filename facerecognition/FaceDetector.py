@@ -20,7 +20,7 @@ class FaceDetector(object):
             for box, prob, ld in zip(boxes, probs, landmarks):
                 draw.rectangle(((box[0],box[1]),(box[2],box[3])),outline=(255,0,0),width=5)
                 
-                draw.text((box[2],box[3]),str(prob))
+                
                 
         except:
             pass
