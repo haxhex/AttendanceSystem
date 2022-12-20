@@ -10,6 +10,7 @@
       .flex-container {
         display: flex;
         padding: 5px;
+        flex-direction: row-reverse;
       }
 
 
@@ -31,11 +32,13 @@
 
       .left {
         float: left;
+        margin-left: 80px;
+        margin-bottom: 5px;
       }
 
       .right {
         float: right;
-        margin-left: 5px;
+        margin-right: 80px;
       }
 
       .btn {
@@ -245,16 +248,13 @@
         <input type="submit" />
       </form> -->
 
-      <div class="clearfix">
-        <a class="btn right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
-        <a class="btn right" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
-      </div>
-
       <div class="flex-container">
-        <div style="width:30%; margin:10px; margin-left: 30px;">
-          <canvas id="myChart" width="700" height="1200" style="border:3px solid #b4b0b7; padding: 10px;"></canvas>
+        <div style="width:40%; margin-right: 30px; margin-top:50px;">
+          <canvas id="myChart" width="700" height="700" style="border:3px solid #b4b0b7; padding: 10px;"></canvas>
         </div>
         <div style="width:70%;">
+          <a class="btn left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
+          <a class="btn right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
           {{ calendar }}
         </div>
       </div>
