@@ -294,13 +294,16 @@ def registerPage(request):
 				first_name = request.POST.get('first_name')
 				last_name = request.POST.get('last_name')
 				group = Group.objects.get(name='employee')
+				position = position = request.POST.get('position')
+				department1 = department(position)
 				user.groups.add(group)
 				Employee.objects.create(
 					user = user,
 					email = email,
 					first_name = first_name,
 					last_name = last_name,
-					department = request.POST.get('department')
+					position = position,
+					department = department1
 				)
 				context= {'form': form}
 				messages.success(request, 'Account was created for ' + username)
