@@ -30,7 +30,7 @@ class FaceDetector(object):
     
     def detect(self,frame):
         boxes, probs, landmarks = self.mtcnn.detect(frame, landmarks=True)
-        if len(boxes) != 0 :
+        if boxes is not None :
             self.detected = True
         return boxes, probs, landmarks
 
