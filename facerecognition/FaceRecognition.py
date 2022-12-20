@@ -57,7 +57,7 @@ class FaceRecognition(object):
         for (name, db_enc) in db.items():
 
             for i in range(len(db_enc)):
-                dist =  1 - spatial.distance.cosine(prd , db_enc[i])
+                dist =  spatial.distance.cosine(prd , db_enc[i])
                 
                 # If this distance is less than the min_dist, then set min_dist to dist, and identity to name. (≈ 3 lines)
                 if min_dist < dist:
