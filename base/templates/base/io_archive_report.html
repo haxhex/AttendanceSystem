@@ -273,24 +273,24 @@
         </div>
         <!-- <button type="submit" onclick="getOption()" style="margin-right:120px; height:28px;"> -->
         {% endif %}
-        <button type="submit" onclick="getOption()" style="margin-right:120px; height:28px;">
-          submit
+        <button type="submit" onclick="getOption()" style="margin-right:120px; height:28px; padding-top: 2px;">
+          Apply
         </button>
       </form>
       {% if name != '' and drange != '' %}
       {% if request.user.is_superuser %}
       <a href="{% url 'export-act-excel' name drange %}">
-        <button class="dark-blue-button" role="button" style="margin-right:10px">Activity Report</button>
+        <button class="dark-blue-button" role="button" style="margin-right:10px; height:28px; padding-top: 2px;">Activity Report</button>
       </a>
       <a href="{% url 'export-io-excel' name drange %}">
-        <button class="dark-blue-button" role="button">IO Report</button>
+        <button class="dark-blue-button" role="button" style="height:28px; padding-top: 2px;">IO Report</button>
       </a>
       {% else %}
       <a href="{% url 'export-act-excel' request.user.employee.id drange %}">
-        <button class="dark-blue-button" role="button" style="margin-right:10px">Activity Report</button>
+        <button class="dark-blue-button" role="button" style="margin-right:10px; height:28px; padding-top: 2px;">Activity Report</button>
       </a>
       <a href="{% url 'export-io-excel' request.user.employee.id drange %}">
-        <button class="dark-blue-button" role="button">IO Report</button>
+        <button class="dark-blue-button" role="button" style="height:28px; padding-top: 2px;">IO Report</button>
       </a>
       {% endif %}
       {% endif %}
