@@ -282,6 +282,9 @@
                 margin-right: auto; */
             "
             >
+            {% for message in messages %}
+              <p id="messages">{{message}}</p>
+              {% endfor %}	
             <h1>Employees' list</h1>
             <div>
                 <div>
