@@ -1025,8 +1025,8 @@ def export_io_excel(request, name, drange):
 			date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
 			# t_vals.append(date_time)  
 			t_vals.append(date_time.strftime("%H:%M:%S"))
-		else:
 			max_io += 1
+		# else:
 	print(t_vals)
 	response = HttpResponse(content_type='application/ms-excel')
 	response['Content-Disposition'] = 'attachment; filename=IO_Report ' + \
@@ -1037,15 +1037,8 @@ def export_io_excel(request, name, drange):
 	font_style = xlwt.XFStyle()
 	font_style.font.bold = True
 	columns = ['Date', 'Working Hours']
-	for i in range(1, max_io+1):
-		columns.append(f"Entry {i}")
-		columns.append(f"Exit {i}")
-	if max_io == 0:
-		columns.append(f"Entry 1")
-		columns.append(f"Exit 1")
-	
-	for col_num in range(len(columns)):
-		ws.write(row_num, col_num, columns[col_num], font_style)
+ 
+	max_io = 0
 	
 	employees = Employee.objects.all()
 	employees_list = []
@@ -1066,8 +1059,17 @@ def export_io_excel(request, name, drange):
 				if str(io.start_time.date()) == str(dates_ss[i]):
 					ws.write(rowx, 2 + 2*ii, str(io.start_time.time()), font_style)
 					ws.write(rowx, 3 + 2*ii, str(io.end_time.time()), font_style)
+					max_io += 1
 					ii += 1
 			i += 1
+   
+	for i in range(1, max_io):
+		columns.append(f"Entry {i}")
+		columns.append(f"Exit {i}")
+		print(columns)
+ 
+	for col_num in range(len(columns)):
+		ws.write(0, col_num, columns[col_num], font_style)
 	
 	wb.save(response)
 	return response
