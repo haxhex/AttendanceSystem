@@ -126,47 +126,72 @@ def io_archive(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def io_report(request):
-    employees_list = []
-    employees = Employee.objects.all()
-    for employee in employees:
-        if employee.user.id != request.user.id:
-            employees_list.append(employee) 
+	employees_list = []
+	employees = Employee.objects.all()
+	for employee in employees:
+		if employee.user.id != request.user.id:
+			employees_list.append(employee) 
             
             
-	# in_outs = in_outs.filter(start_time__day=day, employee = user_id)
-	# 	# print(start_date)
-	# 	sdate = datetime.strptime(start_date, '%Y-%m-%d').date()		
-	# 	edate = datetime.strptime(end_date, '%Y-%m-%d').date()
-	# 	# print(end_date)
-	# 	for ins in in_outs_per_day:
-	# 		if not (sdate <= ins.start_time.date() and edate >= ins.start_time.date()):
-	# 			day = 0
-	# 		# else:
-	# 		# 	day = 0
-	# 	d = ''
-	# 	total = []
-	# 	i = 0
-	# 	for in_out in in_outs_per_day:
-	# 		in_out_times = str(in_out.get_html_url)
-	# 		in_out_times_arr = in_out_times.split(' ')
-	# 		FMT = '%H:%M:%S'
-	# 		tdelta = dt.strptime(in_out_times_arr[6], FMT) - dt.strptime(in_out_times_arr[2], FMT)
-	# 		total.append(str(tdelta))
-	# 		d += f'<li> {in_out.get_html_url}'
-		
-	# 	if day != 0:
-	# 		mysum = dtt.timedelta()
-	# 		for i in total:
-	# 			(h, m, s) = i.split(':')
-	# 			dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
-	# 			mysum += dd
-	# 		if (str(mysum) == '0:00:00'):
-	# 			mysum = ''
-	# 		else:
-	# 			mysum = "Total: " + str(mysum)
-    
-    context = {'employees' : employees_list}
-    return render(request ,'base/io_report.html', context)
+	# sdate = dtt.datetime.strptime(drange.split(' - ')[0], '%Y-%m-%d').date()
+	# edate = dtt.datetime.strptime(drange.split(' - ')[1], '%Y-%m-%d').date()
+	# date_generated = [sdate + dtt.timedelta(days=x) for x in range(0, (edate-sdate).days+1)]
+	working_hours = []
+	in_outs = In_out.objects.all()
+	in_out_list = []
+	dates_ss = []
+	names = []
+	for emp in employees_list:
+		in_out_nums = 0
+		for in_out in in_outs:
+			if in_out.employee.id == emp.id:
+				in_out_nums += 1
+		if in_out_nums > 0:
+			for in_out in in_outs:
+				if in_out.employee.id == emp.id:
+					in_out_list.append(in_out)
+					if str(in_out.start_time.date()) not in dates_ss:
+						dates_ss.append(str(in_out.start_time.date()))
+				t_vals = []
+				for dte in dates_ss:   	
+					total = []
+					for in_out in in_outs:    
+						if in_out.employee.id == emp.id:
+							if str(in_out.start_time.date()) == dte:
+								FMT = '%H:%M:%S'
+								tdelta = dt.strptime(str(in_out.end_time.time()), FMT) - dt.strptime(str(in_out.start_time.time()), FMT)
+								total.append(str(tdelta))
+					mysum = dtt.timedelta()
+					for i in total:
+						(h, m, s) = i.split(':')
+						dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+						mysum += dd
+						date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
+					t_vals.append(date_time.strftime("%H:%M:%S"))
+			# print("----------------")	
+			# print(t_vals)
+			# print("----------------")	
+			for hh in t_vals:
+				(h, m, s) = hh.split(':')
+				dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+				mysum += dd
+				try:
+					date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
+				except:
+					continue
+			working_hours.append(date_time.strftime("%H:%M:%S"))
+			names.append(emp.id)
+		else:
+			working_hours.append("00:00:00")
+	# print(working_hours)
+	# print(names)
+	
+ 
+	
+
+	emps_list = zip(employees_list, working_hours)
+	context = {'employees' : emps_list}
+	return render(request ,'base/io_report.html', context)
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
