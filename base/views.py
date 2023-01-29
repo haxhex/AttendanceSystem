@@ -802,7 +802,7 @@ def editUser(request, pk):
 			employee.department = department(employee.position)
 			form.save()
 			return redirect('employees_list')
-	context = {'form':form, 'eid': pk, 'page':page, 'position':employee.position}
+	context = {'form':form, 'eid': pk, 'page':page, 'position':employee.position, 'emper':employee}
 	return render(request, 'base/edit-user.html', context)
 
 
@@ -1334,6 +1334,28 @@ def add_position(request):
 
 	context = {'form':form}
 	return render(request, 'base/create-position.html', context)
+
+def switch_role(request, pk):
+    print("-------****---------")
+    emp = Employee.objects.get(id=pk)
+    print(emp.user.id)
+    user = User.objects.get(id=emp.user.id)
+    print(user.groups.all()[0].name)
+    if user.groups.all()[0].name == "employee":
+       print("-------****---------")
+       group = Group.objects.get(name='admin')
+       user.groups.add(group)
+       group = Group.objects.get(name='employee')
+       user.groups.remove(group)
+    else:
+       print("-------FK---------")
+       group = Group.objects.get(name='employee')
+       user.groups.add(group)
+       group = Group.objects.get(name='admin')
+       user.groups.remove(group)
+    print("-------****---------")
+    return redirect('edit-user', pk)
+
     
     
 
