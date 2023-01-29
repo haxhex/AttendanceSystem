@@ -186,7 +186,15 @@ def io_report(request):
 	
 
 	emps_list = zip(employees_list, working_hours)
-	context = {'employees' : emps_list}
+	dates = []
+	for in_out in in_outs:
+		if in_out.start_time.date() not in dates:
+			dates.append(str(in_out.start_time.date()))
+	min_date = min(dates)
+	max_date = max(dates)
+	drange = min_date + " - " + max_date
+    
+	context = {'employees' : emps_list, 'dep' : 'All', 'drange' : drange}
 	return render(request ,'base/io_report.html', context)
 
 @login_required(login_url='login')
@@ -1035,7 +1043,7 @@ def export_act_excel(request, name, drange):
 	for employee in employees:
 		employees_list.append(employee)
 	i = 0
-	for row_num in range(len(date_generated)):
+	for row_num in range(len()):
 		rowx = row_num+1
 		ws.write(rowx, 0, str(date_generated[row_num]), font_style)
 		if date_generated[row_num] not in dates_ss:
@@ -1208,4 +1216,95 @@ def dep_filter(request, dep, drange):
 	emps_list = zip(employees_list, working_hours)
  
 	return render(request, 'base/io_report.html', {'employees': emps_list, 'dep':dep, 'drange' : drange})
+
+
+def export_total_hours(request, dep, drange):
+	sdate = dtt.datetime.strptime(drange.split(' - ')[0], '%Y-%m-%d').date()
+	edate = dtt.datetime.strptime(drange.split(' - ')[1], '%Y-%m-%d').date()
+	date_generated = [sdate + dtt.timedelta(days=x) for x in range(0, (edate-sdate).days+1)]
+	s_date =  drange.split(' - ')[0]
+	e_date =  drange.split(' - ')[1]
+	employees = Employee.objects.all()
+	employees_list = []
+	if dep != 'All':
+		for em in employees:
+			if em.department == dep:
+				employees_list.append(em)
+	else:
+		for em in employees:
+			employees_list.append(em)
+	in_outs = In_out.objects.filter(start_time__range=[dtt.datetime.strptime(s_date, "%Y-%m-%d"), dtt.datetime.strptime(e_date, "%Y-%m-%d")])
+	print("---------------")
+	for io in in_outs:
+		print(io.employee.first_name + "----" + str(io.start_time) + "----" + str(io.end_time))
+	print("----------------")
+	dates_ss = []
+	for in_out in in_outs:
+		if in_out.employee.department == dep:
+			if str(in_out.start_time.date()) not in dates_ss:
+				dates_ss.append(in_out.start_time.date())
+	print("******")
+	print(dates_ss)
+	working_hours = []
+	for emp in employees_list:
+		in_out_list = []
+		in_out_nums = 0
+		for in_out in in_outs:
+			if in_out.employee.id == emp.id:
+				in_out_nums += 1
+		if in_out_nums > 0:
+			for in_out in in_outs:
+				if in_out.employee.id == emp.id:
+					in_out_list.append(in_out)
+			if len(in_out_list) > 0:
+				timeList = []
+				timeList1 = []
+				for ins in in_out_list:
+					timeList.append(str(ins.start_time.time()))
+					timeList1.append(str(ins.end_time.time()))
+
+				mysum1 = dtt.timedelta()
+				for i in timeList:
+					(h, m, s) = i.split(':')
+					d = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+					mysum1 += d
+				print(str(mysum1))
+				mysum2 = dtt.timedelta()
+				for i in timeList1:
+					(h, m, s) = i.split(':')
+					d = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+					mysum2 += d
+					
+				print(str(mysum2))
+
+				time = mysum2 - mysum1
+				print("----------------")
+				print(time)
+				print("----------------")
+				working_hours.append(str(time))
+		else:
+			working_hours.append("00:00:00")
+
+	print(working_hours)
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename=Activities_Report ' + \
+		str(dtt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))+'.xls'
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('Working Hours')
+	row_num = 0
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+	columns = ['Name', 'Working Hours']
+	for col_num in range(len(columns)):
+		ws.write(row_num, col_num, columns[col_num], font_style)
+	
+	 
+	for rowx in range(len(employees_list)):
+		ws.write(rowx+1, 0, employees_list[rowx].first_name + " " + employees_list[rowx].last_name, font_style)
+		ws.write(rowx+1, 1, working_hours[rowx], font_style)
+					
+	wb.save(response)
+	return response
+    
+    
 

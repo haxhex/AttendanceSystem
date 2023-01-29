@@ -30,6 +30,7 @@ urlpatterns = [
     path("act-dep-filter/<str:fltra>/<str:fltrd>/" , views.act_dep_filter , name="act-dep-filter"),  
     path('export-act-excel/<str:name>/<str:drange>/', views.export_act_excel, name="export-act-excel"),
     path('export-io-excel/<str:name>/<str:drange>/', views.export_io_excel, name="export-io-excel"),
+    path('export-total-hours/<str:dep>/<str:drange>/', views.export_total_hours, name="export-total-hours"),
     # path('register-face/', views.register_face, name="register-face"),
     re_path(r'^calendar/$', views.CalendarView.as_view(), name='calendar'),
     re_path(r'^event/new/$', views.event, name='event_new'),

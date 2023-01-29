@@ -337,8 +337,12 @@
                                                     </div>
                                                     </div>
                                                     <div class="col-sm-7">
+                                                        {% if dep != '' and drange != '' %}
+                                                        <a href="{% url 'export-total-hours' dep drange  %}" class="btn btn-secondary" style="border-radius: 5px 5px 5px 5px;"><i class="material-icons">&#xE24D;</i> <span>Activities Report</span></a>
+                                                        {% else %}
                                                         <a href="" class="btn btn-secondary" style="border-radius: 5px 5px 5px 5px;"><i class="material-icons">&#xE24D;</i> <span>Activities Report</span></a>
-                                                        <a href="" class="btn btn-secondary" style="border-radius: 5px 5px 5px 5px;"><i class="material-icons">&#xE24D;</i> <span>IO Reportl</span></a>						
+                                                        {% endif %}
+                                                        <!-- <a href="" class="btn btn-secondary" style="border-radius: 5px 5px 5px 5px;"><i class="material-icons">&#xE24D;</i> <span>IO Reportl</span></a>						 -->
                                                 </div>    
 
               
