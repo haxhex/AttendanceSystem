@@ -138,8 +138,6 @@ def io_report(request):
 	# date_generated = [sdate + dtt.timedelta(days=x) for x in range(0, (edate-sdate).days+1)]
 	working_hours = []
 	in_outs = In_out.objects.all()
-	in_out_list = []
-	dates_ss = []
 	names = []
 	for emp in employees_list:
 		in_out_nums = 0
@@ -147,39 +145,37 @@ def io_report(request):
 			if in_out.employee.id == emp.id:
 				in_out_nums += 1
 		if in_out_nums > 0:
+			in_out_list = []
 			for in_out in in_outs:
 				if in_out.employee.id == emp.id:
 					in_out_list.append(in_out)
-					if str(in_out.start_time.date()) not in dates_ss:
-						dates_ss.append(str(in_out.start_time.date()))
-				t_vals = []
-				for dte in dates_ss:   	
-					total = []
-					for in_out in in_outs:    
-						if in_out.employee.id == emp.id:
-							if str(in_out.start_time.date()) == dte:
-								FMT = '%H:%M:%S'
-								tdelta = dt.strptime(str(in_out.end_time.time()), FMT) - dt.strptime(str(in_out.start_time.time()), FMT)
-								total.append(str(tdelta))
-					mysum = dtt.timedelta()
-					for i in total:
-						(h, m, s) = i.split(':')
-						dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
-						mysum += dd
-						date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
-					t_vals.append(date_time.strftime("%H:%M:%S"))
-			# print("----------------")	
-			# print(t_vals)
-			# print("----------------")	
-			for hh in t_vals:
-				(h, m, s) = hh.split(':')
-				dd = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
-				mysum += dd
-				try:
-					date_time = dtt.datetime.strptime(str(mysum), "%H:%M:%S")
-				except:
-					continue
-			working_hours.append(date_time.strftime("%H:%M:%S"))
+			if len(in_out_list) > 0:
+				timeList = []
+				timeList1 = []
+				for ins in in_out_list:
+					timeList.append(str(ins.start_time.time()))
+					timeList1.append(str(ins.end_time.time()))
+
+				mysum1 = dtt.timedelta()
+				for i in timeList:
+					(h, m, s) = i.split(':')
+					d = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+					mysum1 += d
+				print(str(mysum1))
+				mysum2 = dtt.timedelta()
+				for i in timeList1:
+					(h, m, s) = i.split(':')
+					d = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+					mysum2 += d
+					
+				print(str(mysum2))
+
+				time = mysum2 - mysum1
+				print("----------------")
+				print(time)
+				print("----------------")
+				working_hours.append(time)
+    
 			names.append(emp.id)
 		else:
 			working_hours.append("00:00:00")
@@ -1138,3 +1134,78 @@ def export_io_excel(request, name, drange):
 	
 	wb.save(response)
 	return response
+
+def dep_filter(request, dep, drange):
+	print(dep)
+	print(drange)
+	employees = Employee.objects.all()
+	employees_list = []
+	if dep != 'All':
+		for emp in employees:
+			if emp.department == dep:
+				employees_list.append(emp)
+	else:
+		for emp in employees:
+			employees_list.append(emp)
+   
+
+	s_date =  drange.split(' - ')[0]
+	e_date =  drange.split(' - ')[1]
+	in_outs = In_out.objects.filter(start_time__range=[dtt.datetime.strptime(s_date, "%Y-%m-%d"), dtt.datetime.strptime(e_date, "%Y-%m-%d")])
+	print("---------------")
+	for io in in_outs:
+		print(io.employee.first_name + "----" + str(io.start_time) + "----" + str(io.end_time))
+	print("----------------")
+
+	print(employees_list)
+    
+	working_hours = []
+	names = []
+	for emp in employees_list:
+		in_out_nums = 0
+		for in_out in in_outs:
+			if in_out.employee.id == emp.id:
+				in_out_nums += 1
+		if in_out_nums > 0:
+			in_out_list = []
+			for in_out in in_outs:
+				if in_out.employee.id == emp.id:
+					in_out_list.append(in_out)
+			if len(in_out_list) > 0:
+				timeList = []
+				timeList1 = []
+				for ins in in_out_list:
+					timeList.append(str(ins.start_time.time()))
+					timeList1.append(str(ins.end_time.time()))
+
+				mysum1 = dtt.timedelta()
+				for i in timeList:
+					(h, m, s) = i.split(':')
+					d = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+					mysum1 += d
+				print(str(mysum1))
+				mysum2 = dtt.timedelta()
+				for i in timeList1:
+					(h, m, s) = i.split(':')
+					d = dtt.timedelta(hours=int(h), minutes=int(m), seconds=int(s))
+					mysum2 += d
+					
+				print(str(mysum2))
+
+				time = mysum2 - mysum1
+				print("----------------")
+				print(time)
+				print("----------------")
+				working_hours.append(time)
+
+ 
+			names.append(emp.id)
+		else:
+			working_hours.append("00:00:00")
+   
+
+
+	emps_list = zip(employees_list, working_hours)
+ 
+	return render(request, 'base/io_report.html', {'employees': emps_list, 'dep':dep, 'drange' : drange})
+
