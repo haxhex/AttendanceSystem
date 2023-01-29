@@ -385,12 +385,15 @@ def registerPage(request):
 			# return render(request, 'base/sign-up.html', context)
 			er = True
 			errors.append('Please enter a valid username.')			
-
+	positions = Position.objects.all()
+	position_list = []
+	for p in positions:
+		position_list.append(p)
 	if er:
-		context= {'form': form, 'errors':errors}
+		context= {'form': form, 'errors' : errors, 'positions' : position_list}
 		return render(request, 'base/sign-up.html', context)
    
-	context = {'form':form}
+	context = {'form':form, 'positions':positions}
 	return render(request, 'base/sign-up.html', context)
 
 @unauthenticated_user
@@ -452,12 +455,14 @@ def accountSettings(request):
 		form = EmployeeForm(request.POST, request.FILES,instance=employee)
 		if form.is_valid():
 			if is_valid_mobile(str(mobile)) == False and str(mobile) != "":
-				context= {'form': form, 'error':'Your mobile number is not valid'}
+				context= {'form': form, 'error':'Your mobile number is not valid' , 'position' : employee.position}
 				return render(request, 'base/edit_profile.html', context)
 			employee.department = department(employee.position)
 			form.save()
 			return redirect('view-profile')
-	context = {'form':form, 'page':page}
+	print("-----*****---")
+	print(employee.position)
+	context = {'form':form, 'page':page , 'position' : employee.position}
 	return render(request, 'base/edit_profile.html', context)
 
 
@@ -698,7 +703,7 @@ def createUser(request):
 
 	context = {'form':form}
 	return render(request, 'base/create-user.html', context)
-    
+
     
     
 	# valid_username = True
@@ -793,7 +798,7 @@ def editUser(request, pk):
 			employee.department = department(employee.position)
 			form.save()
 			return redirect('employees_list')
-	context = {'form':form, 'eid': pk, 'page':page}
+	context = {'form':form, 'eid': pk, 'page':page, 'position':employee.position}
 	return render(request, 'base/edit-user.html', context)
 
 
@@ -1305,6 +1310,26 @@ def export_total_hours(request, dep, drange):
 					
 	wb.save(response)
 	return response
+
+def add_position(request):
+
+	form = CreatePositionForm()
+	if request.method == 'POST':
+		form = CreatePositionForm(request.POST)
+		print("Form Created")
+		if form.is_valid():
+			print("----Form is Valid")
+			name = request.POST.get('name')
+			department = request.POST.get('department')
+			Position.objects.create(
+				name = name,
+				department = department
+			)
+			return redirect('employees_list')
+
+
+	context = {'form':form}
+	return render(request, 'base/create-position.html', context)
     
     
 

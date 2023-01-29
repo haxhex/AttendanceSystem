@@ -222,6 +222,19 @@ class InOutForm(ModelForm):
 #      class Meta:
 #          model = Employee
 #          fields = ['face_rec']
+
+
+class CreatePositionForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CreatePositionForm, self).__init__(*args, **kwargs)
+        self.fields['name'].required = True
+        self.fields['department'].required = True
+    class Meta:
+        model = Position
+        fields = ['name', 'department']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control','id': 'form3Example0'}),            
+        }
     
 
 

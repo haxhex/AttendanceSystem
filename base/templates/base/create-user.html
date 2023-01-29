@@ -97,6 +97,13 @@
                       Select your position
                     </option>
                     <optgroup label="Accouning">
+                      {% for pos in positions %}
+                      {% if pos.department == 'Accouning'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Auditor">Auditor</option>
                       <option value="CFO">CFO</option>
                       <option value="Payroll specialist">
@@ -105,6 +112,13 @@
                       <option value="Tax specialist">Tax specialist</option>
                     </optgroup>
                     <optgroup label="Marketing">
+                      {% for pos in positions %}
+                      {% if pos.department == 'Marketing'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Advertising manager">
                         Advertising manager
                       </option>
@@ -115,6 +129,13 @@
                       <option value="Market analyst">Market analyst</option>
                     </optgroup>
                     <optgroup label="Human resources">
+                      {% for pos in positions %}
+                      {% if pos.department == 'Human resources'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Compensation specialist">
                         Compensation specialist
                       </option>
@@ -127,6 +148,13 @@
                       <option value="Training manager">Training manager</option>
                     </optgroup>
                     <optgroup label="Production">
+                      {% for pos in positions %}
+                      {% if pos.department == 'Production'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Chief inspector">Chief inspector</option>
                       <option value="Brand manager">Brand manager</option>
                       <option value="Market analyst">Market analyst</option>
@@ -138,6 +166,13 @@
                       </option>
                     </optgroup>
                     <optgroup label="IT">
+                      {% for pos in positions %}
+                      {% if pos.department == 'IT'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Communications analyst">
                         Communications analyst
                       </option>

@@ -46,4 +46,15 @@ class Event(models.Model):
     def get_html_url(self):
         url = reverse('event_edit', args=(self.id,))
         return f'<a href="{url}"> {self.title} </a>'
+    
+class Position(models.Model):
+    name =  models.CharField(max_length=200, null=True)
+    department =  models.CharField(max_length=200, null=True)
+    def __str__(self):
+        return str(self.name)
+    @property
+    def get_html_url(self):
+        # url = reverse('event_edit', args=(self.id,))
+        # return f'<a href="{url}"> {self.start_time} <br/> {self.end_time} </a>'
+        return f'Department: {self.name} <br/> Position: {self.department}'
 

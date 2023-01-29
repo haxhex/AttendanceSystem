@@ -19,5 +19,7 @@ from .models import *
 admin.site.register(Employee)
 admin.site.register(In_out)
 admin.site.register(Event)
+admin.site.register(Position)
+
 
 

@@ -153,6 +153,13 @@
                       Select your position
                     </option>
                     <optgroup label="Accouning">
+                      {% for pos in positions %}
+                      {% if pos.department == 'Accouning'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Auditor">Auditor</option>
                       <option value="CFO">CFO</option>
                       <option value="Payroll specialist">
@@ -161,6 +168,13 @@
                       <option value="Tax specialist">Tax specialist</option>
                     </optgroup>
                     <optgroup label="Marketing">
+                      {% for pos in positions %}
+                      {% if pos.department == 'Marketing'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Advertising manager">
                         Advertising manager
                       </option>
@@ -171,6 +185,13 @@
                       <option value="Market analyst">Market analyst</option>
                     </optgroup>
                     <optgroup label="Human resources">
+                      {% for pos in positions %}
+                      {% if pos.department == 'Human resources'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Compensation specialist">
                         Compensation specialist
                       </option>
@@ -183,6 +204,13 @@
                       <option value="Training manager">Training manager</option>
                     </optgroup>
                     <optgroup label="Production">
+                      {% for pos in positions %}
+                      {% if pos.department == 'Production'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Chief inspector">Chief inspector</option>
                       <option value="Brand manager">Brand manager</option>
                       <option value="Market analyst">Market analyst</option>
@@ -194,6 +222,13 @@
                       </option>
                     </optgroup>
                     <optgroup label="IT">
+                      {% for pos in positions %}
+                      {% if pos.department == 'IT'%}
+                      <option value="{{pos.name}}">
+                        {{pos.name}}
+                      </option>
+                      {% endif %}
+                      {% endfor %}
                       <option value="Communications analyst">
                         Communications analyst
                       </option>
@@ -303,7 +338,7 @@
       </div>
     </section>
     <!-- Section: Design Block -->
-    <script>
+    <!-- <script>
       window.onbeforeunload = function () {
         localStorage.setItem("position", $("#position").val());
         localStorage.setItem("username", $("#form3Example0").val());
@@ -313,7 +348,7 @@
         localStorage.setItem("password1", $("#form3Example4").val());
         localStorage.setItem("password2", $("#form3Example5").val());
       };
-    </script>
+    </script> -->
 
   
   </body>
