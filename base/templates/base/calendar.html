@@ -217,10 +217,12 @@
           }
         });
     </script>
+
   </head>
 
   <body>
     {%include "navbar.html" %}
+    <title>Dashboard</title>
     <!-- background image -->
     <div
       class="p-5 bg-image"
@@ -255,6 +257,7 @@
         <div style="width:70%;">
           <a class="btn left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
           <a class="btn right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+          
           {{ calendar }}
         </div>
       </div>

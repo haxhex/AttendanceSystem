@@ -472,6 +472,8 @@ class CalendarView(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
+        print("------")
+        print(d)
         user_id = self.request.user.employee
         cal = Calendar(d.year, d.month)
         in_outs = In_out.objects.all()
@@ -567,6 +569,7 @@ def prev_month(d):
     month = 'month=' + str(prev_month.year) + '-' + str(prev_month.month)
     return month
 def next_month(d):
+    print(d)
     days_in_month = calendar.monthrange(d.year, d.month)[1]
     last = d.replace(day=days_in_month)
     next_month = last + timedelta(days=1)
