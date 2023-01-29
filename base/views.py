@@ -505,6 +505,7 @@ class CalendarView(generic.ListView):
         html_cal = cal.formatmonth(user_id, withyear=True)
         context['calendar'] = mark_safe(html_cal)
         context['prev_month'] = prev_month(d)
+        print("This Part ------------->")
         context['next_month'] = next_month(d)
         context['chart'] = chart
         context['datess'] = dates_ss
