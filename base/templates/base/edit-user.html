@@ -70,6 +70,7 @@
         });
     });
     </script>
+    <title>Edit User</title>
 
 </head>
 
@@ -265,6 +266,17 @@
           <a href="{% url 'change-pass' eid %}">Change Password</a>
           {% endif %}
           <br />
+
+          {% if emper.user.groups.all.0.name == "employee" %}
+          <section class="text-center">
+            <a href="{% url 'switch-role' eid %}"><input type="button" value="Switch role to Admin" onClick=""/></a>
+          </section>
+          {% else %}
+          <section class="text-center">
+            <a href="{% url 'switch-role' eid %}"><input type="button" value="Switch role to Employee" onClick=""/></a>
+          </section>
+          {% endif %}
+          <br/>
           <section class="text-center">
             <input type="submit" value="Save changes" />
           </section>

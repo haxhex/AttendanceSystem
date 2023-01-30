@@ -217,10 +217,12 @@
           }
         });
     </script>
+
   </head>
 
   <body>
     {%include "navbar.html" %}
+    <title>Dashboard</title>
     <!-- background image -->
     <div
       class="p-5 bg-image"
@@ -254,27 +256,106 @@
         </div>
         <div style="width:70%;">
           <a class="btn left" href="{% url 'calendar' %}?{{ prev_month }}"> Previous Month </a>
-          <a class="btn right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+          <select
+          id="year"
+          name="year"
+          required
+          style="width: 15%; margin:1%;"
+          required
+        >
+        <option value="" selected disabled>
+          Select Year
+        </option>
+        <option value="2023">
+          2023
+        </option>
+        <option value="2022">
+          2022
+        </option>
+        <option value="2021">
+          2021
+        </option>
+        <option value="2020">
+          2020
+        </option>
+        <option value="2019">
+          2019
+        </option>
+       </select> 
+       <select
+          id="month"
+          name="month"
+          required
+          style="width: 15%; margin:1%;"
+          required
+        >
+        <option value="" selected disabled>
+          Select Month
+        </option>
+        <option value="1">
+          1
+        </option>
+        <option value="2">
+          2
+        </option>
+        <option value="3">
+          3
+        </option>
+        <option value="4">
+          4
+        </option>
+        <option value="5">
+          5
+        </option>
+        <option value="6">
+          6
+        </option>
+        <option value="7">
+          7
+        </option>
+        <option value="8">
+          8
+        </option>
+        <option value="9">
+          9
+        </option>
+        <option value="10">
+          10
+        </option>
+        <option value="11">
+          11
+        </option>
+        <option value="12">
+          12
+        </option>
+
+       </select> 
+       <button class="gray-button" role="button" onclick="getOption()"style="display:inline-block; padding: 5px 7px; height:35px;">Go</button>
+
+        <a class="btn right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
+          
           {{ calendar }}
         </div>
       </div>
 
-    </div> 
+    </div>
+
+    <script type="text/javascript">
+      function getOption() {
+          selectElement_year = document.querySelector('#year');
+          output_year = selectElement_year.value;
+          selectElement_month = document.querySelector('#month');
+          output_month = selectElement_month.value;
+          val = String(output_year) + "-" + String(output_month);
+          console.log(val);
+          location.href = "{% url 'calendar' %}?month=" + val;
+      }
+      </script>
+      
   </body>
+  
+
+
+  
 </html>
 {% endblock %}
-
-<!-- because of wifth of image they aren't in a row! -->
-<!-- if you switch calnder & graph they'll be in same row.because calender is flexible -->
-<!-- <div> -->
-<!-- <table class="right"> -->
-<!-- <tr> -->
-<!-- <td> -->
-<!-- {% if chart %} -->
-<!-- <img src="data:image/png;base64, {{chart|safe}}" /> -->
-
-<!-- {% endif %} -->
-<!-- </td> -->
-<!-- </tr> -->
-<!-- </table> -->
-<!-- </div> -->
