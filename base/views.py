@@ -925,7 +925,7 @@ class ActRep(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         daterange = self.request.GET.get('daterange') if self.request.GET.get('daterange') != None else ''
-        if self.request.user.is_superuser:
+        if self.request.user.groups.all()[0].name == "admin":  
             sel_user = self.request.GET.get('users') if self.request.GET.get('users') != None else ''
         else:
             sel_user = self.request.user.employee.id
@@ -1052,7 +1052,7 @@ def export_act_excel(request, name, drange):
 	for employee in employees:
 		employees_list.append(employee)
 	i = 0
-	for row_num in range(len()):
+	for row_num in range(len(date_generated)):
 		rowx = row_num+1
 		ws.write(rowx, 0, str(date_generated[row_num]), font_style)
 		if date_generated[row_num] not in dates_ss:
