@@ -17,6 +17,7 @@
       .calendar {
         margin-left: auto;
         margin-right: auto;
+        margin-top: 1%;
         /* margin-left: 1%;
         margin-right: 1%; */
       }
@@ -32,13 +33,16 @@
 
       .left {
         float: left;
-        margin-left: 80px;
-        margin-bottom: 5px;
+        margin-left: 10%;
+        margin-top: 1%;
+        height:4.5%;
       }
 
       .right {
         float: right;
-        margin-right: 80px;
+        margin-right: 10%;
+        margin-top: 1%;
+        height:4.5%;
       }
 
       .btn {
@@ -251,7 +255,7 @@
       </form> -->
 
       <div class="flex-container">
-        <div style="width:40%; margin-right: 30px; margin-top:40px;">
+        <div style="width:40%; margin-right: 30px; margin-top:4.5%;">
           <canvas id="myChart" width="700" height="800" style="border:2px solid #b4b0b7; padding: 10px;"></canvas>
         </div>
         <div style="width:70%;">
@@ -260,7 +264,7 @@
           id="year"
           name="year"
           required
-          style="width: 15%; margin:1%;"
+          style="width: 18%; margin:1%; margin-top: 1px;"
           required
         >
         <option value="" selected disabled>
@@ -286,7 +290,7 @@
           id="month"
           name="month"
           required
-          style="width: 15%; margin:1%;"
+          style="width: 18%; margin:1%;"
           required
         >
         <option value="" selected disabled>
@@ -330,7 +334,7 @@
         </option>
 
        </select> 
-       <button class="gray-button" role="button" onclick="getOption()"style="display:inline-block; padding: 5px 7px; height:35px;">Go</button>
+       <button class="gray-button" role="button" onclick="getOption()"style="display:inline-block; padding: 5px 7px; height:4%;">Go</button>
 
         <a class="btn right" href="{% url 'calendar' %}?{{ next_month }}"> Next Month </a>
           
