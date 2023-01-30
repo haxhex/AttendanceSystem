@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% include "header.html" %}
+    <title>Add New Position</title>
+
+    <script>
+      window.onload = function () {
+        var position = localStorage.getItem("position");
+        console.log(position);
+        if (position !== null && position != 'undefined') $("#position").val(position);
+      }
+    </script>
+  </head>
+  <body>
+    <div>{%include "navbar.html" %}</div>
+    <!-- Section: Design Block -->
+      <!-- Background image -->
+      <div
+        class="p-5 bg-image"
+        style="
+          background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+          height: 300px;
+        "
+      ></div>
+      <!-- Background image -->
+
+      <div
+        class="card"
+        style="
+          width: 40%;
+          margin-left: 30%;
+          margin-top: -250px;
+          background: hsla(0, 0%, 100%, 0.8);
+          backdrop-filter: blur(30px);
+        "
+      >
+        <div class="card-body py-5 px-md-5">
+          <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+              <section class="text-center">
+                <h2 class="fw-bold mb-5">Add New In-Out</h2>
+              </section>
+              <form method="POST" action="">
+                {% csrf_token %}
+                <!-- 2 column grid layout with text inputs for the first and last names -->
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example0">Time in</label>
+                  {{form.start_time}}
+                  <!-- <input type="text" name="username" id="form3Example0" class="form-control" /> -->
+                </div>
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example0">Time out</label>
+                  {{form.end_time}}
+                  <!-- <input type="text" name="username" id="form3Example0" class="form-control" /> -->
+                </div>
+
+
+
+                
+                <!-- Submit button -->
+                <section class="text-center">
+                  <button type="submit" style="background-color: #334180;">
+                    Add
+                  </button>
+                </section>
+                <!-- switch to login-->
+                </div>
+                <div style="width: 100%; text-align: center;">
+                  <div style="color: red; text-align:left; display: inline-block; margin: 0 auto; padding: 3px;">
+                    <ul>
+                      {% for error in errors  %}
+                      <li>{{error}}</li>
+                    {% endfor %}
+                    </ul>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Section: Design Block -->
+    <script>
+      window.onbeforeunload = function () {
+        localStorage.setItem("department", $("#department").val());
+      }
+    </script>
+  </body>
+</html>
