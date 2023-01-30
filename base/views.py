@@ -694,12 +694,12 @@ def createUser(request):
 				valid_username = False
 				return redirect('employees_list')
 		
-		if er == False and valid_username and not form.is_valid():
-			# print("---Invalid Username")
-			# context= {'form': form, 'error':'Please enter a valid username.'}
-			# return render(request, 'base/sign-up.html', context)
-			er = True
-			errors.append('Please enter a valid username.')			
+		# if er == False and valid_username and not form.is_valid():
+		# 	# print("---Invalid Username")
+		# 	# context= {'form': form, 'error':'Please enter a valid username.'}
+		# 	# return render(request, 'base/sign-up.html', context)
+		# 	er = True
+		# 	errors.append('Please enter a valid username.')			
 
 	if er:
 		context= {'form': form, 'errors':errors}
