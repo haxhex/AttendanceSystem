@@ -379,7 +379,18 @@
                                 {% for emps in employees %}
                                 <tr>
                                     <td>
+                                        {% if emps.profile_picture %}
                                         <img src="{{emps.profile_picture.url}}" class="rounded-circle" width="50" height="50">         
+
+                                        {% else %}
+                                        <img
+                                          src="{% static 'images/default_prof.png' %}"
+                                          class="rounded-circle"
+                                          width="50"
+                                          height="50"
+                                        />
+                                        {% endif %}
+                                        
                                     </td>
                                     <td>{{emps.user.username}}</td>
                                     <td>{{emps.first_name}} {{emps.last_name}}</td> 

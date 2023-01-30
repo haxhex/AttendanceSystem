@@ -56,6 +56,15 @@
         >Dashboard</a
       >
     </li>
+    <li style="float: left">
+      <a
+        class="white-a"
+        href="{% url 'add-inout' %}"
+        onMouseOver="this.style.color='#5d74ba'"
+        onMouseOut="this.style.color='white'"
+        >Add In-Out</a
+      >
+    </li>
     {% if request.user.groups.all.0.name == "admin" %}
     <!-- super user -->
     <li style="float: left">
