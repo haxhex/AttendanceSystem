@@ -1371,7 +1371,7 @@ def add_inout(request):
 				end_time = end_time,
 				employee = request.user.employee
 			)
-			return redirect('employees_list')
+			return redirect('dashboard')
 
 
 	context = {'form':form}
