@@ -20,28 +20,23 @@
     {% if request.user.is_authenticated %}
     <!-- user logged in -->
     <li style="float: right">
-
-      {% if request.user.employee.profile_picture %} 
+      {% if request.user.employee.profile_picture %}
       <img
-      src="{{request.user.employee.profile_picture.url}}"
-      class="rounded-circle"
-      alt="Cinque Terre"
-      width="50"
-      height="50"
-    /> 
-      {% else %} 
+        src="{{request.user.employee.profile_picture.url}}"
+        class="rounded-circle"
+        alt="Cinque Terre"
+        width="50"
+        height="50"
+      />
+      {% else %}
       <img
-      src="{% static 'images/default_prof.png' %}"
-      class="rounded-circle"
-      alt="Cinque Terre"
-      width="50"
-      height="50"
-    /> 
-      {% endif %}
-      {% if re %}
-        
-      {% endif %}
-
+        src="{% static 'images/default_prof.png' %}"
+        class="rounded-circle"
+        alt="Cinque Terre"
+        width="50"
+        height="50"
+      />
+      {% endif %} {% if re %} {% endif %}
     </li>
     <li style="float: right">
       <a
