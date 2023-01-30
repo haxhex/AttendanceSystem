@@ -39,7 +39,25 @@
     margin-top: 15px;
     }
     
-    
+    input[type=button]{
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 14px;
+      font-family: -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
+      border-radius: 6px;
+      border: none;
+      /* margin-bottom: 1%; */
+      margin-top:1%;
+
+      background: #838284;
+      box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1),
+        inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5),
+        0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+      color: #dfdedf;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
     </style>
     <script>
       $(document).ready(() => {
@@ -98,7 +116,7 @@
     >
     <div class="flex-container justify-content-center">
       <div class="flex-item">
-        <h1>Edit Profile</h1>
+        <h1>Edit User</h1>
         <form method="POST" action="" enctype="multipart/form-data">
           <div>{% csrf_token %}
              <!-- profile photo -->
@@ -158,7 +176,7 @@
               <div class="form-outline mb-4">
                 <label class="form-label" for="form3Example6">Position</label>
                 <!-- <input type="email" name="email" id="form3Example3" class="form-control" /> -->
-                <select id="position" name="position" required>
+                <select id="position" name="position" style="width:85%;" required>
                   <option value="" selected disabled>
                     Select your position
                   </option>
@@ -265,15 +283,16 @@
           {% if page == 'accountSettings' %}
           <a href="{% url 'change-pass' eid %}">Change Password</a>
           {% endif %}
-          <br />
 
           {% if emper.user.groups.all.0.name == "employee" %}
           <section class="text-center">
-            <a href="{% url 'switch-role' eid %}"><input type="button" value="Switch role to Admin" onClick=""/></a>
+            <!-- <a href="{% url 'switch-role' eid %}"><input type="button" value="Switch role to Admin" onClick=""/></a> -->
+            <a href="{% url 'switch-role' eid %}">Switch role to Admin</a>
           </section>
           {% else %}
           <section class="text-center">
-            <a href="{% url 'switch-role' eid %}"><input type="button" value="Switch role to Employee" onClick=""/></a>
+            <!-- <a href="{% url 'switch-role' eid %}"><input type="button" value="Switch role to Employee" onClick=""/></a> -->
+            <a href="{% url 'switch-role' eid %}">Switch role to Employee</a>
           </section>
           {% endif %}
           <br/>
