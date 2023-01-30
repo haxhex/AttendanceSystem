@@ -796,13 +796,14 @@ def editUser(request, pk):
 	page = 'editUser'
 	employee = Employee.objects.get(id=pk)
 	form = EmployeeForm(instance=employee)
+	positions = Position.objects.all()
 	if request.method == 'POST':
 		form = EmployeeForm(request.POST, request.FILES,instance=employee)
 		if form.is_valid():
 			employee.department = department(employee.position)
 			form.save()
 			return redirect('employees_list')
-	context = {'form':form, 'eid': pk, 'page':page, 'position':employee.position, 'emper':employee}
+	context = {'form':form, 'eid': pk, 'page':page, 'position':employee.position, 'emper':employee, 'positions':positions}
 	return render(request, 'base/edit-user.html', context)
 
 

@@ -220,6 +220,7 @@
                   </optgroup>
                   <optgroup label="Human resources">
                     {% for pos in positions %}
+                    <option value="1">Pos</option>
                     {% if pos.department == 'Human resources'%}
                     <option value="{{pos.name}}">
                       {{pos.name}}

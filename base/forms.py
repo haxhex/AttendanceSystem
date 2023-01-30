@@ -238,17 +238,17 @@ class CreatePositionForm(ModelForm):
         
         
 
-class CreateInOutForm(ModelForm):
+class CreateInOutForm(ModelForm): 
     def __init__(self, *args, **kwargs):
         super(CreateInOutForm, self).__init__(*args, **kwargs)
         self.fields['start_time'].required = True
         self.fields['end_time'].required = True
     class Meta:
         model = In_out
-        fields = ['start_time', 'end_time']  
+        fields = ['start_time', 'end_time'] 
+        
+
+
     
-
-
-
 
         
